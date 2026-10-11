@@ -1,0 +1,10 @@
+{
+  "evidence": "Sanitized native channel history read on 2026-10-02; not synthetic",
+  "payloads": [
+    {"type":1005,"content":"{0}已启用“群聊邀请确认”，群成员需群主或管理员确认才能邀请朋友进群。","data":{"invite":"1"},"extra":[{"uid":"fixture-actor","name":"测试成员"}]},
+    {"type":1005,"content":"{0}已恢复默认进群方式。","data":{"invite":"0"},"extra":[{"uid":"fixture-actor","name":"测试成员"}]},
+    {"type":1005,"content":"{0}开启了群禁言","data":{"forbidden":"1"},"extra":[{"uid":"fixture-actor","name":"测试成员"}]},
+    {"type":1005,"content":"{0}修改群名为\"测试群\"","data":{"name":"测试群"},"extra":[{"uid":"fixture-actor","name":"测试成员"}]}
+  ],
+  "handling": "Relay invite/status notices; name/notice/mute updates already produce Tencent group notifications. Keep per-native-message dedup and bridge marker."
+}

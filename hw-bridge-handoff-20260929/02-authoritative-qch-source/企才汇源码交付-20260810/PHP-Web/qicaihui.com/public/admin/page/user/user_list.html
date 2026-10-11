@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8" />
+	<title></title>
+	<meta name="renderer" content="webkit" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+	<link rel="stylesheet" href="../../lib/layui-v2.5.5/css/layui.css" media="all" />
+	<link rel="stylesheet" href="../../css/public.css" media="all" />
+</head>
+
+<body>
+	<div class="layuimini-container">
+		<div class="layuimini-main">
+			<fieldset class="table-search-fieldset">
+				<legend>搜索信息</legend>
+				<div style="margin: 10px 10px 10px 10px">
+					<form class="layui-form layui-form-pane" action="">
+						<div class="layui-form-item">
+							<div class="layui-inline">
+								<div class="layui-input-inline">
+									<input type="text" name="uid" autocomplete="off" class="layui-input"
+										placeholder="用户id" />
+								</div>
+							</div>
+							
+							<div class="layui-inline">
+								<div class="layui-input-inline">
+									<input type="text" name="user_name" autocomplete="off" class="layui-input"
+										placeholder="手机号" />
+								</div>
+							</div>
+							
+							<div class="layui-inline">
+								<div class="layui-input-inline">
+									<input type="text" name="nick_name" autocomplete="off" class="layui-input"
+										placeholder="用户昵称" />
+								</div>
+							</div>
+
+							<div class="layui-inline">
+								<button type="submit" class="layui-btn layui-btn-primary" lay-submit
+									lay-filter="data-search-btn">
+									<i class="layui-icon"></i> 搜 索
+								</button>
+							</div>
+						</div>
+					</form>
+				</div>
+			</fieldset>
+			
+			<script type="text/html" id="toolbar_add">
+                    <div class="layui-btn-container">
+                        <button class="layui-btn layui-btn-normal layui-btn-sm data-add-btn" lay-event="add"> 添 加 </button>
+                        <button class="layui-btn layui-btn-normal layui-btn-sm data-add-btn" lay-event="batch_banned"> 批量封禁/解封(id) </button>
+                        <button class="layui-btn layui-btn-normal layui-btn-sm data-add-btn" lay-event="batch_banned_ip"> 批量封禁/解封（IP） </button>
+                    </div>
+
+            </script>
+			
+			<table class="layui-hide" id="currentTableId" lay-filter="currentTableFilter" style="align: center"></table>
+			
+		</div>
+	</div>
+	<script src="../../lib/layui-v2.5.7/layui.js" charset="utf-8"></script>
+	<script src="../../common/common.js" charset="utf-8"></script>
+	<script>
+		layui.use(['form', 'table'], function () {
+			var $ = layui.jquery,
+				form = layui.form,
+				table = layui.table
+
+			table.render({
+				elem: '#currentTableId',
+				url: WebHost + 'user/get_user_list',
+				where: {
+					login_token: AdminLoginToken,
+				}, //设定异步数据接口的额外参数
+				method: 'POST',
+				toolbar: '#toolbar_add',
+				defaultToolbar: [
+					'filter',
+					'exports',
+					'print',
+					{
+						title: '提示',
+						layEvent: 'LAYTABLE_TIPS',
+						icon: 'layui-icon-tips',
+					},
+				],
+				autoSort: false,
+				totalRow: true,
+				cols: [
+					[
+						{ field: 'uid', title: 'ID', minWidth: 120, sort: true, totalRowText: '合计'},
+						{
+							field: 'user_name',
+							title: '手机号',
+							align: 'center',
+							minWidth: 120,
+						},
+						{
+							field: 'nick_name',
+							title: '昵称',
+							align: 'center',
+							minWidth: 150,
+						},
+						{
+							field: 'head_pic',
+							title: '用户头像',
+							templet: '#head_pic_Tpl',
+							align: 'center',
+							minWidth: 120,
+						},
+						{
+							field: 'sex',
+							title: '性别',
+							templet: '#sex_Tpl',
+							align: 'center',
+							hide: true,
+							minWidth: 80,
+						},
+						{
+							field: 'money',
+							title: '余额',
+							align: 'center',
+				// 			hide: true,
+							minWidth: 80,
+						},
+						{
+							field: 'login_status',
+							title: '登录状态',
+							templet: '#login_status_Tpl',
+							align: 'center',
+							minWidth: 120,
+						},
+						{
+							field: 'last_login_time',
+							title: '登录时间',
+							templet: '#last_login_time_Tpl',
+							align: 'center',
+							hide: true,
+							minWidth: 150,
+						},
+						{
+							field: 'add_time',
+							title: '注册时间',
+							templet: '#add_time_Tpl',
+							align: 'center',
+							hide: true,
+							minWidth: 150,
+						},
+
+						{
+							field: 'is_vip',
+							title: '是否会员',
+							templet: '#is_vip',
+							align: 'center',
+							minWidth: 80,
+						},
+						{
+							field: 'vip_end_time',
+							title: '会员到期时间',
+							templet: '#vip_end_time',
+							align: 'center',
+							minWidth: 150,
+						},
+						{
+							field: 'reg_ip',
+							title: '注册IP',
+							templet: '#reg_ip_Tpl',
+							align: 'center',
+				// 			hide: false,
+							minWidth: 1,
+						},
+						 {
+							field: 'login_ip',
+							title: '登录ip',
+							templet: '#login_ip_Tpl',
+							align: 'center',
+				// 			hide: false,
+							minWidth: 1,
+						},
+						{
+							title: '操作',
+							toolbar: '#currentTableBar',
+							align: 'center',
+							minWidth: 400,
+						},
+						
+					],
+				],
+
+				//增加全部数据选项
+				limits: [10, 15, 20, 25, 50, 100,10000],
+				limit: 15,
+				page: true,
+				skin: 'line',
+				
+			})
+            table.on('toolbar(currentTableFilter)', function (obj) {
+                if (obj.event === 'add') {  // 监听添加操作
+                    var index = layer.open({
+                        title: '添加',
+                        type: 2,
+                        shade: 0.2,
+                        maxmin: true,
+                        shadeClose: true,
+                        area: ['80%', '80%'],
+                        content: 'user_add.html',
+                    });
+                    $(window).on("resize", function () {
+                        layer.full(index);
+                    });
+                }else if (obj.event === 'batch_banned') {
+					var index = layer.open({
+						title: '批量封禁',
+						type: 2,
+						shade: 0.2,
+						maxmin: true,
+						shadeClose: true,
+						area: ['80%', '80%'],
+						content: 'user_banned.html',
+					})
+					$(window).on('resize', function () {
+						layer.full(index)
+					})
+					return false
+				}else if (obj.event === 'batch_banned_ip') {
+					var index = layer.open({
+						title: '批量封禁',
+						type: 2,
+						shade: 0.2,
+						maxmin: true,
+						shadeClose: true,
+						area: ['80%', '80%'],
+						content: 'batch_banned_ip.html',
+					})
+					$(window).on('resize', function () {
+						layer.full(index)
+					})
+					return false
+				}
+            });
+			// 监听搜索操作
+			form.on('submit(data-search-btn)', function (data) {
+				// var result = JSON.stringify(data.field);
+				// layer.alert(result, {
+				//     title: '最终的搜索信息'
+				// });
+				data.field.admin_login_token = AdminLoginToken
+				//执行搜索重载
+				table.reload(
+					'currentTableId',
+					{
+						where: data.field,
+						page: {
+							curr: 1,
+						},
+					},
+					'json'
+				)
+
+				return false
+			})
+			//监听排序事件 
+			table.on('sort(currentTableFilter)', function (obj) { //注：sort 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
+				table.reload('currentTableId', {
+					initSort: obj //记录初始排序，如果不设的话，将无法标记表头的排序状态。
+					, where: { //请求参数（注意：这里面的参数可任意定义，并非下面固定的格式）
+						order: obj.field //排序字段
+						, sort: obj.type //排序方式
+					}
+				});
+			});
+			
+			
+			
+			table.on('tool(currentTableFilter)', function (obj) {
+				var data = obj.data
+
+				if (obj.event === 'edit_info') {
+					Id = data.uid
+					var index = layer.open({
+						title: '编辑用户信息',
+						type: 2,
+						shade: 0.2,
+						maxmin: true,
+						shadeClose: true,
+						area: ['80%', '80%'],
+						content: '../user/user_edit.html',
+					})
+					$(window).on('resize', function () {
+						layer.full(index)
+					})
+					return false
+				}  else if (obj.event === 'edit_money') {
+					Id = data.uid
+					var index = layer.open({
+						title: '修改资金',
+						type: 2,
+						shade: 0.2,
+						maxmin: true,
+						shadeClose: true,
+						area: ['80%', '80%'],
+						content: '../user/user_edit_money.html',
+					})
+					$(window).on('resize', function () {
+						layer.full(index)
+					})
+					return false
+				}  else if (obj.event === 'edit_password') {
+					Id = data.uid
+					var index = layer.open({
+						title: '编辑',
+						type: 2,
+						shade: 0.2,
+						maxmin: true,
+						shadeClose: true,
+						area: ['80%', '80%'],
+						content: '../user/user_edit_password.html',
+					})
+					$(window).on('resize', function () {
+						layer.full(index)
+					})
+					return false
+				} else if (obj.event === 'edit_vip') {
+					Id = data.uid
+					var index = layer.open({
+						title: '编辑',
+						type: 2,
+						shade: 0.2,
+						maxmin: true,
+						shadeClose: true,
+						area: ['80%', '80%'],
+						content: '../user/user_edit_vip_time.html',
+					})
+					$(window).on('resize', function () {
+						layer.full(index)
+					})
+					return false
+				} 
+			})
+
+
+		})
+
+		function previewImg(obj) {
+			var img = new Image()
+			img.src = obj.src
+			//var height = img.height + 50; // 原图片大小
+			//var width = img.width; //原图片大小
+			var imgHtml =
+				"<img src='" +
+				obj.src +
+				"' width='500px' height='500px'/>"
+			//弹出层
+			layer.open({
+				type: 1,
+				shade: 0.8,
+				offset: 'auto',
+				area: [500 + 'px', 550 + 'px'], // area: [width + 'px',height+'px'] //原图显示
+				shadeClose: true,
+				scrollbar: false,
+				title: '查看图片', //不显示标题
+				content: imgHtml, //捕获的元素，注意：最好该指定的元素要存放在body最外层，否则可能被其它的相对元素所影响
+				cancel: function () {
+					//layer.msg('捕获就是从页面已经存在的元素上，包裹layer的结构', { time: 5000, icon: 6 });
+				},
+			})
+		}
+	</script>
+
+	<script type="text/html" id="login_status_Tpl">
+			{{# if(d.login_status == "1"){ }} 正常 {{# }else
+			if(d.login_status=="2"){}} 禁止 {{# } else { }} 未知 {{# } }}
+		</script>
+	<script type="text/html" id="sex_Tpl">
+			{{# if(d.sex == "1"){ }} 男 {{# }else if(d.sex=="2"){}} 女 {{# }
+			else { }} 未知 {{# } }}
+		</script>
+	<script type="text/html" id="is_vip">
+			{{# if(d.is_vip == "1"){ }} 是 {{# }else if(d.is_vip=="2"){}} 否 {{# }
+			else { }} 未知 {{# } }}
+		</script>	
+	<script type="text/html" id="head_pic_Tpl">
+			<img src="{{d.head_pic}}" height="100%" class="layui-upload-img" onclick="previewImg(this)" />
+		</script>
+	
+	
+	<script type="text/html" id="last_login_time_Tpl">
+			{{dateFormat(d.last_login_time) }}
+		</script>
+	<script type="text/html" id="add_time_Tpl">
+			{{dateFormat(d.add_time) }}
+		</script>
+		<script type="text/html" id="vip_end_time">
+			{{dateFormat(d.vip_end_time) }}
+		</script>
+	<script type="text/html" id="login_ip_Tpl">
+    {{d.login_ip || '未知'}}
+</script>
+<script type="text/html" id="reg_ip_Tpl">  
+    {{d.reg_ip || '未知'}}
+</script>
+	<script type="text/html" id="currentTableBar">
+			<a class="layui-btn layui-btn-xs data-count-edit" lay-event="edit_info">编辑</a>
+			<a class="layui-btn layui-btn-xs data-count-edit" lay-event="edit_money">资金</a>
+			<a class="layui-btn layui-btn-xs data-count-edit" lay-event="edit_password" >修改密码</a>
+			<a class="layui-btn layui-btn-xs data-count-edit" lay-event="edit_vip" >修改会员时间</a>
+		</script>
+</body>
+
+</html>

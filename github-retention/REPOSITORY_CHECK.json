@@ -1,0 +1,22 @@
+{
+  "source_files_expected": 7959,
+  "source_files_tracked": 7959,
+  "missing": [],
+  "intentional_excluded_logs": [
+    "hw-bridge-handoff-20260929/06-release-and-deploy/business-20260929/tests/business-final-go-test.log",
+    "hw-bridge-handoff-20260929/06-release-and-deploy/business-20260929/tests/business-final-go-vet.log"
+  ],
+  "gitleaks_version": "8.30.1",
+  "source_directory_scan_exit_code": 0,
+  "document_text_scan_exit_code": 0,
+  "known_removed_credentials_remaining_hits": 0,
+  "bridge_go_test": "PASS",
+  "bridge_go_vet": "PASS",
+  "php_lint_files": 5,
+  "php_missing_invalid_valid_config_test": "PASS",
+  "js_syntax_files": 6,
+  "android_gradle_configuration": "PASS",
+  "production_deployed": false,
+  "new_apk_built": false,
+  "staged_scan_remaining_findings": 0
+}

@@ -1,0 +1,569 @@
+[
+  {
+    "path": "01-bridge/tencent-tangseng-bridge/bridge.exe",
+    "category": "release-asset-review",
+    "bytes": 10226176,
+    "sha256": "7801c11bf83ec583fbff0000097a751c99d61c2fd52686aac7896619f7f49f29",
+    "scan": "excluded-or-archive-not-scanned"
+  },
+  {
+    "path": "02-authoritative-qch-source/企才汇源码交付-20260810/PHP-Web/qicaihui.com/public/admin/extend/umeditor/third-party/snapscreen/UEditorSnapscreen.exe",
+    "category": "release-asset-review",
+    "bytes": 519936,
+    "sha256": "e3179d100487acf0d00a597162418b7dc814ee8fb62b116c7f8e908696b24539",
+    "scan": "excluded-or-archive-not-scanned"
+  },
+  {
+    "path": "02-authoritative-qch-source/企才汇源码交付-20260810/PHP-Web/qicaihui.com/thinkphp/library/think/console/bin/hiddeninput.exe",
+    "category": "release-asset-review",
+    "bytes": 9216,
+    "sha256": "8fdff52a7430dba14fb97239c7fe414710991f16da269374e0936a1385f3a318",
+    "scan": "excluded-or-archive-not-scanned"
+  },
+  {
+    "path": "03-php-deployment/backend/thinkphp/library/think/console/bin/hiddeninput.exe",
+    "category": "release-asset-review",
+    "bytes": 9216,
+    "sha256": "8fdff52a7430dba14fb97239c7fe414710991f16da269374e0936a1385f3a318",
+    "scan": "excluded-or-archive-not-scanned"
+  },
+  {
+    "path": "04-tangseng-reference/叨叨服务端源码-轻量副本.zip",
+    "category": "reference-archive-review",
+    "bytes": 106954752,
+    "sha256": "c35e65d534a251ef10e9f16335828fd058a78cb195d273cc2455bb533bd52b98",
+    "scan": "excluded-or-archive-not-scanned"
+  },
+  {
+    "path": "06-release-and-deploy/avatar-fix-20260930-source.zip",
+    "category": "release-asset-review",
+    "bytes": 52968,
+    "sha256": "8cba96e32b7d1313eb78fca2b0512e82fbb7492e5418f91d0e303eec8ff864f7",
+    "scan": "excluded-or-archive-not-scanned"
+  },
+  {
+    "path": "06-release-and-deploy/bridge-server-bundle-v6.zip",
+    "category": "release-asset-review",
+    "bytes": 64382,
+    "sha256": "3984048c99abe79acb6d9e6b11f2c3c8d297b0a62babeac775749709be82840c",
+    "scan": "excluded-or-archive-not-scanned"
+  },
+  {
+    "path": "06-release-and-deploy/business-acceptance-20260930-source.zip",
+    "category": "release-asset-review",
+    "bytes": 102641,
+    "sha256": "a8e4717279f7440a116be6228e49faf91955c7ce4a63a73734292899e43f11bf",
+    "scan": "excluded-or-archive-not-scanned"
+  },
+  {
+    "path": "06-release-and-deploy/business-closure-20261001-group-create-fix-source.zip",
+    "category": "release-asset-review",
+    "bytes": 445175,
+    "sha256": "b5715da2c081194efadd1b74ba44cf82d8411be2a509388afc5d65a470dc0815",
+    "scan": "excluded-or-archive-not-scanned"
+  },
+  {
+    "path": "06-release-and-deploy/business-closure-20261001-pretest-review-source.zip",
+    "category": "release-asset-review",
+    "bytes": 452145,
+    "sha256": "85cc3d8df422355933f693ecf507c59b99606bbd62ad44b0333fb6ca1bd0e311",
+    "scan": "excluded-or-archive-not-scanned"
+  },
+  {
+    "path": "06-release-and-deploy/business-closure-20261001-product-ux-source.zip",
+    "category": "release-asset-review",
+    "bytes": 419128,
+    "sha256": "dc7680b5d9e0ab889b95d0d42c7f2b4af5e2083b32caa2e4114e4b4d451a6f9a",
+    "scan": "excluded-or-archive-not-scanned"
+  },
+  {
+    "path": "06-release-and-deploy/business-closure-20261001-search-fix-source.zip",
+    "category": "release-asset-review",
+    "bytes": 428461,
+    "sha256": "7552ba79828b61ac011545a0ef4cb330a934a8372e29f929c94f36528cd33f95",
+    "scan": "excluded-or-archive-not-scanned"
+  },
+  {
+    "path": "06-release-and-deploy/business-closure-20261001-source.zip",
+    "category": "release-asset-review",
+    "bytes": 414036,
+    "sha256": "53e33f17220f55ed54f045e2f087a8db48bef1e3bed5db13ca577b159746704d",
+    "scan": "excluded-or-archive-not-scanned"
+  },
+  {
+    "path": "06-release-and-deploy/business-closure-20261001-tip-file-fix-source.zip",
+    "category": "release-asset-review",
+    "bytes": 437990,
+    "sha256": "7d975156bd080d6d6f9753e596a919e4dc033e78b6fab54a8658c24117651eb6",
+    "scan": "excluded-or-archive-not-scanned"
+  },
+  {
+    "path": "06-release-and-deploy/client-profile-20260930-source.zip",
+    "category": "release-asset-review",
+    "bytes": 78132,
+    "sha256": "18a33f59c66d10c604d86f44a1e86eefc1a9a863a0fdacb5ce268370ddc4a51e",
+    "scan": "excluded-or-archive-not-scanned"
+  },
+  {
+    "path": "06-release-and-deploy/core-state-group-20260930-source.zip",
+    "category": "release-asset-review",
+    "bytes": 70360,
+    "sha256": "358e61cbd992d54be93ce8449afede18e62b74c5a79bc0878ce6a832c55c7e31",
+    "scan": "excluded-or-archive-not-scanned"
+  },
+  {
+    "path": "06-release-and-deploy/group-initial-avatar-20261002-source.zip",
+    "category": "release-asset-review",
+    "bytes": 19070,
+    "sha256": "699a05a0d68d0b85fce04353d5273be1f7f28b1b7ae3fb1b5c82dc3044751820",
+    "scan": "excluded-or-archive-not-scanned"
+  },
+  {
+    "path": "06-release-and-deploy/group-notifications-20261002-source.zip",
+    "category": "release-asset-review",
+    "bytes": 57377,
+    "sha256": "211cfbaa54e2721776c287baa87d73b2074b06c66d1a5fa28b9f726c4c259ed9",
+    "scan": "excluded-or-archive-not-scanned"
+  },
+  {
+    "path": "06-release-and-deploy/group-profile-operator-20261002-source.zip",
+    "category": "release-asset-review",
+    "bytes": 18980,
+    "sha256": "8abb01cba5d19b62b404db3f22d5aa5082e8ce3a5b7245a424a50f1b4fe8e958",
+    "scan": "excluded-or-archive-not-scanned"
+  },
+  {
+    "path": "06-release-and-deploy/group-role-notice-20261001-source.zip",
+    "category": "release-asset-review",
+    "bytes": 31217,
+    "sha256": "4381735c20f526d654cf05bfaceb97705d2376739ca3d102c16569894e74506e",
+    "scan": "excluded-or-archive-not-scanned"
+  },
+  {
+    "path": "06-release-and-deploy/group-settings-20261001-source.zip",
+    "category": "release-asset-review",
+    "bytes": 66926,
+    "sha256": "5653d68055467c03b7e52d890642df37e8ce6bbc1e0df9b49cf1ad329cd54a5f",
+    "scan": "excluded-or-archive-not-scanned"
+  },
+  {
+    "path": "06-release-and-deploy/group-sync-fix-20260930-source.zip",
+    "category": "release-asset-review",
+    "bytes": 27988,
+    "sha256": "c54ef643116397f59b65f312496170902c21c96cca0848db7d16944deb14a619",
+    "scan": "excluded-or-archive-not-scanned"
+  },
+  {
+    "path": "06-release-and-deploy/hw-bridge-avatar-fix-20260930.tar.gz",
+    "category": "release-asset-review",
+    "bytes": 3354690,
+    "sha256": "f681d4e92c789eb5e31c35901b1f2cabe3e569591d2b6a96678d2b0b9850ac66",
+    "scan": "excluded-or-archive-not-scanned"
+  },
+  {
+    "path": "06-release-and-deploy/hw-bridge-business-20260929.zip",
+    "category": "release-asset-review",
+    "bytes": 88385991,
+    "sha256": "a85eb25c5037a9a612ec49a50b171b25b5db07f594a4af753e24263e492ecbc4",
+    "scan": "excluded-or-archive-not-scanned"
+  },
+  {
+    "path": "06-release-and-deploy/hw-bridge-business-acceptance-20260930.tar.gz",
+    "category": "release-asset-review",
+    "bytes": 3359571,
+    "sha256": "da64e33554c676a75f75fe67fa6c8e073d8579c2714ee859032cde603812eebb",
+    "scan": "excluded-or-archive-not-scanned"
+  },
+  {
+    "path": "06-release-and-deploy/hw-bridge-business-closure-20261001-group-create-fix.tar.gz",
+    "category": "release-asset-review",
+    "bytes": 3411746,
+    "sha256": "df551c3bc828e8e1014ac92b0bfafa7cf2cd83b09e78bad3b78acf67afbecfe0",
+    "scan": "excluded-or-archive-not-scanned"
+  },
+  {
+    "path": "06-release-and-deploy/hw-bridge-business-closure-20261001-pretest-review.tar.gz",
+    "category": "release-asset-review",
+    "bytes": 3411746,
+    "sha256": "df551c3bc828e8e1014ac92b0bfafa7cf2cd83b09e78bad3b78acf67afbecfe0",
+    "scan": "excluded-or-archive-not-scanned"
+  },
+  {
+    "path": "06-release-and-deploy/hw-bridge-business-closure-20261001-product-ux.tar.gz",
+    "category": "release-asset-review",
+    "bytes": 3411904,
+    "sha256": "9b6c3807fd61988e9a9ab1eb1b3b54ca3e8da24960b1ab602ecb3a03da2f9f4e",
+    "scan": "excluded-or-archive-not-scanned"
+  },
+  {
+    "path": "06-release-and-deploy/hw-bridge-business-closure-20261001-search-fix.tar.gz",
+    "category": "release-asset-review",
+    "bytes": 3411904,
+    "sha256": "9b6c3807fd61988e9a9ab1eb1b3b54ca3e8da24960b1ab602ecb3a03da2f9f4e",
+    "scan": "excluded-or-archive-not-scanned"
+  },
+  {
+    "path": "06-release-and-deploy/hw-bridge-business-closure-20261001-tip-file-fix.tar.gz",
+    "category": "release-asset-review",
+    "bytes": 3411746,
+    "sha256": "df551c3bc828e8e1014ac92b0bfafa7cf2cd83b09e78bad3b78acf67afbecfe0",
+    "scan": "excluded-or-archive-not-scanned"
+  },
+  {
+    "path": "06-release-and-deploy/hw-bridge-business-closure-20261001.tar.gz",
+    "category": "release-asset-review",
+    "bytes": 3411655,
+    "sha256": "1afe93b17cf314cffeb81d9f7548c744f602fc6acebd73370d8446cee84413b6",
+    "scan": "excluded-or-archive-not-scanned"
+  },
+  {
+    "path": "06-release-and-deploy/hw-bridge-client-profile-20260930.tar.gz",
+    "category": "release-asset-review",
+    "bytes": 3357795,
+    "sha256": "431cb6a409698c0377a5bcf7c562b413c5380df5ce36f5fffc566a0a7c68355b",
+    "scan": "excluded-or-archive-not-scanned"
+  },
+  {
+    "path": "06-release-and-deploy/hw-bridge-core-state-group-20260930.tar.gz",
+    "category": "release-asset-review",
+    "bytes": 3356815,
+    "sha256": "509e34c138eaad07377bb87a56678b3507f1c17133740a0650a81779926bdeb1",
+    "scan": "excluded-or-archive-not-scanned"
+  },
+  {
+    "path": "06-release-and-deploy/hw-bridge-group-initial-avatar-20261002.tar.gz",
+    "category": "release-asset-review",
+    "bytes": 3427791,
+    "sha256": "affb32ed5131aa433d06a1591358ba8835900c406c7e5085cd0e00a351b316b4",
+    "scan": "excluded-or-archive-not-scanned"
+  },
+  {
+    "path": "06-release-and-deploy/hw-bridge-group-notifications-20261002.tar.gz",
+    "category": "release-asset-review",
+    "bytes": 3417639,
+    "sha256": "7a479e9eec7a678bbb9c68517c659845f969f785d6f05b1c35cf1bfe06f0b5f4",
+    "scan": "excluded-or-archive-not-scanned"
+  },
+  {
+    "path": "06-release-and-deploy/hw-bridge-group-profile-operator-20261002.tar.gz",
+    "category": "release-asset-review",
+    "bytes": 3421973,
+    "sha256": "eba54a326cd230e2bad8be0264fe6d60aa582748386133b510144fcf6f16f2d3",
+    "scan": "excluded-or-archive-not-scanned"
+  },
+  {
+    "path": "06-release-and-deploy/hw-bridge-group-role-notice-20261001.tar.gz",
+    "category": "release-asset-review",
+    "bytes": 3415869,
+    "sha256": "293230cfe2c452cc8adc3650bf7c031973d22f0b21b87327c517d53b37be3007",
+    "scan": "excluded-or-archive-not-scanned"
+  },
+  {
+    "path": "06-release-and-deploy/hw-bridge-group-settings-20261001.tar.gz",
+    "category": "release-asset-review",
+    "bytes": 3416375,
+    "sha256": "facaf4e3ff0f77fa7dc6c00fa7546f700e153593845946c84e85e72c33681704",
+    "scan": "excluded-or-archive-not-scanned"
+  },
+  {
+    "path": "06-release-and-deploy/hw-bridge-group-sync-fix-20260930.tar.gz",
+    "category": "release-asset-review",
+    "bytes": 3349495,
+    "sha256": "fe7ad594ad539c128be5a71ee8ceb1eac3b3a2563cade5d5778427854297ebce",
+    "scan": "excluded-or-archive-not-scanned"
+  },
+  {
+    "path": "06-release-and-deploy/hw-bridge-ios-feedback-20261001.tar.gz",
+    "category": "release-asset-review",
+    "bytes": 3412569,
+    "sha256": "172abdec0d53d9e75afb056c79f667b61ff315b6bdda2934b311417672c971a6",
+    "scan": "excluded-or-archive-not-scanned"
+  },
+  {
+    "path": "06-release-and-deploy/hw-bridge-member-avatar-refresh-20261002.tar.gz",
+    "category": "release-asset-review",
+    "bytes": 3425704,
+    "sha256": "3f363230e2a93a1e6b6c80aad423e3f1f487783e8e335ea0ebe01655f5ba1131",
+    "scan": "excluded-or-archive-not-scanned"
+  },
+  {
+    "path": "06-release-and-deploy/hw-bridge-private-vpc.tar.gz",
+    "category": "release-asset-review",
+    "bytes": 3427791,
+    "sha256": "affb32ed5131aa433d06a1591358ba8835900c406c7e5085cd0e00a351b316b4",
+    "scan": "excluded-or-archive-not-scanned"
+  },
+  {
+    "path": "06-release-and-deploy/hw-bridge-read-receipt-20260930.tar.gz",
+    "category": "release-asset-review",
+    "bytes": 3358580,
+    "sha256": "af739e121325bec7a8f594e623adf4ce018eb1e31e7f5182e12929474e5d0b61",
+    "scan": "excluded-or-archive-not-scanned"
+  },
+  {
+    "path": "06-release-and-deploy/ios-feedback-20261001-source.zip",
+    "category": "release-asset-review",
+    "bytes": 16101,
+    "sha256": "b0f7545448336e9f857cff03362cf72398deed0f410c1ee7ce04fb8e645e0574",
+    "scan": "excluded-or-archive-not-scanned"
+  },
+  {
+    "path": "06-release-and-deploy/member-avatar-refresh-20261002-source.zip",
+    "category": "release-asset-review",
+    "bytes": 19403,
+    "sha256": "0d4bc732a473c6520fb34662184234e170487acafb4da3a953c673abb686582f",
+    "scan": "excluded-or-archive-not-scanned"
+  },
+  {
+    "path": "06-release-and-deploy/php-bridge-provision.tar.gz",
+    "category": "release-asset-review",
+    "bytes": 30941,
+    "sha256": "e92a2537c4692c3a3cbd4e8053c1c792ef6fc83db200e10e16046d39db7157e3",
+    "scan": "excluded-or-archive-not-scanned"
+  },
+  {
+    "path": "06-release-and-deploy/php-business-closure-20261001-group-create-fix.tar.gz",
+    "category": "release-asset-review",
+    "bytes": 30770,
+    "sha256": "99942a460f1240973cabd5c23e3e13030a3cbd783206f47264c4158ac3d17ecf",
+    "scan": "excluded-or-archive-not-scanned"
+  },
+  {
+    "path": "06-release-and-deploy/php-business-closure-20261001-pretest-review.tar.gz",
+    "category": "release-asset-review",
+    "bytes": 30941,
+    "sha256": "e92a2537c4692c3a3cbd4e8053c1c792ef6fc83db200e10e16046d39db7157e3",
+    "scan": "excluded-or-archive-not-scanned"
+  },
+  {
+    "path": "06-release-and-deploy/php-business-closure-20261001-product-ux.tar.gz",
+    "category": "release-asset-review",
+    "bytes": 30234,
+    "sha256": "d32c3e64e2335ac634015c485a923441081b9e5d19e76f38d4f584e6fda1abbd",
+    "scan": "excluded-or-archive-not-scanned"
+  },
+  {
+    "path": "06-release-and-deploy/php-business-closure-20261001-search-fix.tar.gz",
+    "category": "release-asset-review",
+    "bytes": 30234,
+    "sha256": "d32c3e64e2335ac634015c485a923441081b9e5d19e76f38d4f584e6fda1abbd",
+    "scan": "excluded-or-archive-not-scanned"
+  },
+  {
+    "path": "06-release-and-deploy/php-business-closure-20261001-tip-file-fix.tar.gz",
+    "category": "release-asset-review",
+    "bytes": 30234,
+    "sha256": "d32c3e64e2335ac634015c485a923441081b9e5d19e76f38d4f584e6fda1abbd",
+    "scan": "excluded-or-archive-not-scanned"
+  },
+  {
+    "path": "06-release-and-deploy/php-business-closure-20261001.tar.gz",
+    "category": "release-asset-review",
+    "bytes": 30073,
+    "sha256": "934023a435addd5ef810beed3c9dfd2043d0e2e01ccca03b042518f0472e201d",
+    "scan": "excluded-or-archive-not-scanned"
+  },
+  {
+    "path": "06-release-and-deploy/qch-business-closure-20261001-group-create-fix-qa.apk",
+    "category": "release-asset-review",
+    "bytes": 84731822,
+    "sha256": "915d2750bb289efa00023b5c246c15d94c3c393cf579e954bd0b652b8eabfb43",
+    "scan": "excluded-or-archive-not-scanned"
+  },
+  {
+    "path": "06-release-and-deploy/qch-business-closure-20261001-pretest-review-qa.apk",
+    "category": "release-asset-review",
+    "bytes": 84731822,
+    "sha256": "514392530be913e344bf22f1496432f0d897f12dbb2ac398394b06c3a2c3186c",
+    "scan": "excluded-or-archive-not-scanned"
+  },
+  {
+    "path": "06-release-and-deploy/qch-business-closure-20261001-product-ux-qa.apk",
+    "category": "release-asset-review",
+    "bytes": 84731822,
+    "sha256": "caa17a53a2cf8bd31ac9058c6544ba276f1df8bfc6741898954943a63145bbed",
+    "scan": "excluded-or-archive-not-scanned"
+  },
+  {
+    "path": "06-release-and-deploy/qch-business-closure-20261001-qa.apk",
+    "category": "release-asset-review",
+    "bytes": 84731822,
+    "sha256": "ec919eb24b6cd199a76584dea338bea17170220b26b5979ca308f8509260485f",
+    "scan": "excluded-or-archive-not-scanned"
+  },
+  {
+    "path": "06-release-and-deploy/qch-business-closure-20261001-search-fix-qa.apk",
+    "category": "release-asset-review",
+    "bytes": 84731822,
+    "sha256": "bef6f8711960fe0969e9d32b6222a05786ba96607a11b9ae753084fa13ff8fe6",
+    "scan": "excluded-or-archive-not-scanned"
+  },
+  {
+    "path": "06-release-and-deploy/qch-business-closure-20261001-tip-file-fix-qa.apk",
+    "category": "release-asset-review",
+    "bytes": 84731822,
+    "sha256": "915d2750bb289efa00023b5c246c15d94c3c393cf579e954bd0b652b8eabfb43",
+    "scan": "excluded-or-archive-not-scanned"
+  },
+  {
+    "path": "06-release-and-deploy/qch-business-message-state-20260929-qa.apk",
+    "category": "release-asset-review",
+    "bytes": 84727726,
+    "sha256": "9145694f89cfda4c12ca786f968380ef96147d4e25ffce5efdfc88aff5210cfe",
+    "scan": "excluded-or-archive-not-scanned"
+  },
+  {
+    "path": "06-release-and-deploy/qch-business-profiles-20260929-qa.apk",
+    "category": "release-asset-review",
+    "bytes": 84727726,
+    "sha256": "65eaccb3313c087d61fd93ac6fcedb5dfa3e7818b425d0125f15500afbda6442",
+    "scan": "excluded-or-archive-not-scanned"
+  },
+  {
+    "path": "06-release-and-deploy/qch-friends-20260929-qa.apk",
+    "category": "release-asset-review",
+    "bytes": 84723630,
+    "sha256": "4c52ceafd0d0514145a2c6473a4712583896042b7b1f096d8d1c6b089e271b0b",
+    "scan": "excluded-or-archive-not-scanned"
+  },
+  {
+    "path": "06-release-and-deploy/qch-friends-groups-20260929-qa.apk",
+    "category": "release-asset-review",
+    "bytes": 84723630,
+    "sha256": "6212331c80304c952e489134f23e69eff3e7d9a56b52dc72bd0ae2a3b42d29ba",
+    "scan": "excluded-or-archive-not-scanned"
+  },
+  {
+    "path": "06-release-and-deploy/qch-friends-groups-cards-20260929-qa.apk",
+    "category": "release-asset-review",
+    "bytes": 84727726,
+    "sha256": "ad01fd9c150ac7e8246e854b41383d0f84d04216210bf57f036bdd5add27a9ee",
+    "scan": "excluded-or-archive-not-scanned"
+  },
+  {
+    "path": "06-release-and-deploy/qch-group-notifications-20261002-qa.apk",
+    "category": "release-asset-review",
+    "bytes": 84737990,
+    "sha256": "256c4049744b1ce7a76a5ebe3f4bd7846109bb62d2ce7b574c4fc1c14eff479b",
+    "scan": "excluded-or-archive-not-scanned"
+  },
+  {
+    "path": "06-release-and-deploy/qch-group-notifications-20261002-r2-qa.apk",
+    "category": "release-asset-review",
+    "bytes": 84737990,
+    "sha256": "2e97a3e97a043d88508d73fed8bce76b52b18ae58dbd79818a1ff710d7132afb",
+    "scan": "excluded-or-archive-not-scanned"
+  },
+  {
+    "path": "06-release-and-deploy/qch-group-settings-20261001-qa.apk",
+    "category": "release-asset-review",
+    "bytes": 84737978,
+    "sha256": "85d92be06db3f27306da0d1bda7a7a7e94d4be5177e15f9276227cf8c3686a54",
+    "scan": "excluded-or-archive-not-scanned"
+  },
+  {
+    "path": "06-release-and-deploy/read-receipt-20260930-source.zip",
+    "category": "release-asset-review",
+    "bytes": 91344,
+    "sha256": "ae7caf5c2a5024952e0d3c4adc050f0a54a98e01de7f872db336811b143e5104",
+    "scan": "excluded-or-archive-not-scanned"
+  },
+  {
+    "path": "06-release-and-deploy/source-archives-企才汇安卓及PHP-Web源码交付包-20260810.zip",
+    "category": "release-asset-review",
+    "bytes": 70947537,
+    "sha256": "1e6dd58acb48be322bcf627dbc097a11e981613d8d6e0d6e580544389a84b454",
+    "scan": "excluded-or-archive-not-scanned"
+  },
+  {
+    "path": "06-release-and-deploy/企才汇-叨叨桥接联调基线-20260928.apk",
+    "category": "release-asset-review",
+    "bytes": 91810558,
+    "sha256": "80ae07da5689d0b754098744c1820d43e44402a7de2205ac41968b7009baf816",
+    "scan": "excluded-or-archive-not-scanned"
+  },
+  {
+    "path": "06-release-and-deploy/企才汇-混淆验收-mapping.zip",
+    "category": "release-asset-review",
+    "bytes": 1738847,
+    "sha256": "e143bc17b518cce05ad4a308326cfad9457bf27d738c52bf3b3bb560e36d3bb8",
+    "scan": "excluded-or-archive-not-scanned"
+  },
+  {
+    "path": "06-release-and-deploy/企才汇-混淆验收-快速发送修复.apk",
+    "category": "release-asset-review",
+    "bytes": 87611897,
+    "sha256": "319d48672e08a589e155b538e043e889362c6ced957d3a471cb0c821c4670381",
+    "scan": "excluded-or-archive-not-scanned"
+  },
+  {
+    "path": "06-release-and-deploy/business-20260929/hw-bridge-private-vpc.tar.gz",
+    "category": "release-asset-review",
+    "bytes": 3346509,
+    "sha256": "24626e21830cd1b9f7447db5fbc3b35ee4b096077d9d191591fe79cc909b2813",
+    "scan": "excluded-or-archive-not-scanned"
+  },
+  {
+    "path": "06-release-and-deploy/business-20260929/php-bridge-provision.tar.gz",
+    "category": "release-asset-review",
+    "bytes": 22999,
+    "sha256": "b9d86475fa3d8ff51a0400ff63a52e91d315b031106a491c17a2bd24d3faa1d1",
+    "scan": "excluded-or-archive-not-scanned"
+  },
+  {
+    "path": "06-release-and-deploy/business-20260929/qch-business-final-20260929-qa.apk",
+    "category": "release-asset-review",
+    "bytes": 84727726,
+    "sha256": "3f80b1c6530e691a97417fd935ccc84fc8864b89160d4b4e8b2361fb6df50a27",
+    "scan": "excluded-or-archive-not-scanned"
+  },
+  {
+    "path": "06-release-and-deploy/business-20260929/source-patch.zip",
+    "category": "release-asset-review",
+    "bytes": 262950,
+    "sha256": "815f1f007597c9b0c9247217182b5f9a37da029e9dc7de42d2244a0571c81767",
+    "scan": "excluded-or-archive-not-scanned"
+  },
+  {
+    "path": "06-release-and-deploy/friends-20260929/hw-bridge-private-vpc.tar.gz",
+    "category": "release-asset-review",
+    "bytes": 2916368,
+    "sha256": "ee996172caacd0b00b369cff89ad3b78b258492c3bd893898acd5210f459c78b",
+    "scan": "excluded-or-archive-not-scanned"
+  },
+  {
+    "path": "06-release-and-deploy/friends-20260929/php-bridge-provision.tar.gz",
+    "category": "release-asset-review",
+    "bytes": 16089,
+    "sha256": "ddf9c9dc1011679b706de6e7b661da184f07e60c43774831a1bb6271215413f7",
+    "scan": "excluded-or-archive-not-scanned"
+  },
+  {
+    "path": "06-release-and-deploy/friends-groups-cards-20260929/hw-bridge-private-vpc.tar.gz",
+    "category": "release-asset-review",
+    "bytes": 2960078,
+    "sha256": "4b93c6b36d057646be33da6ccfaed3ed2971bec45dd1ddcb6eb1f50d1a9d576e",
+    "scan": "excluded-or-archive-not-scanned"
+  },
+  {
+    "path": "06-release-and-deploy/friends-groups-cards-20260929/php-bridge-provision.tar.gz",
+    "category": "release-asset-review",
+    "bytes": 16636,
+    "sha256": "e4c78e2b531658a6b74752d197c0d1168a591f832e84bd2d1bc07466f7696e5c",
+    "scan": "excluded-or-archive-not-scanned"
+  },
+  {
+    "path": "06-release-and-deploy/media-20260929/hw-bridge-private-vpc.tar.gz",
+    "category": "release-asset-review",
+    "bytes": 3136577,
+    "sha256": "f2163072c220c81dfa1cd07ab1a5e5dbdfc59d249c882a21136fbcd7d94513f7",
+    "scan": "excluded-or-archive-not-scanned"
+  },
+  {
+    "path": "06-release-and-deploy/media-20260929/php-bridge-provision.tar.gz",
+    "category": "release-asset-review",
+    "bytes": 17592,
+    "sha256": "c35f1db66b75700b9f6404b038deb491035e578db3eae7583e5a9fe7cc9fffcb",
+    "scan": "excluded-or-archive-not-scanned"
+  }
+]

@@ -1,0 +1,4 @@
+{
+  "tencent_withdraw": {"CallbackCommand":"C2C.CallbackAfterMsgWithDraw","EventTime":1790704303543,"MsgKey":"fixture-seq_fixture-random_fixture-time","From_Account":"fixture-owner","To_Account":"fixture-peer"},
+  "tang_extra_command": {"type":99,"cmd":"syncMessageExtra","param":{"channel_id":"fixture-channel","channel_type":2,"message_id":"900000000000000001"}}
+}

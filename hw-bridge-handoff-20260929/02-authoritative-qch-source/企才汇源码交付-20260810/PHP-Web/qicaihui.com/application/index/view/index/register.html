@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8" />
+	<title></title>
+	<link rel="stylesheet" type="text/css" href="/../static/reguser/css/base.css" />
+	<link rel="stylesheet" type="text/css" href="/../static/reguser/css/index.css" />
+	<link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_1921749_s01ofxzcb8j.css" />
+	<script src="/../static/reguser/js/Interface_adaptive.js" type="text/javascript" charset="utf-8"></script>
+	<script src="https://libs.baidu.com/jquery/2.0.3/jquery.min.js"></script>
+	<meta name="viewport" content="user-scalable=0">
+</head>
+<style>
+	.content-center {
+		width: 8.86rem;
+		height: 13.46rem;
+		border-radius: 0.2rem;
+		background-color: #fff;
+		margin: 0 auto;
+	}
+
+	#index .content .logo {
+		margin-top: -1.2rem;
+	}
+
+	.tip-text {
+		width: 100%;
+		text-align: center;
+		font-size: 0.4rem;
+		color: #343434;
+		margin-top: 0.1rem;
+	}
+</style>
+
+<body>
+	<div id="index">
+		<div class="header">
+			<div class="icon">
+				<i class="iconfont iconfanhui"></i>
+			</div>
+			<div class="title">
+				<h1>即时通讯</h1>
+			</div>
+			<div class="icon"></div>
+		</div>
+		<div class="content">
+			<div class="content-center">
+				<div class="logo center">
+					<img src="/../static/reguser/img/logo.png">
+
+				</div>
+				<div class="tip-text">
+					<span>注册体验更多精彩</span>
+				</div>
+				<!-- <div class="name center">
+                <span>孤独星球</span>
+            </div>
+            <div class="ad center">
+                <img src="/../static/reguser/img/ad.png" >
+            </div> -->
+
+				<div id="first_tip">
+					<div class="input-box center yzm">
+						<div class="box">
+							<div>
+								<span style="font-size: 0.36rem;">手机号</span>
+							</div>
+							<input placeholder="请输入您的手机号" type="number" name="" id="phone_num" value="" />
+						</div>
+					</div>
+					<div class="input-box center yzm">
+						<div class="box">
+							<div>
+								<span style="font-size: 0.36rem;">密码</span>
+							</div>
+							<input placeholder="请输入您的密码" type="password" name="" id="pass" value="" />
+						</div>
+					</div>
+					<div class="input-box center yzm">
+						<div class="box">
+							<div>
+								<span style="font-size: 0.36rem;">确认密码</span>
+							</div>
+							<input placeholder="请确认您的密码" type="password" name="" id="pass2" value="" />
+						</div>
+					</div>
+
+					<div class="input-box center yzm">
+						<div class="box">
+							<div>
+								<span style="font-size: 0.36rem;">图片验证码</span>
+							</div>
+							<input style="width: 3.5rem;" placeholder="请输入图片验证码" type="" name="" id="capatch_code"
+								   value="" />
+							<div class="get-yam center">
+								<img id="captchaPic" src="" style="display: none;">
+							</div>
+						</div>
+					</div>
+
+
+					<div class="input-box center yzm">
+						<div class="box">
+							<div>
+								<span style="font-size: 0.36rem;">验证码</span>
+							</div>
+							<input style="width: 3.5rem;" placeholder="请输入您的验证码" type="" name="" id="sms_code"
+								value="" />
+							<div id="do_get_code" class="get-yam center">
+								<span id="code_words" style="color: #6C20FF;">获取验证码</span>
+							</div>
+						</div>
+					</div>
+					<div id="register" class="input-box center zhuce" style="margin-top: 1rem;">
+						<div class="box"><span>注册</span></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript">
+	let api_url = "{$api_url}";
+	let can_get_code = true;
+	let can_register = true;
+	let code = "";
+	let sex = 1;
+	let reg_code = GetQueryString('reg_code');
+	let invite_down_url = "{$invite_down_url}"
+	$(document).ready(function () {
+		$("#captchaPic").click();
+	});
+
+	$("#captchaPic").click(function (e) {
+		$("#captchaPic").attr('src', api_url + 'index.php/index/index/verify?t=' + new Date().getTime());
+		$("#captchaPic").css("display", 'block');
+	});
+	function change_sex(val){
+		console.log(val);
+		if(val == 1){
+			$("#man").removeClass('iconweixuanzhong').addClass('iconxuanzhong');
+			$("#woman").removeClass('iconxuanzhong').addClass('iconweixuanzhong');
+		}else{
+			$("#man").removeClass('iconxuanzhong').addClass('iconweixuanzhong');
+			$("#woman").removeClass('iconweixuanzhong').addClass('iconxuanzhong');
+		}
+	}
+	
+	$(document).ready(function(){
+		$("#register").click(function(){
+			let phone_num = $('#phone_num').val();
+			if(phone_num == ''){show_tips("请输入手机号");return false;}
+			
+			let pass = $('#pass').val();
+			if(pass == ''){show_tips("请设置密码");return false;}
+			
+			let pass2 = $('#pass2').val();
+			if(pass2 == ''){show_tips("请确认您的密码");return false;}
+
+			if(pass != pass2){show_tips("您两次输入的密码不一致");return false;}
+            let sms_code = $('#sms_code').val();
+			let data = {
+				user_login:phone_num,
+				password:pass,
+				reg_code:reg_code,
+				sms_code:sms_code,
+			}
+			do_register(data,api_url+"api/login/user_reg");
+		});
+	});
+
+	$("#do_get_code").click(function(){
+		let phone_num = $("#phone_num").val();
+		let type = 2;
+		let captch_code = $('#capatch_code').val();
+		if(phone_num && phone_num.length == 11){
+			if(!can_get_code){return false;}
+			get_code({mobile:phone_num,type:type,captch_code: captch_code},api_url+"index/index/send_sms");
+		}else{
+			show_tips("请输入正确的手机号");
+			return false;
+		}
+	});
+
+
+	function do_register(data,api_urls){
+
+		if(!can_register){return false;}
+		$.ajax({
+			type : "POST",
+// 			contentType: "application/json;charset=UTF-8",
+			url : api_urls,
+			data : data,
+// 			dataType : "jsonp",
+			success : function(result) {
+                let res = JSON.parse(result)
+				if(res.code == 200){
+                    show_tips(res.msg);
+					// go_to_link();
+				}else{
+					show_tips(res.msg);
+				}
+			},
+			error : function(e){
+				console.log(e.status);
+				console.log(e.responseText);
+			}
+		});
+	}
+	
+	
+	function get_code(data,api_urls){ // 获取验证码接口
+    	
+		can_get_code = false;
+		$.ajax({
+			type : "POST",
+// 			contentType: "application/json;charset=UTF-8",
+			url : api_urls,
+			data : data,
+// 			dataType : "jsonp",
+			success : function(result) {
+				console.log(result);
+                let res = JSON.parse(result)
+				if(res.code == 200){
+					show_tips(res.msg);
+					show_tips("验证码已发送请注意查收");
+					count($('#code_words'),'获取验证码');
+				}else{
+					show_tips(res.msg)
+				}
+			},
+			error : function(e){
+				console.log(e.status);
+				console.log(e.responseText);
+				can_get_code = true;
+			}
+		});
+	}
+	
+	function count(obj,hint) { //获取验证码倒计时
+	    var numTime = 60;
+	    var time = setInterval(function () {
+	        numTime--;
+	        console.log(numTime);
+	        obj.html(numTime+"s");
+	        if(numTime==1){
+	            clearInterval(time);
+	            obj.html(hint);
+	            obj.attr('disabled',false);
+				can_get_code = true;
+	        }
+	    },1000)
+	}
+	
+	function show_tips(val){
+		textTip(val);
+	}
+	
+	
+	
+	function textTip(str, t, callBack) {
+		t = t || 2000;
+		var dom = document.createElement("p");
+		dom.setAttribute('class', 'text-tip');
+		document.body.appendChild(dom);
+		var mytip = document.querySelector('.text-tip')
+		
+		mytip.style.display="block";
+		mytip.innerHTML = str;
+		var tipHeight = mytip.offsetHeight;
+		
+		//文字两行或两行以上
+		if((tipHeight - 20)/18>1){
+			mytip.style.width = "55%";
+		}
+		setTimeout(function () {
+			mytip.style.display="none";
+			// mytip.parentNode.removeChild(mytip);
+			if (callBack) {callBack();}
+		}, t);
+	}
+	
+	function go_to_link(){ //跳转下载链接
+		textTip("注册成功",1000,function(){
+			window.location.replace(invite_down_url);
+		});
+	}
+	
+	
+	
+	// function GetQueryString(name){
+	//    var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+	//    var r = window.location.href.substr(1).match(reg);
+	//    if(r!=null){
+	//     var tmp = unescape(r[2]);
+	//     var index = unescape(r[2]).indexOf('#');
+	//     if(index != -1){
+	//      tmp = tmp.slice(0,index);
+	//      console.log(tmp);
+	//      return tmp;
+	//     }else{
+	//      return tmp;
+	//     }
+	     
+	//    }else{
+	//     return null;
+	//    }; 
+	// }
+	
+	function GetQueryString(name) { // 不传name返回所有值，否则返回对应值
+	    var url = window.location.search;
+	    if (url.indexOf('?') == 1) { return false; }
+	    url = url.substr(1);
+	    url = url.split('&');
+	    var name = name || '';
+	    var nameres;
+	    // 获取全部参数及其值
+	    for(var i=0;i<url.length;i++) {
+	        var info = url[i].split('=');
+	        var obj = {};
+	        obj[info[0]] = decodeURI(info[1]);
+	        url[i] = obj;
+	    }
+	    // 如果传入一个参数名称，就匹配其值
+	    if (name) {
+	        for(var i=0;i<url.length;i++) {
+	            for (const key in url[i]) {
+	                if (key == name) {
+	                    nameres = url[i][key];
+	                }
+	            }
+	        }
+	    } else {
+	        nameres = url;
+	    }
+	    // 返回结果
+	    return nameres;
+	}
+	
+	
+	</script>
+</body>
+
+</html>

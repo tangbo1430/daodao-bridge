@@ -1,0 +1,15 @@
+{
+  "bridge_binary_sha256": "f9aac5cc7240b76cfe82632b0316221a03f86dce720f62fb9671bca67c2b0f16",
+  "deployed": true,
+  "apk_changed": false,
+  "files": {
+    "01-bridge/tencent-tangseng-bridge/internal/business/groups.go": "15aa3b8620ba6014bdbc9c364994981909a73146cf399cfee17200b862342b37",
+    "01-bridge/tencent-tangseng-bridge/internal/business/groups_test.go": "bb4e4ca74dcaf636b5b34e29786e657a7c877a095f1ac03bc19cd29e100e0da9",
+    "01-bridge/tencent-tangseng-bridge/internal/business/group_profile_operator.go": "87569a97d7622adebd927cc3630d8e54df4186e9da72283b21781dfdce161dbc",
+    "01-bridge/tencent-tangseng-bridge/internal/business/group_initial_avatar_test.go": "4dcac6ff79377b340042e61176837ae10f3f9c45b18843cc2a2179d933ffd010",
+    "06-release-and-deploy/verify-group-initial-avatar.py": "329a68f15818f6f1a8926ecb85d058f669a47148fc9f1d076454145ed696b7c4",
+    "08-context/GROUP_INITIAL_AVATAR_20261002.md": "ca0b33907f307d2853259195cbf34fa2f1c40474eb72f6ce25106ee669a1ab9e"
+  },
+  "tests": "go test ./...; go vet ./...; real facade/native creation and first avatar operator; repeated sync; later rename",
+  "mobile_ui": "pending"
+}

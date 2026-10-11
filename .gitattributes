@@ -1,0 +1,3 @@
+# Preserve imported bytes for initial SHA256 verification.
+* -text
+# Introduce line-ending normalization only in a later, separately reviewed commit.

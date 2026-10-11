@@ -1,0 +1,60 @@
+<?php
+/**
+ * 用户模块 用户实例
+ */
+
+
+require "./../../RongCloud.php";
+define("APPKEY", '');
+define('APPSECRET', '');
+
+use RongCloud\RongCloud;
+use RongCloud\Lib\Utils;
+
+/**
+ * 用户注册
+ */
+function register() {
+    //连接新加坡数据中心
+    //RongCloud::$apiUrl = ['http://api-sg01.ronghub.com/'];
+    $RongSDK = new RongCloud(APPKEY, APPSECRET);
+    $user = [
+        'id' => 'CHIQ1',
+        'name' => 'PHPSDK',//用户名称
+        'portrait' => 'http://PHPSDK-portrait' //用户头像
+    ];
+    $register = $RongSDK->getUser()->register($user);
+    Utils::dump("用户注册", $register);
+}
+
+register();
+
+/**
+ * 用户信息更新
+ */
+function update() {
+    $RongSDK = new RongCloud(APPKEY, APPSECRET);
+    $user = [
+        'id' => 'ujadk90ha',//用户id
+        'name' => 'Maritn',//用户名称
+        'portrait' => 'http://7xogjk.com1.z0.glb.clouddn.com/IuDkFprSQ1493563384017406982' //用户头像
+    ];
+    $update = $RongSDK->getUser()->update($user);
+    Utils::dump("用户信息更新", $update);
+}
+
+update();
+
+/**
+ * 获取用户信息
+ */
+function get() {
+    $RongSDK = new RongCloud(APPKEY, APPSECRET);
+    $user = [
+        'id' => 'ujadk90ha',//用户id
+    ];
+    $res = $RongSDK->getUser()->get($user);
+    Utils::dump("获取用户信息", $res);
+}
+
+get();

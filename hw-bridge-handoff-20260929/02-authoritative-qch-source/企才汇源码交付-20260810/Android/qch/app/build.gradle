@@ -1,0 +1,148 @@
+apply plugin: 'com.android.application'
+apply plugin: 'com.huawei.agconnect'
+apply plugin: 'com.hihonor.mcs.asplugin'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+
+def releaseSigningProperties = new Properties()
+def releaseSigningFile = rootProject.file('signing.properties')
+def hasReleaseSigning = releaseSigningFile.exists()
+if (hasReleaseSigning) {
+    releaseSigningFile.withInputStream { releaseSigningProperties.load(it) }
+}
+
+android {
+    signingConfigs {
+        if (hasReleaseSigning) {
+            release {
+                storeFile rootProject.file(releaseSigningProperties['storeFile'])
+                storePassword releaseSigningProperties['storePassword']
+                keyAlias releaseSigningProperties['keyAlias']
+                keyPassword releaseSigningProperties['keyPassword']
+            }
+        }
+    }
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    namespace "com.qchm.xyz"
+
+    defaultConfig {
+        applicationId "com.qchm.xyz"
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionCode 1
+        versionName "1.0.0"
+        archivesBaseName = "企才汇"
+        multiDexEnabled = true
+        buildConfigField "String", "API_BASE_URL", '"https://admin.awhaha.com"'
+        buildConfigField "boolean", "ENABLE_TIM_PUSH", "true"
+        ndk {
+            abiFilters = []
+            abiFilters.addAll(rootProject.ext.abiFilters)
+        }
+
+        manifestPlaceholders = [
+                "VIVO_APPKEY": (project.findProperty("VIVO_APPKEY") ?: System.getenv("VIVO_APPKEY") ?: ""),
+                "VIVO_APPID" : "105914509",
+                "HONOR_APPID": "104504228"
+        ]
+
+    }
+    buildFeatures {
+        buildConfig = true
+    }
+    testOptions {
+        unitTests.returnDefaultValues = true
+    }
+    buildTypes {
+        release {
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            if (hasReleaseSigning) {
+                signingConfig signingConfigs.release
+            }
+        }
+        qaRelease {
+            initWith release
+            matchingFallbacks = ['release']
+            signingConfig signingConfigs.debug
+        }
+        debug {
+            minifyEnabled false
+        }
+    }
+
+
+    repositories {
+        flatDir {
+            dirs 'libs'
+        }
+    }
+
+    dexOptions {
+        javaMaxHeapSize "4g"
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    sourceSets {
+        main {
+            res.srcDirs += "src/main/res-light"
+            res.srcDirs += "src/main/res-lively"
+            res.srcDirs += "src/main/res-serious"
+            java.exclude "com/qchm/xyz/signature/GenerateTestUserSig.java"
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar', '*.aar'], dir: 'libs')
+    implementation fileTree(include: ['*.jar', '*.aar'], dir: '../libs')
+    implementation 'androidx.multidex:multidex:2.0.1'
+    implementation 'androidx.localbroadcastmanager:localbroadcastmanager:1.1.0'
+
+    // Bugly artifacts are not included in the delivered offline source package.
+    // A no-op compatibility class is supplied for the debug build below.
+
+    def projects = this.rootProject.getAllprojects().stream().map { project -> project.name }.collect()
+    println "all projects : {$projects}"
+
+
+    // Will be added to the open source code START
+    implementation 'com.squareup.okhttp3:okhttp:4.10.0'
+    implementation 'androidx.recyclerview:recyclerview:1.2.1'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+    implementation 'com.google.code.gson:gson:2.9.1'
+    implementation 'com.google.android.material:material:1.4.0'
+
+    implementation 'com.github.bumptech.glide:glide:4.12.0'
+
+    api project(':tuiconversation')
+    api project(':tuicontact')
+    api project(':tuichat')
+    api project(':tuisearch')
+    api project(':tuicallkit-kt')
+
+    api "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+
+    implementation 'com.lzy.net:okrx2:2.0.2'
+    implementation 'com.lzy.net:okserver:2.0.5'
+    // 添加zxing依赖
+    implementation 'com.journeyapps:zxing-android-embedded:4.3.0'
+
+    def timPushVersion = "8.5.6864"
+    implementation "com.tencent.timpush:timpush:$timPushVersion"
+    implementation "com.tencent.timpush:huawei:$timPushVersion"
+    implementation "com.tencent.timpush:xiaomi:$timPushVersion"
+    implementation "com.tencent.timpush:oppo:$timPushVersion"
+    implementation "com.tencent.timpush:vivo:$timPushVersion"
+    implementation "com.tencent.timpush:honor:$timPushVersion"
+
+    testImplementation 'junit:junit:4.13.2'
+    testImplementation 'com.squareup.okhttp3:mockwebserver:4.10.0'
+
+
+}

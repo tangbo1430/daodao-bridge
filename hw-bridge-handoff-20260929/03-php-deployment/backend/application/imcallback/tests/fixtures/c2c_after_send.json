@@ -1,0 +1,19 @@
+{
+  "CallbackCommand": "C2C.CallbackAfterSendMsg",
+  "SdkAppid": 20044723,
+  "ClientIP": "127.0.0.1",
+  "OptPlatform": "Web",
+  "From_Account": "10001",
+  "To_Account": "10002",
+  "MsgSeq": 100001,
+  "MsgRandom": 200001,
+  "MsgTime": 1783740000,
+  "MsgBody": [
+    {
+      "MsgType": "TIMTextElem",
+      "MsgContent": {
+        "Text": "callback smoke test"
+      }
+    }
+  ]
+}

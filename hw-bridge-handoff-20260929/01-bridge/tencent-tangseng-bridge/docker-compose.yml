@@ -1,0 +1,41 @@
+services:
+  bridge:
+    build: .
+    env_file: .env
+    ports:
+      - "8090:8090"
+      - "8443:8090"
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    restart: unless-stopped
+  mysql:
+    image: mysql:8.0
+    environment:
+      MYSQL_DATABASE: bridge
+      MYSQL_USER: bridge
+      MYSQL_PASSWORD: ${BRIDGE_DB_PASSWORD:-bridge}
+      MYSQL_ROOT_PASSWORD: ${BRIDGE_DB_ROOT_PASSWORD:-change-me}
+    volumes:
+      - bridge_mysql:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    restart: unless-stopped
+  redis:
+    image: redis:7-alpine
+    volumes:
+      - bridge_redis:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    restart: unless-stopped
+volumes:
+  bridge_mysql:
+  bridge_redis:

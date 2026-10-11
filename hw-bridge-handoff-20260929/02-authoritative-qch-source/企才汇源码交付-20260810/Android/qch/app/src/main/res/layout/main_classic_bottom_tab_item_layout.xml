@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@dimen/demo_tab_bottom_item_width"
+    android:layout_height="match_parent">
+    <ImageView android:id="@+id/tab_icon" android:layout_width="1dp" android:layout_height="1dp" android:visibility="invisible" />
+    <TextView
+        android:id="@+id/tab_text"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:includeFontPadding="false"
+        android:text="消息"
+        android:textColor="@color/tab_text_normal_color"
+        android:textSize="15sp" />
+    <View
+        android:id="@+id/tab_indicator"
+        android:layout_width="28dp"
+        android:layout_height="2dp"
+        android:layout_gravity="bottom|center_horizontal"
+        android:background="@color/qch_purple"
+        android:visibility="gone" />
+    <com.tencent.qcloud.tuikit.timcommon.component.UnreadCountTextView
+        android:id="@+id/unread_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|right"
+        android:minWidth="18dp"
+        android:minHeight="18dp"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:textSize="11sp"
+        android:visibility="gone" />
+</FrameLayout>

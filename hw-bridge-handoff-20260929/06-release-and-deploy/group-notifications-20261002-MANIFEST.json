@@ -1,0 +1,70 @@
+[
+  {
+    "path": "01-bridge/tencent-tangseng-bridge/internal/business/groups.go",
+    "sha256": "79b515ca06d6ebd34829fddc96c78f5d503a75ab6eb4e1b0bf26db12e13e29af"
+  },
+  {
+    "path": "01-bridge/tencent-tangseng-bridge/internal/business/group_notice_test.go",
+    "sha256": "62ede0931d2478144d61763b6ae294f76c2469d290d614c735cc5a7e17661321"
+  },
+  {
+    "path": "01-bridge/tencent-tangseng-bridge/internal/business/profile_avatar_refresh_test.go",
+    "sha256": "6303331eaa67b4674c075e3745250c69766771589b32d6689bd3c7894516141c"
+  },
+  {
+    "path": "01-bridge/tencent-tangseng-bridge/internal/media/avatar.go",
+    "sha256": "1088d625baa14aed3f3a2518c2228a9dca03853b5d2e29eae5ef6c8a69de27d2"
+  },
+  {
+    "path": "01-bridge/tencent-tangseng-bridge/internal/media/avatar_test.go",
+    "sha256": "48b85f0f2b285f87618bb8200acd73eb0c34fad38320fa07304da595731a25a8"
+  },
+  {
+    "path": "01-bridge/tencent-tangseng-bridge/test/contract/group-update-observed-20261002.json",
+    "sha256": "7a3de2bf74b2a46abcd9842bc61cc54b4cb8f2d2bb5ec2de6095728ef1c8dc7f"
+  },
+  {
+    "path": "02-authoritative-qch-source/企才汇源码交付-20260810/Android/TUIKit/TUIChat/tuichat/src/main/java/com/tencent/qcloud/tuikit/tuichat/classicui/widget/profile/GroupInfoLayout.java",
+    "sha256": "a3182903832c5686ee7a089d51264453377352ff65918d223c1801e396a7975d"
+  },
+  {
+    "path": "02-authoritative-qch-source/企才汇源码交付-20260810/Android/TUIKit/TUIChat/tuichat/src/main/java/com/tencent/qcloud/tuikit/tuichat/model/ProfileProvider.java",
+    "sha256": "35b115fb1f04a6723b47e003f84069a38690c974e9dcd155f3bd90b794657f3b"
+  },
+  {
+    "path": "02-authoritative-qch-source/企才汇源码交付-20260810/Android/TUIKit/TUIChat/tuichat/src/main/java/com/tencent/qcloud/tuikit/tuichat/presenter/GroupProfilePresenter.java",
+    "sha256": "e91ba24657044d760dd41f108e008da0671c8d4c76f3d734e7c9cefa6a7712c7"
+  },
+  {
+    "path": "02-authoritative-qch-source/企才汇源码交付-20260810/Android/TUIKit/TUIChat/tuichat/src/main/java/com/tencent/qcloud/tuikit/tuichat/presenter/GroupChatPresenter.java",
+    "sha256": "39866894a6114466bae63f66265960c5950dd68a1d4c167a222f9a2e1fd3d189"
+  },
+  {
+    "path": "02-authoritative-qch-source/企才汇源码交付-20260810/Android/TUIKit/TUIContact/tuicontact/src/main/java/com/tencent/qcloud/tuikit/tuicontact/TUIContactService.java",
+    "sha256": "152273f99ece33155d63d0c6aa71e3b0adbafd163c6b30532925362f9d53c3a0"
+  },
+  {
+    "path": "02-authoritative-qch-source/企才汇源码交付-20260810/Android/TUIKit/TUIChat/tuichat/src/main/res/layout/group_info_layout.xml",
+    "sha256": "ddaaf6c989cab219d44222c2c31566d7bd6a04e18860a079620ab7abd8a85abf"
+  },
+  {
+    "path": "06-release-and-deploy/verify-group-notifications.py",
+    "sha256": "36357657b7fd98d2c4919e1a045171da27fa8f9801e1d4829739ca38b243aa96"
+  },
+  {
+    "path": "06-release-and-deploy/verify-group-settings.py",
+    "sha256": "b498ff9719bfb7625f61093b2173ceb4e6a70d1e1e13e92c59294512b9a1cfe0"
+  },
+  {
+    "path": "06-release-and-deploy/refresh-own-avatar.py",
+    "sha256": "bc324b571ba2e2749d31bf03cb1dc554d307db77de7aa84c9525b413c8a5adcb"
+  },
+  {
+    "path": "08-context/GROUP_NOTIFICATIONS_20261002.md",
+    "sha256": "6a78118a3ba5f4837d22501c86d931cdee6e01dee715e5405c38d04fe768c662"
+  },
+  {
+    "path": "08-context/CURRENT_PROGRESS.md",
+    "sha256": "ae911dfd82bafea92e70106a07aa83ba33e75d31f354de399a7daf5ba1554cd8"
+  }
+]

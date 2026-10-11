@@ -1,0 +1,6 @@
+{
+  "source": "deployed TangSeng /v1/message/sync capture after command queue drained, 2026-09-30",
+  "request": {"max_message_seq":8,"limit":100},
+  "response": [{"message_idstr":"900000000000000032","message_seq":2,"from_uid":"fixture-owner","channel_id":"fixture-owner","channel_type":1,"timestamp":1790707000,"payload":{"type":99,"cmd":"syncMessageExtra","param":{"channel_id":"fixture-peer","channel_type":1}}}],
+  "required_ack": "/v1/message/syncack/2"
+}

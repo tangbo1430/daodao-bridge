@@ -1,0 +1,142 @@
+#invitation {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-image: url(../img/invitation.png);
+  background-size: cover;
+}
+#invitation .header {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 1.5rem;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+#invitation .header .icon {
+  width: 1.5rem;
+  height: 1.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#invitation .header .icon i {
+  font-size: 0.5rem;
+  color: #fff;
+}
+#invitation .header .title {
+  flex: 1;
+  height: 1.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#invitation .header .title h1 {
+  font-weight: normal;
+  font-size: 0.44rem;
+  font-family: PingFang SC;
+  color: #ffffff;
+}
+#invitation input::-webkit-input-placeholder {
+  color: #999999;
+}
+#invitation input::-moz-placeholder {
+  /* Mozilla Firefox 19+ */
+  color: #999999;
+}
+#invitation input:-moz-placeholder {
+  /* Mozilla Firefox 4 to 18 */
+  color: #999999;
+}
+#invitation input:-ms-input-placeholder {
+  /* Internet Explorer 10-11 */
+  color: #999999;
+}
+#invitation .content {
+  position: absolute;
+  top: 1.5rem;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  padding-bottom: 1rem;
+}
+#invitation .content .center {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#invitation .content .ad {
+  margin-top: 0.8rem;
+}
+#invitation .content .ad img {
+  width: 80%;
+}
+#invitation .content .code_box {
+  margin-top: 1rem;
+}
+#invitation .content .code_box .box {
+  width: 8.5rem;
+  padding: 0.5rem 0;
+  background-color: #FFFFFF;
+  border-radius: 0.3rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+#invitation .content .code_box .box .title {
+  margin-bottom: 0.3rem;
+}
+#invitation .content .code_box .box .title span {
+  font-size: 0.45rem;
+  font-weight: bold;
+  color: #333333;
+}
+#invitation .content .code_box .box .code {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#invitation .content .code_box .box .code .s_box {
+  width: 0.7rem;
+  height: 0.7rem;
+  background: #efefef;
+  margin: 0.1rem;
+}
+#invitation .content .code_box .box .code .s_box span {
+  color: #E53044;
+  font-size: 0.4rem;
+  font-weight: bold;
+}
+#invitation .content .code_box .box .qrcode img {
+  width: 4rem;
+}
+#invitation .content .code_box .box .tip {
+  margin: 0.5rem 0;
+}
+#invitation .content .code_box .box .tip span {
+  font-size: 0.3rem;
+  font-family: PingFang SC;
+  color: #999999;
+}
+#invitation .content .code_box .box .copy {
+  width: 7.5rem;
+  height: 1.2rem;
+  background: #fe5562;
+  border-radius: 0.6rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#invitation .content .code_box .box .copy span {
+  font-size: 0.4rem;
+  color: #ffffff;
+}

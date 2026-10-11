@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>{$data.title}</title>
+    <style>
+        * {
+            margin: 0px;
+            padding: 0px;
+        }
+        .content{
+            margin:0px 0px;
+            overflow: hidden !important;
+            white-space: normal !important;
+            word-break: break-all !important;
+        }
+        .content div{
+            width: 100% !important;
+            display: inline;
+            overflow: hidden !important;
+            white-space: normal !important;
+            word-break: break-all !important;
+        }
+        .content img{
+            width: 100% !important;
+        }
+    </style>
+</head>
+
+<body oncopy="return false;">
+    <!--<div class="content">-->
+    {$data.content|raw}
+    <!--</div>-->
+</body>
+
+</html>

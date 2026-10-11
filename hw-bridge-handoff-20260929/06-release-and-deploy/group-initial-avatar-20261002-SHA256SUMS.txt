@@ -1,0 +1,3 @@
+affb32ed5131aa433d06a1591358ba8835900c406c7e5085cd0e00a351b316b4  hw-bridge-group-initial-avatar-20261002.tar.gz
+699a05a0d68d0b85fce04353d5273be1f7f28b1b7ae3fb1b5c82dc3044751820  group-initial-avatar-20261002-source.zip
+4a627c47c4410a78e91bb5b47464af88c8d0d47afb4fca11e479ccec76530e0a  group-initial-avatar-20261002-MANIFEST.json

@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="../../lib/layui-v2.5.5/css/layui.css" media="all">
+    <link rel="stylesheet" href="../../css/public.css" media="all">
+</head>
+
+<body>
+    <div class="layuimini-container">
+        <div class="layuimini-main">
+            <script type="text/html" id="toolbar_add">
+                <div class="layui-btn-container layui-hide">
+                    <button class="layui-btn layui-btn-normal layui-btn-sm data-add-btn" lay-event="add"> 添 加 </button>
+                </div>
+            </script>
+            <table class="layui-hide" id="currentTableId" lay-filter="currentTableFilter" style="align: center;">
+            </table>
+        </div>
+    </div>
+    <script src="../../lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
+    <script src="../../common/common.js" charset="utf-8"></script>
+    <script>
+        layui.use(['form', 'table'], function () {
+            var $ = layui.jquery,
+                form = layui.form,
+                table = layui.table;
+            table.render({
+                elem: '#currentTableId',
+                url: WebHost + 'sign_config/get_list',
+                where: {
+                    "login_token": AdminLoginToken,
+                }, //设定异步数据接口的额外参数
+                method: "POST",
+                toolbar: '#toolbar_add',
+                // toolbar: '#toolbar',
+                defaultToolbar: ['filter', 'exports', 'print', {
+                    title: '提示',
+                    layEvent: 'LAYTABLE_TIPS',
+                    icon: 'layui-icon-tips'
+                }],
+                autoSort: false,
+                cols: [[
+                    { field: 'id', title: 'ID' },
+                    { field: 'day_num', title: '签到天数', align: "center"},
+                    { field: 'money', title: '签到奖励U币', align: "center"},
+                    { field: 'add_time', title: '创建时间', templet: '#add_time' },
+                    { field: 'update_time', title: '修改时间', templet: '#update_time' },
+                    { title: '操作', minWidth: 250, toolbar: '#currentTableBar', align: "center" }
+                ]],
+                limits: [10, 15, 20, 25, 50, 100],
+                limit: 15,
+                page: true,
+                skin: 'line'
+            });
+
+
+            //监听排序事件 
+            table.on('sort(currentTableFilter)', function (obj) { //注：sort 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
+                table.reload('currentTableId', {
+                    initSort: obj //记录初始排序，如果不设的话，将无法标记表头的排序状态。
+                    , where: { //请求参数（注意：这里面的参数可任意定义，并非下面固定的格式）
+                        order: obj.field //排序字段
+                        , sort: obj.type //排序方式
+                    }
+                });
+            });
+            // 监听搜索操作
+            form.on('submit(data-search-btn)', function (data) {
+                // var result = JSON.stringify(data.field);
+                // layer.alert(result, {
+                //     title: '最终的搜索信息'
+                // });
+                data.field.admin_login_token = AdminLoginToken
+                //执行搜索重载
+                table.reload('currentTableId', {
+                    where: data.field,
+                    page: {
+                        curr: 1
+                    }
+                }, 'json');
+
+                return false;
+            });
+
+            table.on('toolbar(currentTableFilter)', function (obj) {
+                if (obj.event === 'add') {  // 监听添加操作
+                    var index = layer.open({
+                        title: '添加标签',
+                        type: 2,
+                        shade: 0.2,
+                        maxmin: true,
+                        shadeClose: true,
+                        area: ['80%', '80%'],
+                        content: './add.html',
+                    });
+                    $(window).on("resize", function () {
+                        layer.full(index);
+                    });
+                }
+            });
+
+            table.on('tool(currentTableFilter)', function (obj) {
+                var data = obj.data;
+                if (obj.event === 'edit_info') {
+                    Id = data.id;
+                    var index = layer.open({
+                        title: '编辑房间信息',
+                        type: 2,
+                        shade: 0.2,
+                        maxmin: true,
+                        shadeClose: true,
+                        area: ['80%', '85%'],
+                        content: './edit.html',
+                    });
+                    $(window).on("resize", function () {
+                        layer.full(index);
+                    });
+                    return false;
+                } else if (obj.event === 'del') {
+                    Id = data.id;
+                    admin_login_token = AdminLoginToken;
+                    layer.confirm("确认要删除吗", { title: "删除确认" }, function (index) {
+
+                        $.post(WebHost + 'live_room_cate/del', { id: Id, login_token: admin_login_token }, function (data) {
+                            layer.msg(data.msg);
+                            if (data.code == 200) {
+                                location.reload();
+                            }
+                            layer.close(index);
+                        }, "json");
+                    });
+                }
+            });
+
+        });
+
+        function previewImg(obj) {
+            var img = new Image()
+            img.src = obj.src
+            //var height = img.height + 50; // 原图片大小
+            //var width = img.width; //原图片大小
+            var imgHtml =
+                "<img src='" +
+                obj.src +
+                "' width='500px' height='500px'/>"
+            //弹出层
+            layer.open({
+                type: 1,
+                shade: 0.8,
+                offset: 'auto',
+                area: [500 + 'px', 550 + 'px'], // area: [width + 'px',height+'px'] //原图显示
+                shadeClose: true,
+                scrollbar: false,
+                title: '查看图片', //不显示标题
+                content: imgHtml, //捕获的元素，注意：最好该指定的元素要存放在body最外层，否则可能被其它的相对元素所影响
+                cancel: function () {
+                    //layer.msg('捕获就是从页面已经存在的元素上，包裹layer的结构', { time: 5000, icon: 6 });
+                },
+            })
+        }
+    </script>
+    <script type="text/html" id="image">
+  <img src="{{d.http_image}}"  height="100%" class="layui-upload-img" onclick="previewImg(this)" >
+</script>
+    <script type="text/html" id="currentTableBar">
+    <a class="layui-btn layui-btn-xs data-count-edit" lay-event="edit_info">编辑</a>
+<!--    <a class="layui-btn layui-btn-xs data-count-edit" lay-event="del">删除</a>-->
+</script>
+    <script type="text/html" id="add_time">
+        {{dateFormat(d.add_time) }}
+    </script>
+
+
+    <script type="text/html" id="update_time">
+        {{dateFormat(d.update_time) }}
+    </script>
+</body>
+
+</html>

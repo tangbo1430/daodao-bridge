@@ -1,0 +1,148 @@
+#invitation{
+	position: fixed;
+	top:0;
+	right:0;
+	bottom: 0;
+	left:0;
+	background-image: url(../img/invitation.png);
+	background-size: cover;
+	.header{
+		position: absolute;
+		top:0;
+		right:0;
+		left:0;
+		height:1.5rem;
+		width:100%;
+		display: flex;
+		justify-content: space-between;
+		.icon{
+			width:1.5rem;
+			height:1.5rem;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			i{
+				font-size: 0.5rem;
+				color:#fff;
+			}
+		}
+		.title{
+			flex: 1;
+			height:1.5rem;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			h1{
+				font-weight: normal;
+				font-size:0.44rem;
+				font-family:PingFang SC;
+				color:rgba(255,255,255,1);
+			}
+		}
+	}
+	
+	input::-webkit-input-placeholder{
+		color:#999999;
+	}
+	input::-moz-placeholder{   /* Mozilla Firefox 19+ */
+		color:#999999;
+	}
+	input:-moz-placeholder{    /* Mozilla Firefox 4 to 18 */
+		color:#999999;
+	}
+	input:-ms-input-placeholder{  /* Internet Explorer 10-11 */ 
+		color:#999999;
+	}
+	
+	
+	.content{
+		position: absolute;
+		top:1.5rem;
+		right:0;
+		left:0;
+		bottom:0;
+		display: flex;
+		flex-direction: column;
+		overflow-y: auto;
+		padding-bottom: 1rem;
+		.center{
+			width:100%;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+		}
+		.ad{
+			margin-top: 0.8rem;
+			img{
+				width:80%;
+			}
+		}
+		.code_box{
+			margin-top: 1rem;
+			.box{
+				width:8.5rem;
+				padding:0.5rem 0;
+				background-color: #FFFFFF;
+				border-radius: 0.3rem;
+				display: flex;
+				flex-direction: column;
+				justify-content: flex-start;
+				align-items: center;
+				.title{
+					margin-bottom: 0.3rem;
+					span{
+						font-size:0.45rem;
+						font-weight:bold;
+						color:rgba(51,51,51,1);
+					}
+				}
+				.code{
+					display: flex;
+					justify-content: center;
+					align-items: center;
+					.s_box{
+						width:0.7rem;
+						height:0.7rem;
+						background:rgba(239,239,239,1);
+						margin:0.1rem;
+						
+						span{
+							color:#E53044;
+							font-size: 0.4rem;
+							font-weight: bold;
+						}
+					}
+				}
+				.qrcode{
+					img{
+						width:4rem;
+					}
+				}
+				.tip{
+					margin:0.5rem 0;
+					span{
+						font-size:0.3rem;
+						font-family:PingFang SC;
+						color:rgba(153,153,153,1);
+					}
+				}
+				.copy{
+					width:7.5rem;
+					height:1.2rem;
+					background:rgba(254,85,98,1);
+					border-radius:0.6rem;
+					display: flex;
+					justify-content: center;
+					align-items: center;
+					span{
+						font-size:0.4rem;
+						color:rgba(255,255,255,1);
+					}
+				}
+				
+			}
+		}
+		
+		
+	}
+}

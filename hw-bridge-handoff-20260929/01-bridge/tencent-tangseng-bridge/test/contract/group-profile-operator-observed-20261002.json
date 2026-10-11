@@ -1,0 +1,45 @@
+{
+  "evidence": "Sanitized Tencent production callbacks from temporary integration group; fields observed, identities/values replaced",
+  "callbacks": [
+    {
+      "CallbackCommand": "Group.CallbackAfterGroupInfoChanged",
+      "EventTime": 1790914835604,
+      "Type": "Public",
+      "GroupId": "dd_fixture-group",
+      "Operator_Account": "fixture-admin",
+      "FaceUrl": "https://media.example.invalid/avatar"
+    },
+    {
+      "CallbackCommand": "Group.CallbackAfterGroupInfoChanged",
+      "EventTime": 1790914839158,
+      "Type": "Public",
+      "GroupId": "dd_fixture-group",
+      "Operator_Account": "fixture-user",
+      "Name": "fixture-value"
+    },
+    {
+      "CallbackCommand": "Group.CallbackAfterGroupInfoChanged",
+      "EventTime": 1790914839830,
+      "Type": "Public",
+      "GroupId": "dd_fixture-group",
+      "Operator_Account": "fixture-user",
+      "Name": "fixture-value"
+    },
+    {
+      "CallbackCommand": "Group.CallbackAfterGroupInfoChanged",
+      "EventTime": 1790914841215,
+      "Type": "Public",
+      "GroupId": "dd_fixture-group",
+      "Operator_Account": "fixture-user",
+      "Notification": "fixture-value"
+    },
+    {
+      "CallbackCommand": "Group.CallbackAfterGroupInfoChanged",
+      "EventTime": 1790914842846,
+      "Type": "Public",
+      "GroupId": "dd_fixture-group",
+      "Operator_Account": "fixture-user",
+      "FaceUrl": "https://media.example.invalid/avatar"
+    }
+  ]
+}

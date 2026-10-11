@@ -1,0 +1,1 @@
+{"event_id":"real-test-memory-1","trace_id":"trace-1","source":"tencent","command":"C2C.CallbackAfterSendMsg","occurred_at":1760000000,"idempotency_key":"tencent:real-memory-1","payload":{"From_Account":"16607117013","To_Account":"ceshijishu888","MsgBody":[{"MsgType":"TIMTextElem","MsgContent":{"Text":"真实链路测试"}}],"MsgSeq":1,"MsgKey":"real-memory-1"}}

@@ -1,0 +1,1 @@
+{"CallbackCommand":"C2C.CallbackAfterSendMsg","SdkAppid":20000000,"From_Account":"tx_user_a","To_Account":"tx_user_b","MsgKey":"sample-msg-1","MsgSeq":1,"MsgTime":1760000000,"MsgBody":[{"MsgType":"TIMTextElem","MsgContent":{"Text":"contract sample","CloudCustomData":""}}]}

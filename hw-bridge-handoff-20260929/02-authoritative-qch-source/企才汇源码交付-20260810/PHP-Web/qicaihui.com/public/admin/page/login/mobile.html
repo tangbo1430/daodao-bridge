@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="../../lib/layui-v2.5.5/css/layui.css" media="all">
+    <link rel="stylesheet" href="../../css/public.css" media="all">
+</head>
+<style>
+    .captcha {
+            width: 60%;
+            display: inline-block;
+        }
+
+        .captcha-img {
+            display: inline-block;
+            width: 34%;
+            float: right;
+        }
+
+        .captcha-img img {
+            height: 34px;
+            border: 1px solid #e6e6e6;
+            height: 36px;
+            width: 100%;
+        }
+</style>
+<body>
+    <div class="layuimini-container">
+        <div class="layuimini-main">
+
+            <form class="layui-form" action="" lay-filter="MyForm">
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label " >手机号</label>
+                    <div class="layui-input-inline" style="width:300px;">
+                        <input type="text"  id="show_mobile" name="show_mobile" disabled="disabled" class="layui-input">
+                        
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label ">图片验证码</label>
+                    <div class="layui-input-inline" style="width:300px;">
+                        <input type="text" name="captcha"  placeholder="图形验证码"
+                            autocomplete="off" class="layui-input verification captcha" id="captcha" value="">
+                        <div class="captcha-img">
+                            <img id="captchaPicL" onclick="clickCaptch()" src="" style="display:none;" >
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">手机验证码</label>
+                    <div class="layui-input-inline" style="width:300px;">
+                        <input type="text"  name="sms_code"  class="layui-input captcha">
+                        <div class="captcha-img">
+                            <button type="button" class="layui-btn" id="getMobileCode" >获取验证码</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        
+                        <button class="layui-btn" lay-submit lay-filter="saveBtn">确认登录</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="../../lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
+    <script src="../../common/common.js" charset="utf-8"></script>
+    <!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
+
+    <script>
+        layui.use(['form', 'table'], function () {
+            var form = layui.form,
+                layer = layui.layer,
+                table = layui.table,
+                $ = layui.$;
+
+            /**
+             * 初始化表单，要加上，不然刷新部分组件可能会不加载
+             */
+            
+            // 当前弹出层，防止ID被覆盖
+            var parentIndex = layer.index;
+            var data = parent.LoginData
+            
+            $('#show_mobile').val(data.show_mobile)
+            
+            
+            // 粒子线条背景
+            $(document).ready(function () {
+                $("#captchaPicL").attr('src', WebHost + '/apip/verify?t=' + new Date().getTime());
+                $("#captchaPicL").css("display", 'block');
+            });
+            $('#captchaPicL').click(function(){
+                $("#captchaPicL").attr('src', WebHost + '/apip/verify?t=' + new Date().getTime());
+                $("#captchaPicL").css("display", 'block');
+            })
+            $('#getMobileCode').click(function(e){
+                var mobile = data.mobile
+                var captcha = $('#captcha').val()
+                $.post(WebHost + "apip/get_mobile_code", {captcha: captcha, mobile: mobile},
+                    function (data, textStatus, jqXHR) {
+                        layer.msg(data.msg, { time: 1000 }, function () {
+                            
+                        });
+                        if(data.code == 201) {
+                            $("#captchaPicL").attr('src', WebHost + '/apip/verify?t=' + new Date().getTime());
+                            $("#captchaPicL").css("display", 'block');
+                        }
+                    },
+                    "json"
+                );
+            })
+            // 进行登录操作
+            form.on('submit(saveBtn)', function (data) {
+                data.field.uid = parent.LoginData.uid
+                data.field.mobile = parent.LoginData.mobile
+                data = data.field;
+                
+                console.log(data)
+                if (data.sms_code == '') {
+                    layer.msg('手机验证码不能为空');
+                    return false;
+                }
+                $.ajax({
+                    type: "post",
+                    url: WebHost + "apip/sms_login",
+                    data: data,
+                    dataType: "json",
+                    success: function (response) {
+                        layer.msg(response.msg, { time: 2000 }, function () {
+                            if (response.code == 200) {
+                                var data_r = response.data;
+                                
+                                LoginData = data_r
+                                localStorage.setItem("admin_login_token", data_r.login_token);
+                                localStorage.setItem("is_has_warn", data_r.is_has_warn);
+                                localStorage.setItem("aid", data_r.uid);
+                                
+            					var index = parent.layer.getFrameIndex(window.name);
+                                parent.layer.close(index); 
+                                
+                            } else {
+                                $("#captchaPic").click();
+                            }
+
+                        });
+                    }
+                });
+                return false;
+            });
+            
+
+            //  $("#hid").find("option[value='{$param.hid}']").prop("selected",true);
+            //   form.render();
+            
+            
+
+        });
+    </script>
+</body>
+
+</html>

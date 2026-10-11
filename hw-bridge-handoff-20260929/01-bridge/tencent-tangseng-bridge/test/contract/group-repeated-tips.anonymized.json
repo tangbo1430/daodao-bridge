@@ -1,0 +1,13 @@
+{
+  "description": "Live group history before fix: identical projection writes every minute. Accounts, group and sequences anonymized; media URLs omitted.",
+  "get_group_info": {"ActionStatus":"OK","ErrorCode":0,"GroupInfo":[{"ErrorCode":0,"GroupId":"dd_fixture-group","MaxMemberNum":200,"Owner_Account":"fixture-owner","Name":"fixture group","Introduction":"fixture group","Notification":"","MuteAllMember":"Off"}]},
+  "get_group_member_info": {"ActionStatus":"OK","ErrorCode":0,"MemberList":[{"Member_Account":"fixture-owner","Role":"Owner","ShutUpUntil":0},{"Member_Account":"fixture-peer","Role":"Member","ShutUpUntil":1790767532}]},
+  "recent_system_messages": [
+    {"MsgSeq":101,"MsgTimeStamp":1790767474,"MsgBody":{"OpType":6,"Operator_Account":"fixture-admin","MsgGroupNewInfo":{"ShutupAll":0}}},
+    {"MsgSeq":102,"MsgTimeStamp":1790767474,"MsgBody":{"OpType":5,"Operator_Account":"fixture-admin","List_Account":["fixture-peer"]}},
+    {"MsgSeq":103,"MsgTimeStamp":1790767474,"MsgBody":{"OpType":7,"Operator_Account":"fixture-admin","MsgMemberInfo":[{"User_Account":"fixture-peer","ShutupTime":0}]}},
+    {"MsgSeq":104,"MsgTimeStamp":1790767532,"MsgBody":{"OpType":6,"Operator_Account":"fixture-admin","MsgGroupNewInfo":{"ShutupAll":0}}},
+    {"MsgSeq":105,"MsgTimeStamp":1790767532,"MsgBody":{"OpType":5,"Operator_Account":"fixture-admin","List_Account":["fixture-peer"]}},
+    {"MsgSeq":106,"MsgTimeStamp":1790767532,"MsgBody":{"OpType":7,"Operator_Account":"fixture-admin","MsgMemberInfo":[{"User_Account":"fixture-peer","ShutupTime":0}]}}
+  ]
+}

@@ -1,0 +1,87 @@
+[
+  {
+    "request": "GET /v1/groups/<group_no>",
+    "status": 200,
+    "body": {
+      "group_no": "00000000000000000000000000000001",
+      "group_type": 1,
+      "category": "",
+      "name": "Fixture",
+      "remark": "",
+      "notice": "Fixture",
+      "mute": 0,
+      "top": 0,
+      "show_nick": 0,
+      "save": 0,
+      "forbidden": 0,
+      "invite": 0,
+      "chat_pwd_on": 0,
+      "screenshot": 0,
+      "revoke_remind": 1,
+      "join_group_remind": 0,
+      "forbidden_add_friend": 0,
+      "status": 1,
+      "receipt": 1,
+      "flame": 0,
+      "flame_second": 0,
+      "allow_view_history_msg": 0,
+      "member_count": 2,
+      "online_count": 2,
+      "quit": 0,
+      "role": 1,
+      "forbidden_expir_time": 0,
+      "allow_member_pinned_message": 0,
+      "created_at": "2026-09-30 00:39:44",
+      "updated_at": "2026-09-30 00:39:44",
+      "version": 1142020
+    }
+  },
+  {
+    "request": "GET /v1/groups/<group_no>/membersync?limit=1000&version=0",
+    "status": 400,
+    "body": {
+      "msg": "超大群不支持同步群成员！",
+      "status": 400
+    }
+  },
+  {
+    "request": "GET /v1/groups/<group_no>/members?limit=100&page=1",
+    "status": 200,
+    "body": [
+      {
+        "id": 137133,
+        "uid": "00000000000000000000000000000002",
+        "group_no": "00000000000000000000000000000001",
+        "name": "Fixture",
+        "remark": "",
+        "role": 1,
+        "version": 1291133,
+        "is_deleted": 0,
+        "status": 1,
+        "vercode": "REDACTED",
+        "invite_uid": "",
+        "robot": 0,
+        "forbidden_expir_time": 0,
+        "created_at": "",
+        "updated_at": "2026-09-30 00:39:44"
+      },
+      {
+        "id": 137132,
+        "uid": "00000000000000000000000000000003",
+        "group_no": "00000000000000000000000000000001",
+        "name": "Fixture",
+        "remark": "",
+        "role": 0,
+        "version": 1291132,
+        "is_deleted": 0,
+        "status": 1,
+        "vercode": "REDACTED",
+        "invite_uid": "",
+        "robot": 0,
+        "forbidden_expir_time": 0,
+        "created_at": "",
+        "updated_at": "2026-09-30 00:39:44"
+      }
+    ]
+  }
+]

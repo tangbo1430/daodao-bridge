@@ -1,0 +1,3 @@
+# Preserve product static assets in the source archive.
+.DS_Store
+Thumbs.db

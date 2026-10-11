@@ -1,0 +1,10 @@
+{
+  "description": "Read-only production observations before fix. Identifiers replaced; credential-bearing media URLs omitted.",
+  "tang_avatar": {"status":200,"bytes":34082},
+  "tencent_shadow": {"ResultCode":0,"ProfileItem":[{"Tag":"Tag_Profile_IM_Nick","Value":"Fixture Name"},{"Tag":"Tag_Profile_IM_Image","Value":""}]},
+  "bridge_friend_state": {"status":"active","avatar_url_present":true},
+  "bridge_identity": {"source_system":"tangseng","avatar_url_present":false},
+  "account_check": {"ActionStatus":"OK","ErrorCode":0,"ResultItem":[{"UserID":"fixture-owner","ResultCode":0,"AccountStatus":"Imported"},{"UserID":"fixture-peer","ResultCode":0,"AccountStatus":"Imported"}]},
+  "friend_check": {"ActionStatus":"OK","ErrorCode":0,"InfoItem":[{"To_Account":"fixture-peer","Relation":"CheckResult_Type_NoRelation","ResultCode":0}]},
+  "friend_delete_no_relation": {"ActionStatus":"OK","ErrorCode":0,"ResultItem":[{"To_Account":"fixture-peer","ResultCode":31704}]}
+}

@@ -1,0 +1,5 @@
+7552ba79828b61ac011545a0ef4cb330a934a8372e29f929c94f36528cd33f95  business-closure-20261001-search-fix-source.zip
+b3fd7f95ca4969ab1a410004ecc97bd2297f5039ac84167a304b86956533f211  business-closure-20261001-search-fix-SOURCE-MANIFEST.json
+9b6c3807fd61988e9a9ab1eb1b3b54ca3e8da24960b1ab602ecb3a03da2f9f4e  hw-bridge-business-closure-20261001-search-fix.tar.gz
+d32c3e64e2335ac634015c485a923441081b9e5d19e76f38d4f584e6fda1abbd  php-business-closure-20261001-search-fix.tar.gz
+bef6f8711960fe0969e9d32b6222a05786ba96607a11b9ae753084fa13ff8fe6  qch-business-closure-20261001-search-fix-qa.apk

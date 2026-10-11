@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="../../lib/layui-v2.5.5/css/layui.css" media="all">
+    <link rel="stylesheet" href="../../css/public.css" media="all">
+</head>
+
+<body>
+    <div class="layuimini-container">
+        <div class="layuimini-main">
+            <fieldset class="table-search-fieldset">
+                <legend>搜索信息</legend>
+                <div style="margin: 10px 10px 10px 10px">
+                    <form class="layui-form layui-form-pane" action="">
+                        <div class="layui-form-item">
+                            <div class="layui-inline">
+                                <div class="layui-input-inline">
+                                    <input type="text" name="uid" autocomplete="off" class="layui-input"
+                                        placeholder="发布人会员id">
+                                </div>
+                            </div>
+                            <div class="layui-inline">
+                                <div class="layui-input-inline">
+                                    <input type="text" name="nick_name" autocomplete="off" class="layui-input"
+                                        placeholder="发布人昵称">
+                                </div>
+                            </div>
+                            <div class="layui-inline">
+                                <div class="layui-input-inline">
+                                    <select name="show_status" lay-filter="aihao">
+                                        <option value="">审核状态</option>
+                                        <option value="1">待审核</option>
+                                        <option value="2">审核通过</option>
+                                        <option value="3">审核拒绝</option>
+                                    </select>
+                                </div>
+                            </div>
+
+
+                            <div class=" layui-inline">
+                                <button type="submit" class="layui-btn layui-btn-primary" lay-submit
+                                    lay-filter="data-search-btn"><i class="layui-icon"></i> 搜 索</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+        </div>
+        </fieldset>
+        <table class="layui-hide" id="currentTableId" lay-filter="currentTableFilter" style="align: center;">
+        </table>
+    </div>
+    </div>
+    <script src="../../lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
+    <script src="../../common/common.js" charset="utf-8"></script>
+    <script>
+        layui.use(['form', 'table'], function () {
+            var $ = layui.jquery,
+                form = layui.form,
+                table = layui.table;
+            table.render({
+                elem: '#currentTableId',
+                url: WebHost + 'zone/user_zone_data',
+                where: {
+                    "login_token": AdminLoginToken,
+                }, //设定异步数据接口的额外参数
+                method: "POST",
+                toolbar: '#toolbar_add',
+                defaultToolbar: ['filter', 'exports', 'print', {
+                    title: '提示',
+                    layEvent: 'LAYTABLE_TIPS',
+                    icon: 'layui-icon-tips'
+                }],
+                cols: [[
+                    { field: 'zid', title: 'ID' },
+                    { field: 'user_nick_name', title: '会员信息' },
+                    { field: 'content', title: '内容' },
+                    { field: 'images', title: '图片', templet: '#image' },
+                    // { field: 'result', title: '图片结果' },
+                    { field: 'show_status', title: '状态', templet: '#show_status' },
+
+                    { field: 'add_time', title: '创建时间', templet: '#add_time' },
+                    { title: '操作', minWidth: 150, toolbar: '#currentTableBar', align: "center" }
+                ]],
+                limits: [10, 15, 20, 25, 50, 100],
+                limit: 15,
+                page: true,
+                skin: 'line'
+            });
+
+            // 监听搜索操作
+            form.on('submit(data-search-btn)', function (data) {
+                // var result = JSON.stringify(data.field);
+                // layer.alert(result, {
+                //     title: '最终的搜索信息'
+                // });
+                data.field.admin_login_token = AdminLoginToken
+                //执行搜索重载
+                table.reload('currentTableId', {
+                    where: data.field,
+                    page: {
+                        curr: 1
+                    }
+                }, 'json');
+                return false;
+            });
+
+            /**
+ * toolbar监听事件
+     */
+
+            table.on('tool(currentTableFilter)', function (obj) {
+                var data = obj.data;
+                if (obj.event === 'un_zone_examine') {
+                    Id = data.zid;
+                    admin_login_token = AdminLoginToken;
+                    layer.confirm("确认要拒绝吗", { title: "拒绝审核确认" }, function (index) {
+                        $.post(WebHost + 'Userzone/zone_examine', { zid: Id, login_token: admin_login_token, show_status: 3 }, function (data) {
+                            layer.msg(data.msg);
+                            if (data.code == 200) {
+                                location.reload();
+                            }
+                            layer.close(index);
+                        }, "json");
+                    });
+                } else if (obj.event === 'zone_examine') {
+                    Id = data.zid;
+                    admin_login_token = AdminLoginToken;
+                    layer.confirm("确认要通过吗", { title: "通过审核确认" }, function (index) {
+                        $.post(WebHost + 'Userzone/zone_examine', { zid: Id, login_token: admin_login_token, show_status: 2 }, function (data) {
+                            layer.msg(data.msg);
+                            if (data.code == 200) {
+                                location.reload();
+                            }
+                            layer.close(index);
+                        }, "json");
+                    });
+                } else if (obj.event === 'edit') {
+                    Id = data.zid;
+                    admin_login_token = AdminLoginToken;
+                    var index = layer.open({
+                        title: '编辑',
+                        type: 2,
+                        shade: 0.2,
+                        maxmin: true,
+                        shadeClose: true,
+                        area: ['80%', '80%'],
+                        content: '../userzone/user_zone_edit.html',
+                    })
+                    $(window).on('resize', function () {
+                        layer.full(index)
+                    })
+                    return false
+                }
+            });
+        });
+
+        function previewImg(obj) {
+            var img = new Image()
+            img.src = obj.src
+            //var height = img.height + 50; // 原图片大小
+            //var width = img.width; //原图片大小
+            var imgHtml =
+                "<img src='" +
+                obj.src +
+                "' width='500px' height='500px'/>"
+            //弹出层
+            layer.open({
+                type: 1,
+                shade: 0.8,
+                offset: 'auto',
+                area: [500 + 'px', 550 + 'px'], // area: [width + 'px',height+'px'] //原图显示
+                shadeClose: true,
+                scrollbar: false,
+                title: '查看图片', //不显示标题
+                content: imgHtml, //捕获的元素，注意：最好该指定的元素要存放在body最外层，否则可能被其它的相对元素所影响
+                cancel: function () {
+                    //layer.msg('捕获就是从页面已经存在的元素上，包裹layer的结构', { time: 5000, icon: 6 });
+                },
+            })
+        }
+    </script>
+    <script type="text/html" id="add_time">
+    {{dateFormat(d.add_time) }}
+</script>
+
+    <script type="text/html" id="deal_time">
+    {{dateFormat(d.deal_time) }}
+</script>
+    <script type="text/html" id="update_time">
+    {{dateFormat(d.update_time) }}
+</script>
+    <script type="text/html" id="currentTableBar">
+        <!--
+    {{#  if(d.show_status == "1"){ }}
+     <a class="layui-btn layui-btn-warm layui-btn-xs" lay-event="zone_examine">审核通过</a>
+     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="un_zone_examine">审核拒绝</a>
+     {{# }else if(d.show_status=="2"){}}
+     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="un_zone_examine">审核拒绝</a>
+     {{# }else if(d.show_status=="3"){}}
+     <a class="layui-btn layui-btn-warm layui-btn-xs" lay-event="zone_examine">审核通过</a>
+     {{# }else {}}
+     <a class="layui-btn layui-btn-warm layui-btn-xs" lay-event="zone_examine">审核通过</a>
+     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="un_zone_examine">审核拒绝</a>
+     {{#  } }}
+        -->
+
+    <a class="layui-btn   layui-btn-xs" lay-event="edit">编辑</a>
+    </script>
+
+
+    <script type="text/html" id="show_status">
+    {{#  if(d.show_status == "1"){ }}
+    <a class="layui-btn  layui-btn-xs" >待审核</a>
+    {{# }else if(d.show_status=="2"){}}
+    <a class="layui-btn  layui-btn-xs">审核通过</a>
+     {{# }else if(d.show_status=="3"){}}
+    <a class="layui-btn  layui-btn-xs">审核拒绝</a>
+    {{#  } }}
+</script>
+
+    <script type="text/html" id="image">
+        {{#  layui.each(d.image_list, function(index, item){ }}
+       
+      <img src="{{item}}"  height="30px" class="layui-upload-img" onclick="previewImg(this)"> 
+      
+      {{#  }); }}
+
+  
+</script>
+
+    <script type="text/html" id="sound">
+        {{#  if(d.sound != ""){ }}  
+    <audio src="{{d.sound}}" controls="controls" ></audio>
+    {{# }else if(d.status=="1"){}}
+    无
+    {{#  } }}
+ </script>
+    <script type="text/html" id="video">
+    <video src="{{d.video}}"  width="100" height="80" controls="controls">
+        Your browser does not support the video tag.
+        </video>
+ </script>
+
+</body>
+
+</html>

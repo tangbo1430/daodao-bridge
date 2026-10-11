@@ -1,0 +1,16 @@
+{
+  "provenance": "real native login for dedicated registration acceptance reservation",
+  "variant": "40-character-device",
+  "reservation_status": "registering",
+  "stored_uid_present": true,
+  "http_status": 200,
+  "response": {
+    "data": {
+      "uid": "fixture-str",
+      "app_id": "fixture-str",
+      "name": "fixture-str",
+      "username": "fixture-str",
+      "token": "[redacted]"
+    }
+  }
+}

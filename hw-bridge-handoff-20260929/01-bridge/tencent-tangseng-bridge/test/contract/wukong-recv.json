@@ -1,0 +1,1 @@
+{"method":"recv","params":{"messageId":"wk-msg-1","messageSeq":1,"clientMsgNo":"client-1","timestamp":1760000000,"channelId":"peer_uid","channelType":1,"fromUid":"peer_uid","payload":{"type":1,"content":"contract sample"}}}

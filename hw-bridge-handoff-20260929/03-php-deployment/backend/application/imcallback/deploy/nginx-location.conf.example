@@ -1,0 +1,16 @@
+# Add this location inside the existing server block.
+location = /imcallback/tencent/receive {
+    include fastcgi_params;
+    fastcgi_param SCRIPT_FILENAME $document_root/index.php;
+    fastcgi_param SCRIPT_NAME /index.php;
+    fastcgi_param PATH_INFO /imcallback/tencent/receive;
+    fastcgi_pass php-fpm:9000;
+}
+
+# Keep the callback body small and fail fast.
+client_max_body_size 1m;
+fastcgi_read_timeout 5s;
+
+# Set IM_CALLBACK_TOKEN and IM_SDK_APP_ID on the PHP-FPM container. Ensure the
+# PHP-FPM pool inherits container environment variables (clear_env = no), or
+# declare them with pool-level env[] directives.

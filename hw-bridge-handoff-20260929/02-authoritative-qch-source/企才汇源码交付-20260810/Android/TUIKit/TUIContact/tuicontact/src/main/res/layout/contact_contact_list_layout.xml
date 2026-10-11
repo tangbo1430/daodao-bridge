@@ -1,0 +1,119 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F7F9FC"
+    android:orientation="vertical">
+
+    <EditText
+        android:id="@+id/contact_search_input"
+        android:layout_width="match_parent"
+        android:layout_height="38dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/contact_qch_search_bg"
+        android:drawableStart="@drawable/contact_qch_search_icon"
+        android:drawablePadding="8dp"
+        android:hint="搜索姓名、账号"
+        android:imeOptions="actionSearch"
+        android:inputType="text"
+        android:maxLines="1"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:textColor="#1D1D22"
+        android:textColorHint="#9A9EA7"
+        android:textSize="15sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="86dp"
+        android:background="#FFFFFFFF"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp">
+
+        <LinearLayout
+            android:id="@+id/contact_shortcut_new_friend"
+            style="@style/ContactQchShortcutContainer">
+            <ImageView style="@style/ContactQchShortcutIcon" android:src="?attr/contact_new_friend_icon" />
+            <TextView style="@style/ContactQchShortcutLabel" android:text="新朋友" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/contact_shortcut_group"
+            style="@style/ContactQchShortcutContainer">
+            <ImageView style="@style/ContactQchShortcutIcon" android:src="?attr/contact_group_list_icon" />
+            <TextView style="@style/ContactQchShortcutLabel" android:text="保存的群聊" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/contact_shortcut_tag"
+            style="@style/ContactQchShortcutContainer">
+            <ImageView style="@style/ContactQchShortcutIcon" android:background="@drawable/contact_qch_shortcut_cyan" android:padding="9dp" android:src="@drawable/contact_qch_tag_icon" />
+            <TextView style="@style/ContactQchShortcutLabel" android:text="标签" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/contact_shortcut_service"
+            style="@style/ContactQchShortcutContainer">
+            <ImageView style="@style/ContactQchShortcutIcon" android:background="@drawable/contact_qch_shortcut_purple" android:padding="9dp" android:src="@drawable/contact_qch_service_icon" />
+            <TextView style="@style/ContactQchShortcutLabel" android:text="客服" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/contact_recent_section"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#FFFFFFFF"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="34dp"
+            android:gravity="center_vertical"
+            android:paddingStart="16dp"
+            android:text="最近联系"
+            android:textColor="#1D1D22"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="82dp"
+            android:fillViewport="false"
+            android:overScrollMode="never"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:id="@+id/contact_recent_list"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp" />
+        </HorizontalScrollView>
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="34dp"
+        android:gravity="center_vertical"
+        android:paddingStart="16dp"
+        android:text="联系人"
+        android:textColor="#1D1D22"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <com.tencent.qcloud.tuikit.tuicontact.classicui.widget.ContactListView
+        android:id="@+id/contact_listview"
+        android:background="#F7F9FC"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+</LinearLayout>

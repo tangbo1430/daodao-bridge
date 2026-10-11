@@ -1,0 +1,42 @@
+[
+  {
+    "channel_id": "00000000000000000000000000000001",
+    "channel_type": 2,
+    "client_msg_no": "fixture-client_msg_no",
+    "from_uid": "",
+    "message_id": "fixture-message_id",
+    "message_seq": 1,
+    "occurred_at": 1790699984,
+    "payload": {
+      "content": "Fixture Creator邀请{0}加入群聊",
+      "creator": "00000000000000000000000000000002",
+      "creator_name": "Fixture Creator",
+      "extra": [
+        {
+          "uid": "00000000000000000000000000000003",
+          "name": "Fixture User"
+        }
+      ],
+      "type": 1001,
+      "version": 1142020
+    },
+    "to_uid": "00000000000000000000000000000002"
+  },
+  {
+    "channel_id": "00000000000000000000000000000001",
+    "channel_type": 2,
+    "client_msg_no": "fixture-client_msg_no",
+    "from_uid": "",
+    "message_id": "fixture-message_id",
+    "message_seq": 1,
+    "occurred_at": 1790699985,
+    "payload": {
+      "cmd": "groupAvatarUpdate",
+      "param": {
+        "group_no": "00000000000000000000000000000001"
+      },
+      "type": 99
+    },
+    "to_uid": "00000000000000000000000000000002"
+  }
+]

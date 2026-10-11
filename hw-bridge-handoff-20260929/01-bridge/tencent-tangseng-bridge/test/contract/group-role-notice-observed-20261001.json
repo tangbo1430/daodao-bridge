@@ -1,0 +1,21 @@
+{
+  "kind": "sanitized_live_observation",
+  "date": "2026-10-01",
+  "scope": "Temporary group, authorized test pair. Native endpoint called with the Huawei owner's own native identity; mobile UI not verified.",
+  "before_fix": {
+    "promote": {"tencent_role": "Admin", "tencent_tip_op": 4, "tencent_tip_member_role": 300},
+    "demote": {"tencent_role": "Member", "tencent_tip_op": 5, "tencent_tip_member_role": 200},
+    "native_visible_role_notices": 0
+  },
+  "after_fix": {
+    "facade_promote": {"native_role": 2, "tencent_role": "Admin", "native_notice_count": 1},
+    "facade_demote": {"native_role": 0, "tencent_role": "Member", "native_notice_count": 2},
+    "native_promote": {"native_role": 2, "tencent_role": "Admin", "native_notice_count": 3},
+    "native_demote": {"native_role": 0, "tencent_role": "Member", "native_notice_count": 4},
+    "payload_shape": {"type": 2000, "content": "<member-name>已被设置为群管理员", "bridge_event_id": "bridge-group-role:<stable-hash>"},
+    "repeated_sync_count": 3,
+    "additional_notices_after_sync": 0,
+    "native_notices_relayed_back_to_tencent": 0,
+    "cleanup": "temporary group disbanded"
+  }
+}

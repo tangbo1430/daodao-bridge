@@ -1,0 +1,10 @@
+{
+  "channel_id": "fixture____cmd",
+  "channel_type": 1,
+  "to_uid": "fixture-shadow",
+  "payload": {
+    "type": 99,
+    "cmd": "channelUpdate",
+    "param": { "channel_id": "fixture-peer", "channel_type": 1 }
+  }
+}

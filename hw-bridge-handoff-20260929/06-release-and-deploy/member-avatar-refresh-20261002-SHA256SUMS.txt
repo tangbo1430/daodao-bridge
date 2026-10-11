@@ -1,0 +1,3 @@
+3f363230e2a93a1e6b6c80aad423e3f1f487783e8e335ea0ebe01655f5ba1131  hw-bridge-member-avatar-refresh-20261002.tar.gz
+0d4bc732a473c6520fb34662184234e170487acafb4da3a953c673abb686582f  member-avatar-refresh-20261002-source.zip
+58c44e29cdbabcd863c21713dde667ac81a37992da277fc539d6453b25f50382  member-avatar-refresh-20261002-MANIFEST.json

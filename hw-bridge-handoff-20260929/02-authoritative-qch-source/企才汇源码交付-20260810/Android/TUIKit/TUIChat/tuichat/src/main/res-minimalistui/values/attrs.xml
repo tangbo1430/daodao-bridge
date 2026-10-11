@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="ChatVoiceWaveView">
+        <attr name="chat_voice_line_space" format="dimension"/>
+        <attr name="chat_voice_line_width" format="dimension"/>
+        <attr name="chat_voice_duration" format="integer"/>
+
+        <attr name="chat_voice_wave_mode" format="enum">
+            <enum name="up_down" value="0"/>
+            <enum name="left_right" value="1"/>
+        </attr>
+
+        <attr name="chat_voice_line_type" format="enum">
+            <enum name="bar_chart" value="0"/>
+            <enum name="line_graph" value="1"/>
+        </attr>
+
+        <attr name="chat_voice_line_color" format="color"/>
+        <attr name="android:gravity"/>
+    </declare-styleable>
+</resources>

@@ -1,0 +1,1 @@
+{"source":"tencent","event_id":"real-test-1","command":"C2C.CallbackAfterSendMsg","occurred_at":1790490200,"idempotency_key":"real-test-1","payload":{"CallbackCommand":"C2C.CallbackAfterSendMsg","From_Account":"16607117013","To_Account":"16607117013","MsgKey":"real-test-msg-1","MsgBody":[{"MsgType":"TIMTextElem","MsgContent":{"Text":"Bridge真实测试消息"}}]}}

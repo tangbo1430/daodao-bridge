@@ -1,0 +1,794 @@
+[
+  {
+    "path": "01-bridge/tencent-tangseng-bridge/deploy/Dockerfile.runtime",
+    "status": "added",
+    "sha256": "69fdb95c47c12e7ec5a824971687ae5f68ee02ca1c3e1b4ea1069eb8710f8fb1",
+    "baseline_sha256": null
+  },
+  {
+    "path": "01-bridge/tencent-tangseng-bridge/migrations/002_friend_state.sql",
+    "status": "added",
+    "sha256": "df16a6be22a2d927824dcfd9eff761e035dfcc690113215abd2e7a7d44f863b9",
+    "baseline_sha256": null
+  },
+  {
+    "path": "01-bridge/tencent-tangseng-bridge/migrations/003_group_state.sql",
+    "status": "added",
+    "sha256": "9b3a07042a16ce3cb63019f9ffae9d2579f766a17a20681ebab91f4c111e224b",
+    "baseline_sha256": null
+  },
+  {
+    "path": "01-bridge/tencent-tangseng-bridge/migrations/004_media_object.sql",
+    "status": "added",
+    "sha256": "bb1b4d4c38f7c10e83c13cc0e59fdf67268df07129f68a023f551b9088299437",
+    "baseline_sha256": null
+  },
+  {
+    "path": "01-bridge/tencent-tangseng-bridge/migrations/005_message_state.sql",
+    "status": "added",
+    "sha256": "dd9bcf7cc7cea567a549ae83eb4d0aa3d13950f00f63a34e65d5eafcb1d600a1",
+    "baseline_sha256": null
+  },
+  {
+    "path": "01-bridge/tencent-tangseng-bridge/cmd/bridge/main.go",
+    "status": "modified",
+    "sha256": "b7f93b48c14e1f635e6f3441d372b00bee72330d5e037e84045358c25b4c89d8",
+    "baseline_sha256": "c4dbe4c7e4ed67d5237d7b65e67727c1cc6ecbb6068605fef38d7614fdd49732"
+  },
+  {
+    "path": "01-bridge/tencent-tangseng-bridge/internal/account/lifecycle_test.go",
+    "status": "added",
+    "sha256": "404b7893ac13acbd37f5eae0d5effb13473366ed85e19b348d776da85fd0fc2e",
+    "baseline_sha256": null
+  },
+  {
+    "path": "01-bridge/tencent-tangseng-bridge/internal/account/service.go",
+    "status": "modified",
+    "sha256": "63e9e9e992a68f4dcf7e4a8af37e8f7631dcde8c83678bbf094988818fb617db",
+    "baseline_sha256": "c3f6ad2077f79ae3d679276a33e811b37686c23352b7e37e975b744315280e7b"
+  },
+  {
+    "path": "01-bridge/tencent-tangseng-bridge/internal/adapter/adapter.go",
+    "status": "modified",
+    "sha256": "13a5262714fce1c1798e9edbcd73533caf7826aaa16dc6defc288d0a76471281",
+    "baseline_sha256": "e3867de1bfaaa5d832e254d1a087b32d91df663359673ef058445bf08ccd8ecb"
+  },
+  {
+    "path": "01-bridge/tencent-tangseng-bridge/internal/adapter/business.go",
+    "status": "added",
+    "sha256": "f22c68a36733a3660a7958e5c1c087de3245921984bd2d21a71d3f540a1b12c4",
+    "baseline_sha256": null
+  },
+  {
+    "path": "01-bridge/tencent-tangseng-bridge/internal/adapter/business_test.go",
+    "status": "added",
+    "sha256": "a552d4259657198225f1528047f3ddddcfba45789f0ea70903ddb209092cb477",
+    "baseline_sha256": null
+  },
+  {
+    "path": "01-bridge/tencent-tangseng-bridge/internal/adapter/conversations.go",
+    "status": "added",
+    "sha256": "4611a0b0bd8fe32ff93b5cacd4c3c6e9b59cd16209dcdc3cf20c4a68b47bb153",
+    "baseline_sha256": null
+  },
+  {
+    "path": "01-bridge/tencent-tangseng-bridge/internal/adapter/groups.go",
+    "status": "added",
+    "sha256": "6c85f2a451ff1fce64198e5267d3e5b9ba87629162f03fae7aebaccaf503c40c",
+    "baseline_sha256": null
+  },
+  {
+    "path": "01-bridge/tencent-tangseng-bridge/internal/adapter/message_state.go",
+    "status": "added",
+    "sha256": "d5a1a9ee0e0559b8792bc4943f520a8ba99af53f23f3fb7469866aad01aa0654",
+    "baseline_sha256": null
+  },
+  {
+    "path": "01-bridge/tencent-tangseng-bridge/internal/adapter/message_state_test.go",
+    "status": "added",
+    "sha256": "2bd957a5d4cf2b533ef751cb853622adf8851e0630a3835fb6266898f9a7ac0f",
+    "baseline_sha256": null
+  },
+  {
+    "path": "01-bridge/tencent-tangseng-bridge/internal/adapter/refresh_test.go",
+    "status": "added",
+    "sha256": "e209e4fd531f2843727ce8824ebb257423ebbd8e0419023057785d8569c73ce7",
+    "baseline_sha256": null
+  },
+  {
+    "path": "01-bridge/tencent-tangseng-bridge/internal/adapter/roaming.go",
+    "status": "added",
+    "sha256": "ddba09ba71ef31457dc83a30ffaf4fbe50b65cde3fd2fa2c08b16e3d541aa10b",
+    "baseline_sha256": null
+  },
+  {
+    "path": "01-bridge/tencent-tangseng-bridge/internal/business/account_lifecycle.go",
+    "status": "added",
+    "sha256": "a0f81ffdea13333ad9dfb47f2b1452166d6beb729818b3e6bbf076e5b3ac210b",
+    "baseline_sha256": null
+  },
+  {
+    "path": "01-bridge/tencent-tangseng-bridge/internal/business/account_lifecycle_test.go",
+    "status": "added",
+    "sha256": "8b4e53e690e79771c33278cf4091446a1f01e06a8ec1a69d196724855a5cf4e3",
+    "baseline_sha256": null
+  },
+  {
+    "path": "01-bridge/tencent-tangseng-bridge/internal/business/command_reset_test.go",
+    "status": "added",
+    "sha256": "e3890026738478b58c3ddd90d6dbb389d34cf0d6a91d022bca25388e13e5368f",
+    "baseline_sha256": null
+  },
+  {
+    "path": "01-bridge/tencent-tangseng-bridge/internal/business/conversations.go",
+    "status": "added",
+    "sha256": "90a6a25e9a8be0029233a69ca4ebd5b8404dffce697fd42c76947746326ef9c8",
+    "baseline_sha256": null
+  },
+  {
+    "path": "01-bridge/tencent-tangseng-bridge/internal/business/conversations_test.go",
+    "status": "added",
+    "sha256": "f6a8899db670a8d4d8587d25c989d6fd4c6a2bb0c193dd1b96402b4ee34f712a",
+    "baseline_sha256": null
+  },
+  {
+    "path": "01-bridge/tencent-tangseng-bridge/internal/business/errors.go",
+    "status": "added",
+    "sha256": "6466fe17fea8cab7b35e4b0548010abb309b67e5f3a67196d91d6975b1a33a05",
+    "baseline_sha256": null
+  },
+  {
+    "path": "01-bridge/tencent-tangseng-bridge/internal/business/friends.go",
+    "status": "added",
+    "sha256": "7238b1c39f3358b96c64b7473ec64683eafa4bd8079187208112dcf637e114e1",
+    "baseline_sha256": null
+  },
+  {
+    "path": "01-bridge/tencent-tangseng-bridge/internal/business/friends_test.go",
+    "status": "added",
+    "sha256": "627288c3c6efccf6d45255fab8e5c6f4286a32688d82fa26738640c830a1d774",
+    "baseline_sha256": null
+  },
+  {
+    "path": "01-bridge/tencent-tangseng-bridge/internal/business/friend_notification_test.go",
+    "status": "added",
+    "sha256": "8769cc9b0c073c5c6215e132a7330119fe3c112aa91bb5c2e5c81f85912cae6b",
+    "baseline_sha256": null
+  },
+  {
+    "path": "01-bridge/tencent-tangseng-bridge/internal/business/groups.go",
+    "status": "added",
+    "sha256": "0e407129f3b3160e2d41c70df6aebd7c565b2c6e9e4e027051511e31f960a8dd",
+    "baseline_sha256": null
+  },
+  {
+    "path": "01-bridge/tencent-tangseng-bridge/internal/business/groups_test.go",
+    "status": "added",
+    "sha256": "41e59854766dcc09f0954b8661444e2b4b1f0f0c5e868868a30f831c4c264fbe",
+    "baseline_sha256": null
+  },
+  {
+    "path": "01-bridge/tencent-tangseng-bridge/internal/business/group_events.go",
+    "status": "added",
+    "sha256": "d118c5702dbc5d38274fc6402e3d988ae382e745715cb26763f87f80a217b440",
+    "baseline_sha256": null
+  },
+  {
+    "path": "01-bridge/tencent-tangseng-bridge/internal/business/group_notice_test.go",
+    "status": "added",
+    "sha256": "9fff37b012dce1c784bcaca1f1074113d469a81483b995572220881bb61b5ef5",
+    "baseline_sha256": null
+  },
+  {
+    "path": "01-bridge/tencent-tangseng-bridge/internal/business/message_metadata.go",
+    "status": "added",
+    "sha256": "706c4b9da31a0e32a78ca45c69ea8f1e6abd1df67710f91f91e46ba3fe60c353",
+    "baseline_sha256": null
+  },
+  {
+    "path": "01-bridge/tencent-tangseng-bridge/internal/business/message_metadata_test.go",
+    "status": "added",
+    "sha256": "52da2915e2e188956517d64cfc36bf3cef8be822aaddb6bdca320772c7cc6842",
+    "baseline_sha256": null
+  },
+  {
+    "path": "01-bridge/tencent-tangseng-bridge/internal/business/message_records.go",
+    "status": "added",
+    "sha256": "e33242e869e0dd40975456174047cc63bd21d2fb56b77013cea6b0edf1603e46",
+    "baseline_sha256": null
+  },
+  {
+    "path": "01-bridge/tencent-tangseng-bridge/internal/business/message_state.go",
+    "status": "added",
+    "sha256": "3dcb01035838e889b205da63fb73109785c913a56adab1980ea9e2d60779bc1c",
+    "baseline_sha256": null
+  },
+  {
+    "path": "01-bridge/tencent-tangseng-bridge/internal/business/message_state_test.go",
+    "status": "added",
+    "sha256": "da1988ced2cfca32e29d841d26857bb9e232f1d2da1e51f67f8677d81b7c92be",
+    "baseline_sha256": null
+  },
+  {
+    "path": "01-bridge/tencent-tangseng-bridge/internal/business/prepare.go",
+    "status": "added",
+    "sha256": "79c121de0fb2d017922017fb659e97f6bca0f1e7474e38e621e5555d16d60ed5",
+    "baseline_sha256": null
+  },
+  {
+    "path": "01-bridge/tencent-tangseng-bridge/internal/business/profiles.go",
+    "status": "added",
+    "sha256": "01d5d4c842b80fdf97ca018a1bf2fb91fb8a9487637ba6d9b3fc9cf67b49f57d",
+    "baseline_sha256": null
+  },
+  {
+    "path": "01-bridge/tencent-tangseng-bridge/internal/business/profiles_test.go",
+    "status": "added",
+    "sha256": "03e8c1958983f08911d8909978c906953ba830dd16f339e0c9b07608802aea8f",
+    "baseline_sha256": null
+  },
+  {
+    "path": "01-bridge/tencent-tangseng-bridge/internal/business/roaming.go",
+    "status": "added",
+    "sha256": "78c721d761dea93f77eb2d476027e4160eb9d1648614c13339a5fc29a23b524d",
+    "baseline_sha256": null
+  },
+  {
+    "path": "01-bridge/tencent-tangseng-bridge/internal/business/roaming_test.go",
+    "status": "added",
+    "sha256": "b33bce0d835374f910c5ba191a1b849844671338c80cca28f37c8a00bf643f0d",
+    "baseline_sha256": null
+  },
+  {
+    "path": "01-bridge/tencent-tangseng-bridge/internal/business/sync_worker.go",
+    "status": "added",
+    "sha256": "41802b70fd4d0dcd8a62f0ffbd678bfdcc7f0172678865775e5fb3456189b314",
+    "baseline_sha256": null
+  },
+  {
+    "path": "01-bridge/tencent-tangseng-bridge/internal/config/config.go",
+    "status": "modified",
+    "sha256": "92adcbbc05b3ae958e684da42e948f08871776b36cde0f015c9b4ddc732302dc",
+    "baseline_sha256": "8ce910b89e6610b6098b9bf42529de86deb66c541cd386d93ffc8191eca5a047"
+  },
+  {
+    "path": "01-bridge/tencent-tangseng-bridge/internal/domain/business.go",
+    "status": "added",
+    "sha256": "a7b2d36fa54b7149f0dc26ed9e8f34d7d9c436d50acd17246b4bba7dc5bf24ed",
+    "baseline_sha256": null
+  },
+  {
+    "path": "01-bridge/tencent-tangseng-bridge/internal/domain/domain.go",
+    "status": "modified",
+    "sha256": "94e1c3926358ade2a645bdf1d0bd7ccae65aa152dd044b12985a84adb09191af",
+    "baseline_sha256": "ea57fbe361fc61ed2f8928bad7756d6ff9ee8741dac28bacc8b265fc2bd33009"
+  },
+  {
+    "path": "01-bridge/tencent-tangseng-bridge/internal/domain/groups.go",
+    "status": "added",
+    "sha256": "e7d824e034e0aa5d75046ed7bae2fff6a8a62bd75ba9879160ab92c6fbdf1da6",
+    "baseline_sha256": null
+  },
+  {
+    "path": "01-bridge/tencent-tangseng-bridge/internal/domain/groups_test.go",
+    "status": "added",
+    "sha256": "24dc70a4a0553aa67085b8c55897f3c920962b228d6a6835e089eff390286749",
+    "baseline_sha256": null
+  },
+  {
+    "path": "01-bridge/tencent-tangseng-bridge/internal/domain/media.go",
+    "status": "added",
+    "sha256": "25232fdaf0e68e5997ef0ebee73d05b6d070fdd00c477e0096620c39f9118fa1",
+    "baseline_sha256": null
+  },
+  {
+    "path": "01-bridge/tencent-tangseng-bridge/internal/domain/message_metadata.go",
+    "status": "added",
+    "sha256": "5396a2d573666ef32c109a1aaf912544d25471d00f61e71913baba27b977c54b",
+    "baseline_sha256": null
+  },
+  {
+    "path": "01-bridge/tencent-tangseng-bridge/internal/domain/message_metadata_test.go",
+    "status": "added",
+    "sha256": "ed775c6e87c4bb5624881ebdbb862aca01f1d0d47a137ec5ed44080d94f4478d",
+    "baseline_sha256": null
+  },
+  {
+    "path": "01-bridge/tencent-tangseng-bridge/internal/domain/message_state.go",
+    "status": "added",
+    "sha256": "ba259d23742aebbd63ac81da02f71423c490f4d248b7c92134c334d64fa479e0",
+    "baseline_sha256": null
+  },
+  {
+    "path": "01-bridge/tencent-tangseng-bridge/internal/domain/parse.go",
+    "status": "modified",
+    "sha256": "c35ea7ca8dde723ffc8beb1b6fdcbbc5c3afab37e75c9b939d7dbe23ff4da636",
+    "baseline_sha256": "91771d7201ff17b2a38b6499a961ebf43fc25f70a5126723a79129001b45784b"
+  },
+  {
+    "path": "01-bridge/tencent-tangseng-bridge/internal/engine/engine.go",
+    "status": "modified",
+    "sha256": "36b6f7236c3b35a79bd5ffd15802da281031f8852b365bdb5e6f4b91577f9cc5",
+    "baseline_sha256": "cf97358571006dc69fec953bf506c89674b7c62f1a23f1d17866f855c8a23c9b"
+  },
+  {
+    "path": "01-bridge/tencent-tangseng-bridge/internal/engine/engine_test.go",
+    "status": "modified",
+    "sha256": "e30d3188380c857805a64669ae7686976301aae66308c9835b51d48c4a4a8c76",
+    "baseline_sha256": "c4440a6161dca18d9540bb82c2449aa857ac59ec0df696cce43c0ab715db7d94"
+  },
+  {
+    "path": "01-bridge/tencent-tangseng-bridge/internal/httpapi/conversations.go",
+    "status": "added",
+    "sha256": "30d512f63879ea7d3fdfc523380b218932ad893eada308a03607b1f0d164d5c2",
+    "baseline_sha256": null
+  },
+  {
+    "path": "01-bridge/tencent-tangseng-bridge/internal/httpapi/friends.go",
+    "status": "added",
+    "sha256": "b2340770402e078292accdeefb1329c192105666a8bd3dd540bf2e752203974e",
+    "baseline_sha256": null
+  },
+  {
+    "path": "01-bridge/tencent-tangseng-bridge/internal/httpapi/friends_test.go",
+    "status": "added",
+    "sha256": "dc5f42acd23241cb43090faf11e3850ee92a490a1493897cde2e5136eca445fc",
+    "baseline_sha256": null
+  },
+  {
+    "path": "01-bridge/tencent-tangseng-bridge/internal/httpapi/groups.go",
+    "status": "added",
+    "sha256": "7622716e089c0118bd7772e414ec0f25778cf5d4594a3780212e26bd6964120e",
+    "baseline_sha256": null
+  },
+  {
+    "path": "01-bridge/tencent-tangseng-bridge/internal/httpapi/message_state.go",
+    "status": "added",
+    "sha256": "e02172cb50b400260bf212445fc42c844e4e369d4a0ae48c42ea67aa3771b714",
+    "baseline_sha256": null
+  },
+  {
+    "path": "01-bridge/tencent-tangseng-bridge/internal/httpapi/profiles.go",
+    "status": "added",
+    "sha256": "8c4474087cbb04d72f76d02e4970264fe17a64305d059f29937e41ddbf6019a9",
+    "baseline_sha256": null
+  },
+  {
+    "path": "01-bridge/tencent-tangseng-bridge/internal/httpapi/server.go",
+    "status": "modified",
+    "sha256": "34165d6092428a3ee8c9d952039392fbd1479b2fc0868682a2739c76e5c4e716",
+    "baseline_sha256": "18b38f42726ca5b6ce935a3c664f3c938153cecc709060ae3bec8641ceaec7f1"
+  },
+  {
+    "path": "01-bridge/tencent-tangseng-bridge/internal/httpapi/server_test.go",
+    "status": "modified",
+    "sha256": "54b7c0266709537260cebc82ddc86796c3bb3e129c714a4ff6577c3102012c06",
+    "baseline_sha256": "333bf1036c02f7225826e670e860adfc2a1a0df2a21109bdaef66823c0f575c7"
+  },
+  {
+    "path": "01-bridge/tencent-tangseng-bridge/internal/media/avatar.go",
+    "status": "added",
+    "sha256": "319d3840efef392c83e142e58c3973d50e5a63238dee6c655b651a514d99be47",
+    "baseline_sha256": null
+  },
+  {
+    "path": "01-bridge/tencent-tangseng-bridge/internal/media/avatar_test.go",
+    "status": "added",
+    "sha256": "3705ac473a7552272323ef9cb2e01e810379c4a014a7521ae70685f81c0a5ed1",
+    "baseline_sha256": null
+  },
+  {
+    "path": "01-bridge/tencent-tangseng-bridge/internal/media/cache.go",
+    "status": "modified",
+    "sha256": "d8ad56a69ab3f6c2b59e736981d27859fe91c821d3bbc0efb82d5e6c74aa591e",
+    "baseline_sha256": "18b012b6bebb420af6331685b3151c0357c9b458dd4d7369b1b8530f61036ea8"
+  },
+  {
+    "path": "01-bridge/tencent-tangseng-bridge/internal/media/cache_scope_test.go",
+    "status": "added",
+    "sha256": "0417fc9ecfcca324a0bbee75e7de0bf2e4770c44f42010fa990704bae951c129",
+    "baseline_sha256": null
+  },
+  {
+    "path": "01-bridge/tencent-tangseng-bridge/internal/media/service.go",
+    "status": "added",
+    "sha256": "b803dd7d135c485f27cd861a77ce310e9db2300d5453ff01912023a0d3875eda",
+    "baseline_sha256": null
+  },
+  {
+    "path": "01-bridge/tencent-tangseng-bridge/internal/media/service_test.go",
+    "status": "added",
+    "sha256": "386f80ebbb6dc084d3e39e0be18b31e27c59d176ddb4fbb08f6319fcb7afb03c",
+    "baseline_sha256": null
+  },
+  {
+    "path": "01-bridge/tencent-tangseng-bridge/internal/media/source.go",
+    "status": "added",
+    "sha256": "c5afaedb0f999a0998026f9e9f5401d1e80a742c3f9b159eba971ddfaf7715a7",
+    "baseline_sha256": null
+  },
+  {
+    "path": "01-bridge/tencent-tangseng-bridge/internal/media/source_test.go",
+    "status": "added",
+    "sha256": "5480329562002f9c3427727999341f1661f88ffd6d310d834917e34ec62b7519",
+    "baseline_sha256": null
+  },
+  {
+    "path": "01-bridge/tencent-tangseng-bridge/internal/proxy/wukong.go",
+    "status": "modified",
+    "sha256": "429df782edbc0a5cf735c5386a8e70ebff3f145f8598b5c8bd042025822ba804",
+    "baseline_sha256": "a01bf320dc25c6f4073a1093f7a28c9a3a8da9b0ddb8036efc204984512ef96e"
+  },
+  {
+    "path": "01-bridge/tencent-tangseng-bridge/internal/session/receipt.go",
+    "status": "added",
+    "sha256": "ab1896524611bf43bc29311b98f3fab25fc7988ff076591fff53ad7b90d6d456",
+    "baseline_sha256": null
+  },
+  {
+    "path": "01-bridge/tencent-tangseng-bridge/internal/session/receipt_test.go",
+    "status": "added",
+    "sha256": "a5d9be793518a512e6b965c155f09726966377bb1f5ac5d39be8e8d42d83ccb3",
+    "baseline_sha256": null
+  },
+  {
+    "path": "01-bridge/tencent-tangseng-bridge/internal/session/wukong.go",
+    "status": "modified",
+    "sha256": "d57a014ead512d313a5c8de66ffadf6ffb3b7a41857d58162d1f8cbd9444e078",
+    "baseline_sha256": "cb65588fcf9dfc120ccd872d0bb78448d31eb4359e86244d3f6d108d57ede042"
+  },
+  {
+    "path": "01-bridge/tencent-tangseng-bridge/internal/store/friends.go",
+    "status": "added",
+    "sha256": "9f7cf1e5ed840b95ec56a8bdd5450da4847969b2ae8e756ff39e11b37e273d75",
+    "baseline_sha256": null
+  },
+  {
+    "path": "01-bridge/tencent-tangseng-bridge/internal/store/groups.go",
+    "status": "added",
+    "sha256": "e67bb5aa8b76d05a326802eea3b03effdf544283e1fd2c72312fadb47d4e6eab",
+    "baseline_sha256": null
+  },
+  {
+    "path": "01-bridge/tencent-tangseng-bridge/internal/store/media.go",
+    "status": "added",
+    "sha256": "1c21fdd286d31f9c7580c417509913bef40ca8ad5140a4fcc9678361b1199c8b",
+    "baseline_sha256": null
+  },
+  {
+    "path": "01-bridge/tencent-tangseng-bridge/internal/store/message_state.go",
+    "status": "added",
+    "sha256": "09435015535cd94eb3826b47804673b364fafa52178e45cf57e8bf5a71e674af",
+    "baseline_sha256": null
+  },
+  {
+    "path": "01-bridge/tencent-tangseng-bridge/internal/store/mysql.go",
+    "status": "modified",
+    "sha256": "e999b67a332f7668d4b8e152db6f052840add04146e10b07d3e366ad099525dc",
+    "baseline_sha256": "c598a1f2abab376db802bed9d076e944c5b2b5d9e405228eb82ebb878b26cc22"
+  },
+  {
+    "path": "01-bridge/tencent-tangseng-bridge/internal/store/schema.sql",
+    "status": "modified",
+    "sha256": "5740d745053745368fc8aa2d669418f02596bf1894faa4bea62826cc27e0baca",
+    "baseline_sha256": "dacac9832f8e43a7ffa83f74650371e13f198b775175510bbe54f351f25e030b"
+  },
+  {
+    "path": "01-bridge/tencent-tangseng-bridge/internal/store/schema_embed.go",
+    "status": "modified",
+    "sha256": "803b290e951227010c6d0739b555cdf6b1469341caffd90e63bde6034e7ca344",
+    "baseline_sha256": "ad4b3e1c005db90d0e0ea1c82763fb0db1e36e5219c77b6ca252f62c99f08fc7"
+  },
+  {
+    "path": "01-bridge/tencent-tangseng-bridge/internal/store/store.go",
+    "status": "modified",
+    "sha256": "833a906aeae4888ffac45bf6832bde6d27c877e3f292e8c2dcea1277fd6b03a0",
+    "baseline_sha256": "9479f2a10f9b7260872afce1352d0a55f19cd78c744c0f190ee90c2cd6a57c23"
+  },
+  {
+    "path": "01-bridge/tencent-tangseng-bridge/internal/store/store_test.go",
+    "status": "modified",
+    "sha256": "f0c293979aa6fa88243fa486e52199860582a85457dbdcd0bf643af191c932fb",
+    "baseline_sha256": "86c45db4f15f558dd79b49f881300f6aa284921444d78e89e669b81b4d140229"
+  },
+  {
+    "path": "01-bridge/tencent-tangseng-bridge/test/contract/command-queue-reset.anonymized.json",
+    "status": "added",
+    "sha256": "e64bb2e46cd225583050fbdc96823caf98940793309578193e0a056acbe98e46",
+    "baseline_sha256": null
+  },
+  {
+    "path": "01-bridge/tencent-tangseng-bridge/test/contract/conversation-sync.anonymized.json",
+    "status": "added",
+    "sha256": "22289a8e844686df2fb957859166a4f76ab796bea246a328272bee8068441a61",
+    "baseline_sha256": null
+  },
+  {
+    "path": "01-bridge/tencent-tangseng-bridge/test/contract/conversation_sync_test.go",
+    "status": "added",
+    "sha256": "6aba7845a6300855f7f12bb01ea4d54d4bdfb5f4f2bb95f37127a3e38dc6af01",
+    "baseline_sha256": null
+  },
+  {
+    "path": "01-bridge/tencent-tangseng-bridge/test/contract/friend_business_test.go",
+    "status": "added",
+    "sha256": "dd13365e8f11603c51bc9e748cb04cf72aa7cdba55026b1d6a593577855feb2f",
+    "baseline_sha256": null
+  },
+  {
+    "path": "01-bridge/tencent-tangseng-bridge/test/contract/group_business_test.go",
+    "status": "added",
+    "sha256": "241d6d2bf3bebee22e0b2cb6dd9ac0d8cd8ea69e35b68b267e9f7f75e44a92be",
+    "baseline_sha256": null
+  },
+  {
+    "path": "01-bridge/tencent-tangseng-bridge/test/contract/media_contract_test.go",
+    "status": "added",
+    "sha256": "9f878e46e76b08dd67874a31eb88ce549b8fb5b43f03669f5014380778878a12",
+    "baseline_sha256": null
+  },
+  {
+    "path": "01-bridge/tencent-tangseng-bridge/test/contract/message-state.anonymized.json",
+    "status": "added",
+    "sha256": "80ed09e678c3f962daf74299f2bf68412f59dced03f94e9b22804b1e5ea7401e",
+    "baseline_sha256": null
+  },
+  {
+    "path": "01-bridge/tencent-tangseng-bridge/test/contract/message_state_test.go",
+    "status": "added",
+    "sha256": "0956d55b4aab8f3d4942c9636b7c83008c50719b2be73aea3d4546899b3b46ea",
+    "baseline_sha256": null
+  },
+  {
+    "path": "01-bridge/tencent-tangseng-bridge/test/contract/reply-id.anonymized.json",
+    "status": "added",
+    "sha256": "52cdbcc345495430b1631629fbde4aee5629c847eaccf0fdbf4559659847b745",
+    "baseline_sha256": null
+  },
+  {
+    "path": "01-bridge/tencent-tangseng-bridge/test/contract/tangseng-friend-accept.anonymized.json",
+    "status": "added",
+    "sha256": "e6d72d492feb6f0e1736918daba09c518fe58547154523b922c5864025d19c48",
+    "baseline_sha256": null
+  },
+  {
+    "path": "01-bridge/tencent-tangseng-bridge/test/contract/tangseng-friend-request.anonymized.json",
+    "status": "added",
+    "sha256": "69713909bdac6d57d592382a8617b82027bd3af3d2d7d35913a1b282742f348c",
+    "baseline_sha256": null
+  },
+  {
+    "path": "01-bridge/tencent-tangseng-bridge/test/contract/tangseng-group-create.anonymized.json",
+    "status": "added",
+    "sha256": "882c7a5345b49953040d91be30dab57013abb0185d3f3387d40bb51d70909f11",
+    "baseline_sha256": null
+  },
+  {
+    "path": "01-bridge/tencent-tangseng-bridge/test/contract/tangseng-group-members.anonymized.json",
+    "status": "added",
+    "sha256": "9816fbf6e140caf7d58b84d564f8d9fdf4aa6dcd3d7345cfadc898264e0bc77d",
+    "baseline_sha256": null
+  },
+  {
+    "path": "01-bridge/tencent-tangseng-bridge/test/contract/tangseng-media.anonymized.json",
+    "status": "added",
+    "sha256": "52f1a992d65161670152c4f376ec4e9c61f0d06c1626d92cdb0bc24102e8ae5b",
+    "baseline_sha256": null
+  },
+  {
+    "path": "01-bridge/tencent-tangseng-bridge/test/contract/tencent-profile-allow-any.anonymized.json",
+    "status": "added",
+    "sha256": "f8f52ad433e8dbae427d0d1fd0c8a33e87c6eac939c152d1aa37a1c7bb0c7201",
+    "baseline_sha256": null
+  },
+  {
+    "path": "01-bridge/tencent-tangseng-bridge/test/contract/tencent-roam.anonymized.json",
+    "status": "added",
+    "sha256": "d174ccf00c259b2db922e3ae91e46423eaec9870f84a803d9a14b37120678b4c",
+    "baseline_sha256": null
+  },
+  {
+    "path": "01-bridge/tencent-tangseng-bridge/test/contract/tencent_roam_test.go",
+    "status": "added",
+    "sha256": "f38273064248537bec55912b4aa7d5b944921dd6eaeb92f8d7da6abfe6982910",
+    "baseline_sha256": null
+  },
+  {
+    "path": "02-authoritative-qch-source/企才汇源码交付-20260810/Android/qch/build.gradle",
+    "status": "modified",
+    "sha256": "fbc1bb3651328b60fdee9a6f30829d0905a74ffaf55174a37920be2c2f891899",
+    "baseline_sha256": "663c1fb18d92715de28dbf31b700481ceea0e296c6fc1542aca8ce0994a08119"
+  },
+  {
+    "path": "02-authoritative-qch-source/企才汇源码交付-20260810/Android/qch/app/build.gradle",
+    "status": "modified",
+    "sha256": "36f5d71eff6cda938fbdba17e9c7543e5915c7e287c421b28b814bfbf3d77121",
+    "baseline_sha256": "8dd68247d318c7cde11316e75ba967e33ad88e0caa9ea677ac8756c4d436bb63"
+  },
+  {
+    "path": "02-authoritative-qch-source/企才汇源码交付-20260810/Android/qch/gradle/wrapper/gradle-wrapper.properties",
+    "status": "modified",
+    "sha256": "4195d5530c47c8e1ef1ebca105ae021f39a030392a8643c31449b3c4b924b082",
+    "baseline_sha256": "54c48ae69496f61ca14461f5fe9be05349676372d6c654bda459d4d3a5468710"
+  },
+  {
+    "path": "02-authoritative-qch-source/企才汇源码交付-20260810/Android/TUIKit/TUIChat/tuichat/src/main/java/com/tencent/qcloud/tuikit/tuichat/TUIChatService.java",
+    "status": "modified",
+    "sha256": "113ee5d00c5bb1a4b7251b8e97f19d9c1a71bb00d9238bccd7a7690b13147d34",
+    "baseline_sha256": "052584cf48850bea74f6bab40c710482c39a8258d048aacfcc0187530b15df2b"
+  },
+  {
+    "path": "02-authoritative-qch-source/企才汇源码交付-20260810/Android/TUIKit/TUIChat/tuichat/src/main/java/com/tencent/qcloud/tuikit/tuichat/bean/ChatInfo.java",
+    "status": "modified",
+    "sha256": "c0a115eebf8f34dbc8283144d631fdfedb89297e3f07fa9c375b7c48152f5c81",
+    "baseline_sha256": "0d271e783d9da7b4111d5a8bc8113c5cb82d10cb694c7d2d5a14ba338d6a57c6"
+  },
+  {
+    "path": "02-authoritative-qch-source/企才汇源码交付-20260810/Android/TUIKit/TUIChat/tuichat/src/main/java/com/tencent/qcloud/tuikit/tuichat/classicui/ClassicUIService.java",
+    "status": "modified",
+    "sha256": "9a428da36b6f878a406877de4723e6686833975341f5bf08e93d1667ecf647ce",
+    "baseline_sha256": "4962de94fc12e933c0ff5d428023dd5dba8f3c6d7c784b08daddde4ba6045a1b"
+  },
+  {
+    "path": "02-authoritative-qch-source/企才汇源码交付-20260810/Android/TUIKit/TUIChat/tuichat/src/main/java/com/tencent/qcloud/tuikit/tuichat/minimalistui/MinimalistUIService.java",
+    "status": "modified",
+    "sha256": "8d515c4d3ef99e2d8d149942f3b18a28332de1dc11aa6b3b1b1b15752ad57170",
+    "baseline_sha256": "2c811aaa9de639a643c8ffb9c14e6c6c33f575a2c03cb3a71dec7c1fd37b43f3"
+  },
+  {
+    "path": "02-authoritative-qch-source/企才汇源码交付-20260810/Android/TUIKit/TUIChat/tuichat/src/main/java/com/tencent/qcloud/tuikit/tuichat/model/ProfileProvider.java",
+    "status": "modified",
+    "sha256": "c4c48c3379b481b571c9672147ceef034fc11e284962cc57215cbd629c54db1a",
+    "baseline_sha256": "edff9f4ac893ec9a76f516fd8f6c8724b4a69b42c622058aae1a441b719c5d9d"
+  },
+  {
+    "path": "02-authoritative-qch-source/企才汇源码交付-20260810/Android/TUIKit/TUIChat/tuichat/src/main/java/com/tencent/qcloud/tuikit/tuichat/bean/message/BridgeNoticeMessageBean.java",
+    "status": "added",
+    "sha256": "566bc491381e1725a2f126dd5b60d2648b3adb8abd01d37a8424b3ad0b4563c4",
+    "baseline_sha256": null
+  },
+  {
+    "path": "02-authoritative-qch-source/企才汇源码交付-20260810/Android/TUIKit/TUIChat/tuichat/src/main/java/com/tencent/qcloud/tuikit/tuichat/bean/message/BridgeTipMessageBean.java",
+    "status": "added",
+    "sha256": "a462618e174b2ba725f71f6a06afaa4896e060fd732c4f6c04302cc08aa8c882",
+    "baseline_sha256": null
+  },
+  {
+    "path": "02-authoritative-qch-source/企才汇源码交付-20260810/Android/TUIKit/TUIChat/tuichat/src/main/java/com/tencent/qcloud/tuikit/tuichat/classicui/widget/message/viewholder/BridgeNoticeMessageHolder.java",
+    "status": "added",
+    "sha256": "948f64f7477336eb1cfd630df7ef478402273d8a3f0491ed407cccb83c689140",
+    "baseline_sha256": null
+  },
+  {
+    "path": "02-authoritative-qch-source/企才汇源码交付-20260810/Android/TUIKit/TUIContact/tuicontact/src/main/java/com/tencent/qcloud/tuikit/tuicontact/TUIContactService.java",
+    "status": "modified",
+    "sha256": "84a248bb7f3c28e248b8a5f188e4fdfa73f06142236cc7c86f17b79cc1b49972",
+    "baseline_sha256": "230e4e994b8962c27975e91b6a265388c8c70d5bcb99b7e72e89b3e12ea50e37"
+  },
+  {
+    "path": "02-authoritative-qch-source/企才汇源码交付-20260810/Android/TUIKit/TUIContact/tuicontact/src/main/java/com/tencent/qcloud/tuikit/tuicontact/bean/FriendApplicationBean.java",
+    "status": "modified",
+    "sha256": "03b0a4363ca95ec4da3b989d0a6a3261b7b9e7f119646474463be3ea803b95bf",
+    "baseline_sha256": "4817c474a661b714c01ecd167fb33c8c5370dc05c24148be5598f11adf7a0cd1"
+  },
+  {
+    "path": "02-authoritative-qch-source/企才汇源码交付-20260810/Android/TUIKit/TUIContact/tuicontact/src/main/java/com/tencent/qcloud/tuikit/tuicontact/model/BridgeContactClient.java",
+    "status": "modified",
+    "sha256": "f037a30156e2126855ab506cbc46dd974aa9d761078972c874eba306e01841e0",
+    "baseline_sha256": "1d41f229850c3bcfcd0ddfbd3f65b01e4e832f7f148ca11fe3c55eaf1123845a"
+  },
+  {
+    "path": "02-authoritative-qch-source/企才汇源码交付-20260810/Android/TUIKit/TUIContact/tuicontact/src/main/java/com/tencent/qcloud/tuikit/tuicontact/model/ContactProvider.java",
+    "status": "modified",
+    "sha256": "2f5335c3b6aca1201b07b5d7c44645393ccbd454b908dea557cce4ab490d1c34",
+    "baseline_sha256": "6b7fb099fbe6d614e73f8248fec3bbb47dd7a86dd69e5d5ee49ff015016503c2"
+  },
+  {
+    "path": "02-authoritative-qch-source/企才汇源码交付-20260810/Android/TUIKit/TUIContact/tuicontact/src/main/java/com/tencent/qcloud/tuikit/tuicontact/model/GroupInfoProvider.java",
+    "status": "modified",
+    "sha256": "a4be10bb8f813de0f9f3fb60345748e04e89767ece265df24b554645cb538c7d",
+    "baseline_sha256": "1e3fb070a9bf13f26c23666472f6dc8b66334ef5bc23b5aa63ed79f4f5f2ae3d"
+  },
+  {
+    "path": "02-authoritative-qch-source/企才汇源码交付-20260810/Android/TUIKit/TUIContact/tuicontact/src/main/java/com/tencent/qcloud/tuikit/tuicontact/model/GroupMemberProvider.java",
+    "status": "modified",
+    "sha256": "4b2a4d6b65e3e8f0762d68212dd2835fbab085953eac178a71f9f7c46c28a0fd",
+    "baseline_sha256": "3d67a5061ad0b04e07f82af263de637da5d41d8bc2a0eaef153a5e8fef24d04b"
+  },
+  {
+    "path": "03-php-deployment/backend/config/im_bridge.php",
+    "status": "modified",
+    "sha256": "d7d2b9187d3f938ddcd756f14c02cd92d2dcad297a0a1641f19c3d5035b9c12e",
+    "baseline_sha256": "ddfe6dbaa13ea19f8c28facc2308d78eab4b0e90949821fe36435ecc1ac5f816"
+  },
+  {
+    "path": "03-php-deployment/backend/route/route.php",
+    "status": "modified",
+    "sha256": "7e0ed097edc05641f95a028148c8129a3771dfac920f6b07d63d693e90a27f9f",
+    "baseline_sha256": "4ee062fba4991f4e66cf8d29a2277f72dd48bc06ef6ed1b69589db492ba33f03"
+  },
+  {
+    "path": "03-php-deployment/backend/application/api/model/GroupV.php",
+    "status": "modified",
+    "sha256": "cbda6638919be557e5f0702e8dd7c1a525e0b2f02a08edfa37ec0c309494e47e",
+    "baseline_sha256": "c4641768b079f41832ef48efbeb7c4bb6185422e5c2c9fc194edd48d429d1e05"
+  },
+  {
+    "path": "03-php-deployment/backend/application/api/model/User.php",
+    "status": "modified",
+    "sha256": "88500f720bf7b5e143995f52ee734aba353e4a5e129e79d8347ecfe4b3989b51",
+    "baseline_sha256": "debac9ef8b0cea73f15d29fd9a37cc9a39aea5e1698b959b2ed8d9a5050c036d"
+  },
+  {
+    "path": "03-php-deployment/backend/application/api/model/UserTencent.php",
+    "status": "modified",
+    "sha256": "b5c894ce8bfa7cfdbc1a6f29ec9f5cbb26c7181387192ed903dc681f7c5c4508",
+    "baseline_sha256": "e64a92547e504b2b10bcf0ca72fc23095a71e5da4a0c8a3b56a54b6bae35d685"
+  },
+  {
+    "path": "03-php-deployment/backend/application/imaccess/controller/Bridge.php",
+    "status": "modified",
+    "sha256": "ff1b6a518eb0ddc45c269586d2d6fdf81b36e77d4735072787ace79cde2cff5b",
+    "baseline_sha256": "0041aa3fd369a3222d666863cfa65d066ecae790cebf1a9a8bd15225f5806c17"
+  },
+  {
+    "path": "03-php-deployment/backend/application/imaccess/controller/BridgeMedia.php",
+    "status": "added",
+    "sha256": "c18a3ea5ee4dda1677dd4bdb3c5b396008d3d28126e51ea720228c98c777dfcf",
+    "baseline_sha256": null
+  },
+  {
+    "path": "03-php-deployment/backend/application/imaccess/service/BlocklistService.php",
+    "status": "modified",
+    "sha256": "e9fd8e2fa116acdaeeff269e8f73bd5954a2db61d22449eed15eca4bb180184d",
+    "baseline_sha256": "924d9d5317170496bb44a2a135e39628a12d7d14b8e4a3f5b4700f0c352680e5"
+  },
+  {
+    "path": "03-php-deployment/backend/application/imaccess/service/BridgeService.php",
+    "status": "modified",
+    "sha256": "2669e5cad3b1681bf3afb3f8e9930b0653f744c28c47d1819e840296d8efd4db",
+    "baseline_sha256": "055f1174bc479cdc60feeaa87ac43e8eefe55dd02bd13b66203e7cbd6d45a2f2"
+  },
+  {
+    "path": "03-php-deployment/backend/application/imaccess/service/MediaSourceService.php",
+    "status": "added",
+    "sha256": "5b16de83b6e47a7d1ec62ad69712dc47ecfa46f707c4ae578fc615172eec08eb",
+    "baseline_sha256": null
+  },
+  {
+    "path": "03-php-deployment/backend/application/imcallback/handler/HandlerRegistry.php",
+    "status": "modified",
+    "sha256": "701e235afe10500416e0239d8adcadbd258cdf4cb74093f7e494ea3b1fb0bb1e",
+    "baseline_sha256": "124b8940b07c84b6a0467c3765c876e5350b598604c8c0a8ade1964822f97a4b"
+  },
+  {
+    "path": "03-php-deployment/tests/account_deletion_test.php",
+    "status": "added",
+    "sha256": "d85c39721430f2795ec36cb0361168b7680e09381436792d2db6c277b7123adc",
+    "baseline_sha256": null
+  },
+  {
+    "path": "03-php-deployment/tests/bridge_facade_test.php",
+    "status": "added",
+    "sha256": "7fa3b308bcb03614e1ee2c8fd10701c00cd13a2facf222b1bc42e92f20f3d9ad",
+    "baseline_sha256": null
+  },
+  {
+    "path": "03-php-deployment/tests/bridge_media_stream_test.php",
+    "status": "added",
+    "sha256": "ba403bb44860f3554a59fcf6b29ed95aaaf342dc5523449dc65ee2eb3ccea59f",
+    "baseline_sha256": null
+  },
+  {
+    "path": "03-php-deployment/tests/media_source_test.php",
+    "status": "added",
+    "sha256": "b32424bc9533b1cacd7e9e85f006675bae5807a6ff3286f34c5f24f768a2cd27",
+    "baseline_sha256": null
+  },
+  {
+    "path": "03-php-deployment/tests/message_state_callbacks_test.php",
+    "status": "added",
+    "sha256": "2a8325a4d1a40c67baa26739e3aa222432fbc1c606ccd7c3314799607fe16915",
+    "baseline_sha256": null
+  }
+]

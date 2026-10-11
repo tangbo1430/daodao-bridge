@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8" />
+	<title></title>
+	<meta name="renderer" content="webkit" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+	<link rel="stylesheet" href="../../lib/layui-v2.5.5/css/layui.css" media="all" />
+	<link rel="stylesheet" href="../../css/public.css" media="all" />
+</head>
+
+<body>
+	<div class="layuimini-container">
+		<div class="layuimini-main">
+			
+
+<script type="text/html" id="toolbar_add">
+<div class="layui-btn-container">
+
+</div>
+</script>
+
+			<table class="layui-hide" id="currentTableId" lay-filter="currentTableFilter" style="align: center"></table>
+		</div>
+	</div>
+	<script src="../../lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
+	<script src="../../common/common.js" charset="utf-8"></script>
+	<script>
+		layui.use(['form', 'table'], function () {
+			var $ = layui.jquery,
+				form = layui.form,
+				table = layui.table
+
+			table.render({
+				elem: '#currentTableId',
+				url: WebHost + 'Admin/get_admin_log_list',
+				where: {
+					login_token: AdminLoginToken,
+				}, //设定异步数据接口的额外参数
+				method: 'POST',
+				// toolbar: '#toolbar_add',
+				toolbar: '#toolbar',
+				defaultToolbar: [
+					'filter',
+					'exports',
+					'print',
+					{
+						title: '提示',
+						layEvent: 'LAYTABLE_TIPS',
+						icon: 'layui-icon-tips',
+					},
+				],
+				cols: [[
+					{ field: 'op_id', title: 'ID' },
+					{ field: 'user_name', title: '用户名' },
+					{ field: 'operate_name', title: '操作名称' },
+					{ field: 'url', title: '操作链接' },
+					{ field: 'add_ip', title: 'ip地址' },
+					{ field: 'add_time', title: '注册时间', templet: '#add_time_Tpl' },
+				],
+				],
+				limits: [10, 15, 20, 25, 50, 100],
+				limit: 15,
+				page: true,
+				skin: 'line',
+			})
+
+			// 监听搜索操作
+			form.on('submit(data-search-btn)', function (data) {
+				// var result = JSON.stringify(data.field);
+				// layer.alert(result, {
+				//     title: '最终的搜索信息'
+				// });
+				data.field.admin_login_token = AdminLoginToken
+				//执行搜索重载
+				table.reload(
+					'currentTableId',
+					{
+						where: data.field,
+						page: {
+							curr: 1,
+						},
+					},
+					'json'
+				)
+
+				return false
+			})
+
+			
+
+			
+		})
+	</script>
+
+
+
+	<script type="text/html" id="add_time_Tpl">
+{{dateFormat(d.add_time) }}
+</script>
+
+</body>
+
+</html>

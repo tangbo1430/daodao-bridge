@@ -1,0 +1,16 @@
+{
+  "baseline": "hw-bridge-handoff-20260929.zip",
+  "deployment": "single instance; existing Docker/MySQL/Redis/PHP callback",
+  "bridge_binary_sha256": "66ca99e7e176968f07a00f28922464d3dba684e92203115a03550d50b4804fb5",
+  "bridge_backup": "/opt/hw-bridge.backup.20260930025326",
+  "php_backup": "/root/IM/backup-php-bridge-20260930023259",
+  "apk_signature": "QA only; not production",
+  "source_file_counts": {
+    "bridge": 99,
+    "android": 17,
+    "php_with_tests": 16
+  },
+  "acceptance": "partial; see BUSINESS_DELIVERY_20260929.md",
+  "known_incident": "REPLY_CONTRACT_INCIDENT_20260929.md",
+  "secrets": "not included; retain existing server .env"
+}

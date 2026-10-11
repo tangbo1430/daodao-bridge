@@ -1,0 +1,200 @@
+{
+  "source_components": {
+    "MANIFEST.md": {
+      "files": 1,
+      "bytes": 1909
+    },
+    "README.md": {
+      "files": 1,
+      "bytes": 836
+    },
+    "01-bridge": {
+      "files": 188,
+      "bytes": 677836
+    },
+    "02-authoritative-qch-source": {
+      "files": 5898,
+      "bytes": 156320875
+    },
+    "03-php-deployment": {
+      "files": 1717,
+      "bytes": 58460323
+    },
+    "05-docs-and-contracts": {
+      "files": 15,
+      "bytes": 3971785
+    },
+    "06-release-and-deploy": {
+      "files": 86,
+      "bytes": 610322
+    },
+    "07-test-samples": {
+      "files": 14,
+      "bytes": 4680
+    },
+    "08-context": {
+      "files": 39,
+      "bytes": 656542
+    }
+  },
+  "bridge_release_source_hashes_matched": 144,
+  "bridge_release_source_mismatches": [],
+  "bridge_binary_sha256": "f9aac5cc7240b76cfe82632b0316221a03f86dce720f62fb9671bca67c2b0f16",
+  "local_only_verification": true,
+  "auxiliary_scripts": [
+    {
+      "path": "toolchain/avatar-account-check.py",
+      "bytes": 1415,
+      "sha256": "f4e066cfb1fd56ab546b8c5b41a092e208417679b7a66a9c1c839d2e8a765954",
+      "status": "auxiliary-review-not-approved-for-upload"
+    },
+    {
+      "path": "toolchain/avatar-probe.py",
+      "bytes": 3064,
+      "sha256": "34708c64dc31f10400ab23f9bda63d2236f997e920f2e8b5ae0c845a79573114",
+      "status": "auxiliary-review-not-approved-for-upload"
+    },
+    {
+      "path": "toolchain/avatar-relation-check.py",
+      "bytes": 1586,
+      "sha256": "73dab8718dd02017df5dcbce339a6746ea6e8f4edd89c53d185ee2be92cb5c0a",
+      "status": "auxiliary-review-not-approved-for-upload"
+    },
+    {
+      "path": "toolchain/check-state-commands.py",
+      "bytes": 573,
+      "sha256": "eff9f9e918b5c3ac783ff1265d39f99df9baf3d0c00e586f708d891ae52aca7e",
+      "status": "auxiliary-review-not-approved-for-upload"
+    },
+    {
+      "path": "toolchain/client-native-readonly.py",
+      "bytes": 1924,
+      "sha256": "f3c55c0171594ae7dfbf335eb21b01eb2e6beb230af9c6dc819ab38aae8581f3",
+      "status": "auxiliary-review-not-approved-for-upload"
+    },
+    {
+      "path": "toolchain/client-profile-verification.py",
+      "bytes": 1692,
+      "sha256": "f2808a281f56b317e9479380d2842011d616931e3197df0911b48743e1ffeaa7",
+      "status": "auxiliary-review-not-approved-for-upload"
+    },
+    {
+      "path": "toolchain/client-state-verification.py",
+      "bytes": 2651,
+      "sha256": "d516372f31e39349d2cfac8dbd7e95dc6654fb4451f6417835e17eba4095e554",
+      "status": "auxiliary-review-not-approved-for-upload"
+    },
+    {
+      "path": "toolchain/closure-android-rules.py",
+      "bytes": 4062,
+      "sha256": "77163e03cadf077448f6158dc996f29b9839f618c78db49b1ad4179d2689a073",
+      "status": "auxiliary-review-not-approved-for-upload"
+    },
+    {
+      "path": "toolchain/compare-avatar.go",
+      "bytes": 513,
+      "sha256": "8022508ac23f8858a28ba6986e7cc64320464c0c47960c91eed5794f62e4a822",
+      "status": "auxiliary-review-not-approved-for-upload"
+    },
+    {
+      "path": "toolchain/core-group-repeat-check.py",
+      "bytes": 842,
+      "sha256": "e4cf14e50b1a6eb0076b8aa87bef3f7a9604f9baece6af4163b872f9e4615c1c",
+      "status": "auxiliary-review-not-approved-for-upload"
+    },
+    {
+      "path": "toolchain/core-group-verification.py",
+      "bytes": 2163,
+      "sha256": "a24807e6283110d47fbcc86054aa012d518e4a943105f425b9b7d819673714d6",
+      "status": "auxiliary-review-not-approved-for-upload"
+    },
+    {
+      "path": "toolchain/core-session-check.py",
+      "bytes": 588,
+      "sha256": "b99706ec8f2b14a06308bbe42a008ad97793fbc2df09e7b6b03d72da8fcac19a",
+      "status": "auxiliary-review-not-approved-for-upload"
+    },
+    {
+      "path": "toolchain/fix-product-wording.py",
+      "bytes": 5138,
+      "sha256": "3b580109e9b8d3b4b025c5c8215c387af9ffb3244bb4cae5f4490e042e69eff6",
+      "status": "auxiliary-review-not-approved-for-upload"
+    },
+    {
+      "path": "toolchain/GroupV.server-before.php",
+      "bytes": 11565,
+      "sha256": "c4641768b079f41832ef48efbeb7c4bb6185422e5c2c9fc194edd48d429d1e05",
+      "status": "auxiliary-review-not-approved-for-upload"
+    },
+    {
+      "path": "toolchain/inspect-ios-feedback.py",
+      "bytes": 3277,
+      "sha256": "1fcf3b4ba4c48b5a84263d6f3150c1b132c200521ab7e807b31447b22f2cd329",
+      "status": "auxiliary-review-not-approved-for-upload"
+    },
+    {
+      "path": "toolchain/integrate-registration-model.py",
+      "bytes": 4363,
+      "sha256": "a7d232fea4ef50345584b927fbc2e525c6fb5c9e57f3604659eb3310772cf68d",
+      "status": "auxiliary-review-not-approved-for-upload"
+    },
+    {
+      "path": "toolchain/message-state-probe.py",
+      "bytes": 1260,
+      "sha256": "3e1e96c82454a487001538ff73ebfb4a825c92b47fd2b327ce521978e36a807e",
+      "status": "auxiliary-review-not-approved-for-upload"
+    },
+    {
+      "path": "toolchain/mute-probe.py",
+      "bytes": 2760,
+      "sha256": "8f2cf7e63dfd4801963db19e4a6dfd51a0fc28469300aa5b7c1195597dbebe7b",
+      "status": "auxiliary-review-not-approved-for-upload"
+    },
+    {
+      "path": "toolchain/package-business-closure.py",
+      "bytes": 4904,
+      "sha256": "b70b1d39a763ac00220b1b1139a4b8d5fa371d41c23245c9d1ea98d071b29506",
+      "status": "auxiliary-review-not-approved-for-upload"
+    },
+    {
+      "path": "toolchain/probe-admin-notice.py",
+      "bytes": 2411,
+      "sha256": "5323d21f4cd6e31b111217cb590c44c43b0ec2661756e47660927fbdff25b325",
+      "status": "auxiliary-review-not-approved-for-upload"
+    },
+    {
+      "path": "toolchain/probe-group-notifications.py",
+      "bytes": 2089,
+      "sha256": "2f785b9f768271ee053351ba7aeea0e9e4cbd8beb301325c425fbe8199397688",
+      "status": "auxiliary-review-not-approved-for-upload"
+    },
+    {
+      "path": "toolchain/receipt-ui-test.py",
+      "bytes": 2495,
+      "sha256": "071e142919613d18c9df77d3619053e3657474bfbf63b047c7ad731dd165437b",
+      "status": "auxiliary-review-not-approved-for-upload"
+    },
+    {
+      "path": "toolchain/recover-state-commands.py",
+      "bytes": 1860,
+      "sha256": "1bb1190b0daef8a682ddcfce782fa7ec3c02789ab1c6573e7fc11a3d8b7fed96",
+      "status": "auxiliary-review-not-approved-for-upload"
+    },
+    {
+      "path": "toolchain/send-receipt-r3.py",
+      "bytes": 1651,
+      "sha256": "8d567d55724022b71b9e8cf6f351b9ec5900ac304ed6f01abf6312c7c2bd40f7",
+      "status": "auxiliary-review-not-approved-for-upload"
+    },
+    {
+      "path": "toolchain/verify-group-mute-fix.py",
+      "bytes": 2474,
+      "sha256": "49cd1b915e16e05e5a400fcf1bd11218ec0e79d9e8978452835a5a4f909a68af",
+      "status": "auxiliary-review-not-approved-for-upload"
+    }
+  ],
+  "reference_commits": {
+    "toolchain/upstream-tang-ios": "6913a3b320f6b278676ac22e4a45e416b64cb56f",
+    "toolchain/upstream-tang-server": "7511b31c07aa9a6318252202c0dcd8759d5e1cd6"
+  }
+}

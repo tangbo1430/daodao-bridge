@@ -1,0 +1,2 @@
+431cb6a409698c0377a5bcf7c562b413c5380df5ce36f5fffc566a0a7c68355b  hw-bridge-client-profile-20260930.tar.gz
+18a33f59c66d10c604d86f44a1e86eefc1a9a863a0fdacb5ce268370ddc4a51e  client-profile-20260930-source.zip

@@ -1,0 +1,443 @@
+0001 华为端（腾讯 IM）与唐僧叨叨互通：详细开发实施方案
+0002 日期：2026-09-26
+0003 1. 结论与实施总览
+0004 按方案 A+（代理在线 + 拉取补偿）实施：中间层替每个华为用户在叨叨侧常驻一个“无头 PC 客户端”，实时收发；同时内置两条补偿通道（叨叨侧同步接口、腾讯侧漫游消息），保证不丢、不重、不回环。叨叨服务端与悟空 IM 的代码、配置零改动；改动只落在新建的中间层和腾讯一侧（腾讯侧后端 6 处、华为端 App 7 处）。
+0005 本文统一用“角色名”指代各代码包，不用品牌名：华为端 App（腾讯 IM 安卓端）、腾讯侧后端（华为端 App 调用的 PHP 业务后端）、叨叨服务端（唐僧叨叨业务服务 + 悟空 IM）、叨叨安卓端。人名缩写：H = 华为用户，T = 叨叨用户，影子账号 = T 在腾讯 IM 里的对应账号。
+0006 1.1 实施原则
+0007 以叨叨为准：凡是涉及叨叨用户的好友、群、成员、群资料，叨叨是唯一数据源，腾讯侧只是镜像。
+0008 在叨叨侧只以当事人身份操作：所有叨叨写操作都用当事华为用户自己的代理连接或 token 完成，不用管理员接口，叨叨的好友校验、群成员校验、租户限频、黑名单全部自动生效。
+0009 在腾讯侧用独立管理员：中间层调用腾讯 REST 一律用新建的管理员账号 bridge_admin，回调里凡是它发起的操作都能识别出来并忽略。
+0010 先落库、后回执：至少一次投递 + 幂等表 = 恰好一次的效果；任何一步失败都进重试队列，最终由定时对账兜底。
+0011 可一键停用：停掉中间层，叨叨与悟空不受任何影响；华为端只是暂时收不到叨叨侧消息，恢复后自动追平。
+0012 1.2 本期范围
+0013 1.3 交付物
+0014 中间层服务 hw-bridge：Go 单二进制 + Docker 镜像，含内部接口、管理接口、运维脚本。
+0015 中间层数据库 hw_bridge（MySQL 8 独立库）与 Redis 键空间，建表脚本见第 5 节。
+0016 腾讯侧后端补丁：注册改造、回调转发、4 个转发接口、好友问候语修正、恢复注册验证码。
+0017 华为端 App 补丁：注册页、找人、加好友、建群 / 拉人拦截、bridge_tip 提示消息、对叨叨用户隐藏通话按钮。
+0018 腾讯控制台配置清单：开启 13 类回调、新增管理员 bridge_admin、确认漫游天数与群人数上限。
+0019 测试资产：回调与协议契约样本、端到端用例、压测与故障演练脚本、验收记录。
+0020 运维资产：部署文件、监控面板、告警规则、运行手册。
+0021 1.4 改动边界
+0022 2. 四套代码的角色与架构确认
+0023 按依赖和调用关系判定（品牌名一律忽略）：聚畅信安卓是悟空 IM + 唐僧叨叨安卓端，企才汇安卓是腾讯 IM（TUIKit）安卓端，与你的说明一致。另外两套分别是叨叨服务端和腾讯侧后端。
+0024 补充：
+0025 企才汇安卓两次上传内容一致。叨叨安卓端有 huawei 渠道构建（wkuikit/src/nonHuawei 只在非华为渠道启用保活服务），与本方案无关：华为用户使用的是腾讯 IM 安卓端。
+0026 两个安卓工程都带签名文件（叨叨安卓端 changjuxin.jks，华为端 App key.jks），叨叨安卓端还带 .git 历史。本方案用不到这些文件，建议从共享包里移除并单独保管。
+0027 2.1 两套安卓端的架构差异（中间层要抹平的部分）
+0028 3. 总体架构与部署拓扑
+0029 中间层部署在叨叨内网（与 master 同网段），主备两个实例。它对叨叨表现为 300–500 个“PC 客户端”，对腾讯 IM 表现为一个 REST 管理员，对腾讯侧后端表现为一个内部 HTTP 服务。
+0030 蓝色为腾讯一侧，橙色为中间层（主备两实例），绿色为叨叨一侧（不改）。叨叨各客户端照常连悟空和叨叨业务服务，图中省略。
+0031 四条主链路：
+0032 3.1 部署
+0033 机器：2 台 Linux 虚机或 2 个容器，每台 4 核 / 8 GB / 100 GB SSD；内网直连 master:8090（叨叨业务服务）和 master:15200（悟空 WebSocket，master 的 Nginx 负载到 node1–3 的 5200）。
+0034 主备：两个实例都开 HTTP 入口，腾讯侧后端打到哪个都行（入口只入队）。只有持有 Redis 租约 hwb:leader 的实例建代理连接、消费队列、跑定时任务。租约 TTL 15 s，每 5 s 续约；主实例挂掉后备实例在 20 s 内接管，并对全部用户执行重连追平。
+0035 为什么不双活：悟空对同一 device_id 的从设备连接是“新连接关旧连接”（event_connect.go），两个实例同时连同一用户会互相顶掉。500 人规模单实例足够；将来到几千人再改“按 uid 分片 + 分片租约”。
+0036 数据库：独立库 hw_bridge（MySQL 8）。可以放进叨叨现有 MySQL 集群（写入口 6446），但用独立账号、只授权本库；不得读写叨叨的业务库。Redis 用独立 DB 编号或独立实例，键前缀 hwb:。
+0037 ffmpeg：镜像基于 Debian / Ubuntu，其 ffmpeg 包带 AMR-NB 编码器；镜像构建时执行 ffmpeg -hide_banner -encoders | grep amr_nb 校验。
+0038 3.2 网络与端口
+0039 3.3 容量估算
+0040 连接：500 条 WebSocket，每条 30 s 一次心跳，约 17 次/s；内存 200 MB 以内。
+0041 消息：按每人每天收发 200 条估算，500 人约 10 万条/天，峰值 20–50 条/s。同一条群消息会被群内 N 个华为成员的代理各收一次，按 message_id 去重后只处理一次。
+0042 腾讯 REST：中间层默认限速 50 次/s，远低于套餐限频（以控制台显示为准）。
+0043 叨叨同步接口：主备切换或悟空重启后 500 人同时追平，按并发 10 限流，避免冲击叨叨。
+0044 4. 中间层模块设计与技术选型
+0045 中间层用 Go 写成单个服务 hw-bridge，内部 16 个模块；状态全部在 MySQL，Redis 只放租约、锁、缓存和限流。队列用 MySQL 表（inbox / job）实现，便于用 SQL 查失败、重放。
+0046 4.1 技术选型
+0047 4.2 模块划分
+0048 4.3 工程目录
+0049 hw-bridge/  cmd/hw-bridge/main.go  internal/config/          # YAML + 环境变量  internal/leader/          # Redis 租约  internal/ingress/         # /cb/tim、/api/v1/*  internal/account/         # 代注册、续期、加解密  internal/session/         # 悟空 JSON-RPC 客户端 + 会话状态机  internal/dispatch/  internal/relay/d2t/       # 叨叨 → 腾讯  internal/relay/t2d/       # 腾讯 → 叨叨  internal/convert/         # text.go image.go voice.go video.go file.go card.go ...  internal/media/  internal/relation/        # friend.go group.go profile.go  internal/recallread/  internal/compensate/  internal/client/tim/  internal/client/tsdd/  internal/store/           # DAO + migrations/*.sql  internal/admin/  pkg/emoji/                # TUIEmoji ↔ Unicode 码表  deploy/                   # Dockerfile、compose、告警规则  test/contract/            # 回调与协议样本
+0050 4.4 并发与队列模型
+0051 叨叨 → 腾讯：代理连接的读循环把消息按会话键（单聊 p:<小uid>:<大uid>，群 g:<group_no>）投入 keyed executor，同一会话串行、不同会话并行（默认 64 个 worker）。处理成功才 recvack，所以不需要额外队列：未回执的消息由悟空重投，连接断了由重连追平按游标补拉。
+0052 腾讯 → 叨叨：回调先写 inbox_event（唯一键去重），主实例的 dispatcher 每 200 ms 轮询一次（同实例入队时立即唤醒），按会话键串行处理。
+0053 其他任务（建镜像群、导影子账号、对账、资料刷新）进 job 表，带 next_run_at 和指数退避。
+0054 毒消息：同一会话内连续失败 3 次（1 s / 3 s / 10 s）即转死信并告警，后续消息继续处理，不让一条坏消息卡住整个会话。
+0055 4.5 重试策略
+0056 5. 数据库表设计（字段级）
+0057 中间层共 12 张表，全部在独立库 hw_bridge（utf8mb4）。幂等靠三个唯一键：msg_map.src_key（消息）、inbox_event.dedup_key（回调与接口）、job(type, biz_key)（任务）。
+0058 5.1 表一览
+0059 5.2 建表脚本
+0060 CREATE TABLE hw_user (  id             BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,  tim_uid        VARCHAR(64)  NOT NULL COMMENT '腾讯 UserID = 腾讯侧后端数字 uid',  tsdd_uid       VARCHAR(64)  NOT NULL DEFAULT '' COMMENT '叨叨 uid（注册成功后填）',  tsdd_username  VARCHAR(32)  NOT NULL COMMENT '叨叨用户名 = 腾讯侧后端 user_name',  tsdd_app_id    VARCHAR(64)  NOT NULL DEFAULT '' COMMENT '叨叨租户（由邀请码决定）',  invite_code    VARCHAR(64)  NOT NULL DEFAULT '',  pwd_enc        VARBINARY(256) NOT NULL COMMENT '叨叨密码密文，AES-256-GCM',  token_enc      VARBINARY(256) NULL COMMENT '叨叨 token 密文（业务接口与悟空连接共用）',  token_login_at DATETIME     NULL COMMENT '最近一次登录时间，续期起算点',  device_id      VARCHAR(80)  NOT NULL COMMENT 'hwbridge-<tsdd_uid>',  status         TINYINT      NOT NULL DEFAULT 0 COMMENT '0 注册中 1 正常 2 叨叨封禁 3 已注销 9 注册未完成',  nick           VARCHAR(64)  NOT NULL DEFAULT '',  avatar_fp      VARCHAR(64)  NOT NULL DEFAULT '' COMMENT '已同步到叨叨的头像指纹 sha256',  conv_version   BIGINT       NOT NULL DEFAULT 0 COMMENT '/v1/conversation/sync 的 version',  cmd_seq        BIGINT       NOT NULL DEFAULT 0 COMMENT '/v1/message/sync 的游标',  friend_version BIGINT       NOT NULL DEFAULT 0 COMMENT '/v1/friend/sync 的 version',  created_at     DATETIME(3)  NOT NULL DEFAULT CURRENT_TIMESTAMP(3),  updated_at     DATETIME(3)  NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),  UNIQUE KEY uk_tim_uid (tim_uid),  UNIQUE KEY uk_username (tsdd_username),  KEY idx_tsdd_uid (tsdd_uid));CREATE TABLE tsdd_shadow (  tsdd_uid          VARCHAR(64)  PRIMARY KEY COMMENT '同时是腾讯 UserID',  name              VARCHAR(64)  NOT NULL DEFAULT '',  avatar_url        VARCHAR(512) NOT NULL DEFAULT '' COMMENT '写入腾讯的头像地址（带 ?v= 版本参数）',  imported_at       DATETIME(3)  NULL,  profile_synced_at DATETIME(3)  NULL,  status            TINYINT      NOT NULL DEFAULT 1 COMMENT '1 正常 2 叨叨已注销');CREATE TABLE msg_map (  id                 BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,  src_key            VARCHAR(191) NOT NULL COMMENT 'd:<叨叨message_id> | tc:<腾讯MsgKey> | tg:<GroupId>:<MsgSeq>',  direction          TINYINT      NOT NULL COMMENT '1 叨叨→腾讯 2 腾讯→叨叨',  conv_type          TINYINT      NOT NULL COMMENT '1 单聊 2 群',  tsdd_channel       VARCHAR(140) NOT NULL COMMENT '单聊 <小uid>:<大uid>，群 group_no',  tsdd_msg_id        BIGINT       NOT NULL DEFAULT 0,  tsdd_msg_seq       INT UNSIGNED NOT NULL DEFAULT 0,  tsdd_client_msg_no VARCHAR(64)  NOT NULL DEFAULT '',  tsdd_from_uid      VARCHAR(64)  NOT NULL,  tsdd_ts            INT          NOT NULL DEFAULT 0 COMMENT '叨叨消息时间（秒）',  tim_conv           VARCHAR(140) NOT NULL COMMENT '单聊 <From>|<To>，群 GroupId',  tim_msg_key        VARCHAR(128) NOT NULL DEFAULT '' COMMENT '单聊 MsgKey',  tim_msg_id         VARCHAR(128) NOT NULL DEFAULT '' COMMENT 'SDK msgID（REST 返回或回调携带时记录）',  tim_msg_seq        BIGINT       NOT NULL DEFAULT 0 COMMENT '群 MsgSeq',  tim_msg_time       BIGINT       NOT NULL DEFAULT 0,  status             TINYINT      NOT NULL DEFAULT 0 COMMENT '0 处理中 1 成功 2 失败 3 已撤回 4 忽略',  fail_reason        VARCHAR(64)  NOT NULL DEFAULT '',  abstract           VARCHAR(255) NOT NULL DEFAULT '' COMMENT '消息摘要，用于引用回复',  need_receipt       TINYINT      NOT NULL DEFAULT 0 COMMENT '叨叨消息 setting.receipt',  read_synced        TINYINT      NOT NULL DEFAULT 0,  created_at         DATETIME(3)  NOT NULL DEFAULT CURRENT_TIMESTAMP(3),  updated_at         DATETIME(3)  NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),  UNIQUE KEY uk_src (src_key),  KEY idx_tsdd_msg (tsdd_msg_id),  KEY idx_tsdd_cmn (tsdd_client_msg_no),  KEY idx_tim_key (tim_msg_key),  KEY idx_tim_seq (tim_conv, tim_msg_seq),  KEY idx_conv_time (tsdd_channel, tsdd_ts));CREATE TABLE group_map (  tsdd_group_no  VARCHAR(64)  PRIMARY KEY,  tim_group_id   VARCHAR(64)  NOT NULL COMMENT 'dd_<group_no>',  owner_uid      VARCHAR(64)  NOT NULL DEFAULT '' COMMENT '叨叨群主 uid',  name           VARCHAR(128) NOT NULL DEFAULT '',  notice_hash    CHAR(64)     NOT NULL DEFAULT '',  avatar_ver     VARCHAR(32)  NOT NULL DEFAULT '',  forbidden      TINYINT      NOT NULL DEFAULT 0 COMMENT '全员禁言',  invite_confirm TINYINT      NOT NULL DEFAULT 0 COMMENT '群聊邀请确认',  member_version BIGINT       NOT NULL DEFAULT 0 COMMENT 'membersync version',  is_large       TINYINT      NOT NULL DEFAULT 0 COMMENT '超大群（不维护最近会话）',  status         TINYINT      NOT NULL DEFAULT 3 COMMENT '1 正常 2 已解散 3 镜像创建中',  created_at     DATETIME(3)  NOT NULL DEFAULT CURRENT_TIMESTAMP(3),  updated_at     DATETIME(3)  NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),  UNIQUE KEY uk_tim_group (tim_group_id));CREATE TABLE group_member_mirror (  tsdd_group_no VARCHAR(64) NOT NULL,  tsdd_uid      VARCHAR(64) NOT NULL,  tim_account   VARCHAR(64) NOT NULL COMMENT '华为用户填 tim_uid，叨叨用户填 tsdd_uid',  is_hw         TINYINT     NOT NULL,  role          TINYINT     NOT NULL DEFAULT 0 COMMENT '0 成员 1 群主 2 管理员（与叨叨一致）',  mute_until    BIGINT      NOT NULL DEFAULT 0,  joined_at     DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),  PRIMARY KEY (tsdd_group_no, tsdd_uid));CREATE TABLE friend_link (  hw_tsdd_uid     VARCHAR(64)  NOT NULL,  peer_tsdd_uid   VARCHAR(64)  NOT NULL,  state           TINYINT      NOT NULL COMMENT '1 H已申请待T确认 2 T已申请待H确认 3 好友 4 H已删 5 T已删 6 拒绝或过期',  apply_token     VARCHAR(64)  NOT NULL DEFAULT '' COMMENT 'T 发起时叨叨给出的申请 token',  apply_expire_at DATETIME(3)  NULL COMMENT '申请 token 15 天后过期',  remark          VARCHAR(255) NOT NULL DEFAULT '',  tim_synced      TINYINT      NOT NULL DEFAULT 0,  updated_at      DATETIME(3)  NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),  PRIMARY KEY (hw_tsdd_uid, peer_tsdd_uid));CREATE TABLE vercode_cache (  hw_tsdd_uid   VARCHAR(64)  NOT NULL,  peer_tsdd_uid VARCHAR(64)  NOT NULL,  source        VARCHAR(16)  NOT NULL COMMENT 'search / card / group',  vercode       VARCHAR(128) NOT NULL,  created_at    DATETIME(3)  NOT NULL DEFAULT CURRENT_TIMESTAMP(3),  PRIMARY KEY (hw_tsdd_uid, peer_tsdd_uid, source));CREATE TABLE sync_cursor (  hw_tsdd_uid  VARCHAR(64)  NOT NULL,  channel_id   VARCHAR(64)  NOT NULL COMMENT '单聊为对方 uid，群为 group_no',  channel_type TINYINT      NOT NULL,  last_seq     INT UNSIGNED NOT NULL DEFAULT 0,  extra_version BIGINT      NOT NULL DEFAULT 0 COMMENT '/v1/message/extra/sync 游标',  updated_at   DATETIME(3)  NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),  PRIMARY KEY (hw_tsdd_uid, channel_id, channel_type));CREATE TABLE tim_cursor (  conv_key     VARCHAR(160) PRIMARY KEY COMMENT 'c2c:<华为uid>:<影子uid> | g:<GroupId>',  last_time    BIGINT       NOT NULL DEFAULT 0,  last_msg_key VARCHAR(128) NOT NULL DEFAULT '',  last_seq     BIGINT       NOT NULL DEFAULT 0,  updated_at   DATETIME(3)  NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3));CREATE TABLE inbox_event (  id           BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,  source       TINYINT      NOT NULL COMMENT '1 腾讯回调 2 腾讯侧后端接口 3 内部补偿',  kind         VARCHAR(64)  NOT NULL COMMENT 'CallbackCommand 或接口名',  dedup_key    VARCHAR(191) NOT NULL,  conv_key     VARCHAR(160) NOT NULL DEFAULT '' COMMENT '同一会话串行',  body         JSON         NOT NULL,  status       TINYINT      NOT NULL DEFAULT 0 COMMENT '0 新 1 处理中 2 完成 3 待重试 4 死信 5 忽略',  attempts     INT          NOT NULL DEFAULT 0,  next_run_at  DATETIME(3)  NOT NULL DEFAULT CURRENT_TIMESTAMP(3),  last_error   VARCHAR(512) NOT NULL DEFAULT '',  locked_by    VARCHAR(64)  NOT NULL DEFAULT '',  locked_until DATETIME(3)  NULL,  created_at   DATETIME(3)  NOT NULL DEFAULT CURRENT_TIMESTAMP(3),  updated_at   DATETIME(3)  NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),  UNIQUE KEY uk_dedup (dedup_key),  KEY idx_pick (status, next_run_at),  KEY idx_conv (conv_key, id));CREATE TABLE job (  id           BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,  type         VARCHAR(64)  NOT NULL COMMENT 'mirror_group / import_shadow / reconcile_friend / refresh_profile / renew_token ...',  biz_key      VARCHAR(191) NOT NULL COMMENT '同类任务合并键',  payload      JSON         NULL,  status       TINYINT      NOT NULL DEFAULT 0,  attempts     INT          NOT NULL DEFAULT 0,  next_run_at  DATETIME(3)  NOT NULL DEFAULT CURRENT_TIMESTAMP(3),  last_error   VARCHAR(512) NOT NULL DEFAULT '',  locked_by    VARCHAR(64)  NOT NULL DEFAULT '',  locked_until DATETIME(3)  NULL,  created_at   DATETIME(3)  NOT NULL DEFAULT CURRENT_TIMESTAMP(3),  updated_at   DATETIME(3)  NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),  UNIQUE KEY uk_type_biz (type, biz_key),  KEY idx_pick (status, next_run_at));CREATE TABLE media_cache (  src_hash   CHAR(64)     NOT NULL COMMENT 'sha256(文件内容)',  variant    VARCHAR(16)  NOT NULL COMMENT 'orig / amr / m4a / thumb / cover',  tsdd_path  VARCHAR(512) NOT NULL DEFAULT '' COMMENT 'file/preview/chat/...',  size       BIGINT       NOT NULL DEFAULT 0,  width      INT          NOT NULL DEFAULT 0,  height     INT          NOT NULL DEFAULT 0,  duration   INT          NOT NULL DEFAULT 0 COMMENT '秒',  mime       VARCHAR(64)  NOT NULL DEFAULT '',  created_at DATETIME(3)  NOT NULL DEFAULT CURRENT_TIMESTAMP(3),  PRIMARY KEY (src_hash, variant));
+0061 另有一张 audit_log（操作人、动作、对象、结果、时间），记录管理接口操作和账号状态变化。
+0062 5.3 字段约定
+0063 单聊频道键：两个叨叨 uid 按字典序拼成 <小>:<大>，与叨叨 GetFakeChannelIDWith 的思路一致；单聊 message_seq 是频道级的，两人看到的 seq 相同。
+0064 游标只前进：sync_cursor.last_seq 只在一条消息处理完成（成功、忽略或进死信）后前进，用 UPDATE ... SET last_seq = GREATEST(last_seq, ?)。
+0065 加密：密钥 HWB_DATA_KEY（32 字节）只从环境变量或密钥文件读取；密文格式为 key_id(1 字节) || nonce(12) || ciphertext，换密钥时新写入用新 key_id，旧数据由后台任务重加密。解密后的 token 只放进程内存，不进 Redis、不进日志。
+0066 清理：每天凌晨分批删除过期数据（每批 5000 行）；msg_map 如果单表超过 5000 万行改按月分区。
+0067 5.4 Redis 键
+0068 6. 账号代注册：详细流程与异常处理
+0069 华为用户在华为端 App 注册时，腾讯侧后端先让中间层在叨叨注册成功，再建本地账号。两边用“预留 → 确认 / 取消”三段式衔接，不会出现只有一边有账号的半成品。
+0070 6.1 时序
+0071 6.2 中间层对腾讯侧后端的接口
+0072 所有内部接口都带请求头 X-HWB-Timestamp、X-HWB-Nonce、X-HWB-Sign（HMAC-SHA256，见第 15 节）。错误返回 {"code":<错误码>,"msg":"<可直接展示的中文>"}。
+0073 6.3 调叨叨接口的报文
+0074 注册（不带 device，PC 注册不要求设备 ID）：
+0075 POST http://master:8090/v1/user/usernameregisterContent-Type: application/json{  "username": "zhangsan_01",  "password": "<中间层生成的 24 位随机串>",  "name": "张三",  "invite_code": "<叨叨邀请码>",  "flag": 2,  "manufacturer": "huawei"}
+0076 成功返回 HTTP 200：{"data":{"uid":"...","app_id":"...","token":"...",...},"need_upload_web3publickey":1}；失败返回 HTTP 400：{"msg":"...","status":400}。
+0077 紧接着登录一次，拿到代理连接长期使用的 token：
+0078 POST http://master:8090/v1/user/usernameloginContent-Type: application/json{  "username": "zhangsan_01",  "password": "<同上>",  "flag": 2,  "device": {"device_id": "hwbridge-<tsdd_uid>", "device_name": "华为互通", "device_model": "hw-bridge"}}
+0079 为什么要多登录一次：注册返回的 token 没有写入叨叨的 uidtoken:<flag><uid> 缓存；登录后有了这条缓存，以后 PC 再登录就会复用同一个 token 并把有效期重置为 30 天（execLogin），续期不会打断代理连接。
+0080 6.4 规则与错误映射
+0081 叨叨校验顺序（api_usernamelogin.go usernameRegister）：用户名注册开关 → 华为渠道注册开关 → 用户名长度 → 密码长度 → 邀请码 → 用户名格式 → 重名。腾讯侧后端在调中间层前先做用户名长度、格式和本地重名校验，减少无效请求。
+0082 用户名规则汇总：8–22 位，正则 ^[A-Za-z][A-Za-z0-9_]{7,21}$；只有当所用邀请码开启了“允许手机号注册”时，也接受 ^[0-9]{8,22}$。腾讯侧后端的用户名要同时在本地和叨叨两边唯一。
+0083 6.5 异常与幂等
+0084 6.6 注册后的自动行为与镜像
+0085 叨叨注册时会自动做几件事（createUserWithRespAndTx、event_friend.go、group/event.go），中间层在 commit 后的首次追平里逐一处理：
+0086 6.7 token 续期与账号状态
+0087 每日续期：凌晨任务对 token_login_at 超过 7 天的用户调 usernamelogin（flag=2）。正常情况下返回同一个 token，有效期重置为 30 天；如果返回新 token（缓存过期或被清），更新库并让该用户的代理连接立即重连。
+0088 被动续期：叨叨接口返回 401，或悟空连接返回原因码 2（认证失败）时，立即重新登录一次再重试。
+0089 被叨叨禁用：登录返回“该用户已被禁用”或连接返回原因码 19（封禁）→ status=2，停止代理，告警并通知腾讯侧后端（是否同步封禁腾讯账号由运营决定）。
+0090 租户停用：登录被拒、发送返回原因码 25 → 告警，华为用户发消息时收到“暂时无法发送”提示。
+0091 密码不外泄：叨叨密码只有中间层知道；如果有人用它登录叨叨 PC，会覆盖掉悟空里该用户的 PC token（悟空每个 uid + 设备类型只存一个 token），导致代理下次重连失败。华为用户改腾讯侧密码不影响叨叨密码。
+0092 6.8 注销
+0093 华为用户在 App 内注销（腾讯侧后端 /api/user/cancel_account）后，腾讯侧后端调 /api/v1/account/cancel，中间层用该用户的 token 依次执行：
+0094 逐个退出所在叨叨群（POST /v1/groups/:group_no/exit），并把它从镜像群移出。
+0095 逐个删除叨叨好友（DELETE /v1/friends/:uid）。
+0096 昵称改为“已注销用户”（PUT /v1/user/current），关闭代理连接，清空 token，status=3。
+0097 叨叨的 DELETE /v1/user/destroy/:code 需要手机短信验证码，用户名账号没有手机号，所以不调用；如需彻底删除，由叨叨管理员在后台处理。
+0098 7. 代理连接：悟空客户端协议实现细节
+0099 代理连接用悟空现成的 WebSocket JSON-RPC 协议：每个华为用户一条 PC(2) 从设备连接，报文是 JSON、连接不加密，比二进制协议少了密钥交换和 AES 加解密。依据：internal/server/proto.go 在未禁用时按首字节识别 JSON-RPC；internal/options/options.go 的 disableJSONRPC 默认 false，部署配置里没有改；internal/user/handler/event_connect.go 对 JSON-RPC 连接不做加密。
+0100 7.1 连接参数
+0101 7.2 报文
+0102 连接：
+0103 {"method":"connect","id":"c-1","params":{"uid":"<tsdd_uid>","token":"<token>","deviceFlag":2,"deviceId":"hwbridge-<tsdd_uid>","clientTimestamp":1727330000000}}{"id":"c-1","result":{"serverKey":"","salt":"","timeDiff":-15,"reasonCode":1,"nodeId":2}}
+0104 收消息与回执（单聊时 channelId 已按接收方视角改写为对方 uid）：
+0105 {"method":"recv","params":{"header":{"redDot":true},"setting":{"receipt":true},"messageId":"1839000000000000001","messageSeq":57,"clientMsgNo":"a1b2c3","timestamp":1727330001,"channelId":"<对方uid或group_no>","channelType":1,"fromUid":"<发送者uid>","payload":{"type":1,"content":"你好"}}}{"method":"recvack","params":{"messageId":"1839000000000000001","messageSeq":57}}
+0106 发消息：
+0107 {"method":"send","id":"s-88","params":{"clientMsgNo":"hwb_3f2a9c1e5b7d4e8a9c217d4e","channelId":"<对方叨叨uid或group_no>","channelType":1,"payload":{"type":1,"content":"收到"},"header":{"redDot":true},"setting":{"receipt":true}}}{"id":"s-88","result":{"messageId":"1839000000000000002","messageSeq":58,"reasonCode":1}}
+0108 心跳与服务端断开：
+0109 {"method":"ping","id":"p-9"}{"method":"pong"}{"method":"disconnect","params":{"reasonCode":12,"reason":"login in other device"}}
+0110 成功判定：没有 error 字段且 reasonCode 为 1（ReasonSuccess）。protocol.md 写的是“成功时通常为 0”，与 WuKongIMGoProto 的常量不一致，阶段 0 抓包确认后写死在契约测试里。subscribe 与客户端主动 disconnect 在 JSON-RPC 里暂不支持，我们用不到。
+0111 7.3 原因码与处理
+0112 数值取自 WuKongIMGoProto v1.2.3 common.go；发送预校验的映射见悟空 internal/service/permission.go mapTenantMessagePrecheckReason（“不是好友”“未在群内”→ 13，“频率已达上限”→ 22，“租户已停用”→ 25，其他 → 15；预校验超时 2 s 也是 15）。
+0113 7.4 会话状态机
+0114 Syncing 阶段实时收到的消息照常处理，补拉到的消息与实时消息都先查 msg_map，谁先到谁处理。
+0115 7.5 心跳与重连
+0116 每 30 s 发一次 ping；10 s 内没有收到任何帧就关闭连接重连。
+0117 退避：1 s、2 s、4 s … 最长 60 s，加 ±20% 抖动。
+0118 悟空节点重启或主备切换时，500 条连接在 30 s 内随机分散重连，追平任务并发限制为 10。
+0119 失去租约时立即关闭全部连接（直接关 WebSocket），不再回执任何消息。
+0120 7.6 发送与回执的实现要点
+0121 每条连接一个读协程、一个写协程；请求带自增 id，用 id → channel 的表等待响应，超时 10 s。
+0122 clientMsgNo = hwb_ + sha1(来源键) 的前 24 位十六进制。同一条腾讯消息重试多少次都是同一个号，既用来防回环，也用来重试前查重。
+0123 收到 recv 后先判断是否需要转发，处理完成或决定忽略后才 recvack；指令消息、noPersist 消息同样要回执。
+0124 未回执的消息悟空会在同一连接上重投（event_pushonline.go setupRetryIfNeeded），所以处理函数必须幂等。
+0125 7.7 代码骨架
+0126 type Session struct {    UID, DeviceID string    token         string    conn          *websocket.Conn    out           chan []byte  // 单写者    pending       sync.Map     // id -> chan rpcResp    state         atomic.Int32    seq           atomic.Uint64}func (s *Session) Connect(ctx context.Context, addr string) error {    c, _, err := websocket.DefaultDialer.DialContext(ctx, addr, nil)    if err != nil {        return err    }    s.conn = c    go s.writeLoop()    go s.readLoop()    resp, err := s.call(ctx, "connect", connectParams{        UID: s.UID, Token: s.token, DeviceFlag: 2, DeviceID: s.DeviceID,        ClientTimestamp: time.Now().UnixMilli(),    }, 2*time.Second)    if err != nil {        return err    }    if resp.Error != nil || resp.Result.ReasonCode != 1 {        return reasonErr(resp)    }    return nil}func (s *Session) readLoop() {    for {        _, data, err := s.conn.ReadMessage()        if err != nil {            s.onClosed(err)            return        }        var f frame        _ = json.Unmarshal(data, &f)        switch {        case f.Method == "recv":            dispatch.Submit(s, f.Params) // 按会话键串行，处理完调 s.RecvAck        case f.Method == "pong":            s.touch()        case f.Method == "disconnect":            s.onKicked(f.Params)        case f.ID != "":            s.resolve(f.ID, f) // send / connect 的响应        }    }}
+0127 7.8 备选：二进制 TCP 协议
+0128 如果将来悟空开启了 disableJSONRPC，切换到二进制协议：基于 WuKongIM/pkg/client 复制一份到中间层仓库，把写死的 DeviceFlag: APP 改为 PC、随机 DeviceID 改为固定值，连 master:15100；需要实现 Curve25519 密钥交换与 AES 解密。两套实现都实现同一个 IMConn 接口，靠配置切换。
+0129 8. 消息收发链路：叨叨 → 腾讯、腾讯 → 叨叨
+0130 两个方向各一条流水线。每条消息在 msg_map 里只有一行：先占位（status=0）再执行，成功后才回执或标记完成。防回环有四道闸，任何一道拦下就不会循环。
+0131 8.1 叨叨 → 腾讯
+0132 处理步骤：
+0133 分流：payload.type = 99 走指令处理（第 10–12 节）；1000–1022、2000 走系统提示处理（第 10–11 节）；其余走普通消息。
+0134 过滤（不转发，直接回执）：
+0135 fromUid 是华为用户：这条消息本来就是从腾讯过来的；
+0136 clientMsgNo 以 hwb_ 开头；
+0137 单聊对方是 fileHelper；
+0138 header.noPersist 为真的非指令消息；
+0139 消息内容类型在“不转发”名单里（音视频通话信令、截屏提示等，第 9 节）。
+0140 占位去重：INSERT msg_map(src_key='d:<messageId>', status=0 ...)。插入成功就由本次处理；唯一键冲突时看状态：已成功 / 失败 / 忽略 → 直接回执；处理中且不足 60 s → 2 s 后再看（群消息多份并发到达）；处理中超过 60 s → 视为上次中断，接管。
+0141 确定目标：
+0142 单聊：From_Account = 发送者叨叨 uid（影子账号，没导入就先导入），To_Account = 这条代理连接的主人 H 的腾讯 uid。
+0143 群：GroupId = group_map.tim_group_id（没有镜像就先建，第 11 节），From_Account = 发送者影子账号（不是镜像群成员就先静默拉入）。
+0144 转换：见第 9 节；媒体在这一步生成公开地址或转码。
+0145 调腾讯：见下方报文。
+0146 结果：成功 → msg_map 写入 MsgKey / MsgSeq / MsgTime 并置 1，推进该 H 的 sync_cursor，回执。可重试失败 → 不回执、退避重试，同会话后续消息排队；连续 3 次失败转死信后回执，避免堵死会话。不可重试失败 → 置 2、回执、告警。
+0147 单聊报文（字段名以腾讯官方文档为准，阶段 0 用实际请求固化为契约测试）：
+0148 POST https://console.tim.qq.com/v4/openim/sendmsg?sdkappid=<SDKAppID>&identifier=bridge_admin&usersig=<UserSig>&random=<随机数>&contenttype=json{  "SyncOtherMachine": 2,  "From_Account": "<T 的叨叨 uid>",  "To_Account": "<H 的腾讯 uid>",  "MsgRandom": 2863147052,  "ForbidCallbackControl": ["ForbidBeforeSendMsgCallback", "ForbidAfterSendMsgCallback"],  "MsgBody": [{"MsgType": "TIMTextElem", "MsgContent": {"Text": "你好"}}],  "CloudCustomData": "{\"hwb\":{\"src\":\"tsdd\",\"mid\":\"1839000000000000001\",\"seq\":57}}",  "OfflinePushInfo": {    "PushFlag": 0,    "Title": "张三",    "Desc": "你好",    "Ext": "{\"entity\":{\"version\":1,\"chatType\":1,\"action\":1,\"sender\":\"<T uid>\",\"nickname\":\"张三\",\"faceUrl\":\"<头像>\"}}",    "AndroidInfo": {"OPPOChannelID": "tuikit", "HuaWeiCategory": "IM", "VIVOCategory": "IM", "HonorImportance": "NORMAL"}  }}
+0149 MsgRandom 取 message_id 哈希的低 32 位；它只在同一秒内去重，所以不能代替 msg_map。
+0150 OfflinePushInfo 照抄华为端 App 自己发消息时的设置（TUIChat/.../model/ChatProvider.java：标题 = 发送者昵称，Ext 的 entity 结构，OPPO 通道 tuikit，华为 / vivo 分类 IM，荣耀 NORMAL），这样点击通知能直接打开对应聊天。群消息的 chatType = 2、sender = GroupId、标题用群名。
+0151 CloudCustomData 是一个 JSON 字符串，我们只加 hwb 键，引用回复时与 TUIKit 的 messageReply 键并存。
+0152 群报文差异：接口 v4/group_open_http_svc/send_group_msg，字段 GroupId、From_Account、Random、MsgBody、CloudCustomData、ForbidCallbackControl、OfflinePushInfo，@ 用 GroupAtInfo: [{"GroupAtAllFlag":0,"GroupAt_Account":"<H 的腾讯 uid>"}]，返回 MsgSeq、MsgTime。
+0153 8.2 腾讯 → 叨叨
+0154 处理步骤：
+0155 入口：POST /cb/tim，body 是腾讯回调原文，请求头带 HMAC 签名和 X-TIM-Query（腾讯回调 URL 上的 SdkAppid、CallbackCommand、ClientIP、OptPlatform 等原始参数）。验签通过就按命令算 dedup_key 写 inbox_event，写成功或唯一键冲突都返回 200。
+0156 过滤（标记忽略）：
+0157 单聊：From_Account 不是华为用户，或 To_Account 不是影子账号 → 忽略（华为用户之间的聊天只在腾讯）。
+0158 群：GroupId 不以 dd_ 开头，或 From_Account 不是华为用户 → 忽略。
+0159 SendMsgResult 不为 0（腾讯侧没发成功）、OnlineOnlyFlag 为 1（在线消息，如正在输入）→ 忽略。
+0160 CloudCustomData 带 hwb 标记 → 忽略。
+0161 占位：src_key = tc:<MsgKey>（单聊）或 tg:<GroupId>:<MsgSeq>（群）。
+0162 转换：一条腾讯消息可能有多个 Elem。文字与表情合成一条叨叨文本；其他组合按顺序拆成多条，第 n 条的来源键加后缀 #n。
+0163 发送：用 H 的代理连接 send。单聊 channelId = To_Account（即叨叨 uid）、channelType = 1；群 channelId = group_no、channelType = 2。setting.receipt 单聊取 GET /v1/users/:uid 返回的 receipt，群取群设置。H 的代理暂时不在线就把事件延后 2 s 重试；不走任何管理员接口，否则会绕过叨叨校验。
+0164 回执：成功 → msg_map 记下 messageId、messageSeq、clientMsgNo 并置 1。超时 → 先调 /v1/message/channel/sync（start=0、end=0、limit=20，即最近 20 条）找有没有这个 clientMsgNo，有就当成功，没有才用同一个 clientMsgNo 重发。
+0165 失败提示：按 7.3 的原因码生成文案，用腾讯 REST 发一条 bridge_tip 自定义消息给 H（单聊发送人填影子账号，群里不填发送人；禁止回调；SendMsgControl: ["NoUnread"]），如“消息未送达：对方还不是你的好友”。默认不撤回华为端的原消息，与微信被拒收时的表现一致。
+0166 8.3 防回环
+0167 另加一道熔断：同一会话 10 s 内转发超过 50 条就暂停该会话并告警，防止未知原因的循环。
+0168 8.4 去重键
+0169 8.5 顺序与时间
+0170 叨叨 → 腾讯：同一会话串行。群消息按 message_seq 排序：收到 seq 为 n 的消息时如果 n−1 还没处理，最多等 300 ms。
+0171 腾讯 → 叨叨：inbox_event 按 id 顺序、按会话串行；腾讯回调可能并发乱序到达，群消息按 MsgSeq 做 500 ms 重排窗口。
+0172 时间：两边显示的都是写入时间，REST 不能指定消息时间。补发延迟超过 5 分钟的消息，在文本前加“[补发 10:32]”。
+0173 8.6 未读与红点
+0174 中间层写到腾讯的消息照常计入 H 的未读和红点。
+0175 H 在腾讯侧读过后，中间层清掉 H 在叨叨侧的未读（第 12 节），避免叨叨侧积压。
+0176 bridge_tip 提示消息不计未读。
+0177 9. 消息格式对照（字段级）与媒体文件处理
+0178 按叨叨安卓端和悟空安卓 SDK 1.4.7 的实际字段对照。文本、图片、GIF、语音、视频、文件、名片、引用回复都能原样互转；合并转发、位置、富文本、各类自定义消息降级为文本；通话与阅后即焚只给提示。
+0179 9.1 公共约定
+0180 叨叨 payload 公共字段（悟空 SDK WKProto.getSendPayload）：type；mention = {all, uids}；reply = {root_mid, message_id, message_seq, from_uid, from_name, payload}；entities = [{offset, length, type, value}]；robot_id；flame / flame_second（阅后即焚）。发送时 SDK 会去掉 localPath 类本地字段。
+0181 叨叨媒体地址：消息里存相对路径 file/preview/chat/<channelType>/<channelID>/<文件名>，客户端用 WKApiConfig.getShowUrl 拼成 <API 地址>/v1/<相对路径>。GET /v1/file/preview/*path 不需要登录，302 跳转到对象存储（modules/file/api.go）。
+0182 头像：/v1/users/<uid>/avatar、/v1/groups/<group_no>/avatar，都不需要登录。
+0183 腾讯 MsgBody：[{"MsgType": "...", "MsgContent": {...}}]，一条消息可有多个 Elem。
+0184 9.2 叨叨 → 腾讯
+0185 9.3 腾讯 → 叨叨
+0186 为了生成引用摘要，msg_map 增加 abstract VARCHAR(255) 字段，转发时写入消息摘要（文本前 100 字，媒体写“[图片]”“[语音]”等）。
+0187 9.4 @ 与表情
+0188 叨叨 → 腾讯（群）：mention.uids 里的叨叨 uid，华为用户换成腾讯 uid，叨叨用户用叨叨 uid，写进 GroupAtInfo；mention.all = 1 写 GroupAtAllFlag: 1。正文里的“@张三 ”原样保留。
+0189 腾讯 → 叨叨（群）：优先用回调里的 @ 列表（阶段 0 确认 Group.CallbackAfterSendMsg 是否携带）；没有就解析正文里的“@昵称”，按镜像群成员昵称表匹配成叨叨 uid；“@所有人”写 mention.all = 1。
+0190 表情：叨叨用 Unicode emoji（wkbase/src/main/assets/emoji/emoji.xml），华为端能直接显示。TUIKit 用 62 个 [TUIEmoji_*] 码（TUIChat/tuichat/src/main/res/values/arrays.xml 的 chat_buildin_emoji_key，中文名在 values-zh/strings-emoji.xml），转给叨叨时换成最接近的 Unicode emoji，没有对应的换成中文名。码表放在 pkg/emoji，示例：
+0191 9.5 媒体处理细则
+0192 腾讯 → 叨叨（转存）
+0193 回调处理时立即下载腾讯媒体（超时 30 s、上限 100 MB，超限改发文本“[文件] 名称 大小 + 链接”）。
+0194 上传路径 /<channelType>/<channelID>/<毫秒>_<6 位随机>.<扩展名>，与叨叨安卓端 WKUploader.getUploadFileUrl 的规则一致，多加随机后缀防并发重名。单聊 channelID 是对方叨叨 uid，群是 group_no。
+0195 POST http://master:8090/v1/file/upload?type=chat&path=<路径>，multipart 字段 file，请求头 token: <H 的 token>。
+0196 返回 {"path":"file/preview/chat/..."}，这个相对路径直接填进 payload 的 url。
+0197 叨叨 → 腾讯（补全地址）
+0198 相对路径拼成 <叨叨对外 API 地址>/v1/<相对路径>（即叨叨客户端用的公网地址），华为端 App 从公网加载。
+0199 TIMImageElem 需要 Size、Width、Height：宽高取叨叨 payload，Size 用 HEAD（跟随 302）取 Content-Length，取不到填 0（阶段 0 验证 TUIKit 对 Size=0 的表现）。
+0200 语音转码
+0201 腾讯 → 叨叨：ffmpeg -i in.m4a -ac 1 -ar 8000 -c:a libopencore_amrnb -b:a 12.2k out.amr；时长用 ffprobe。波形按叨叨安卓端 AudioRecordManager.getDbs() 的格式生成：每 100 ms 取峰值，算 20·log10(峰值)，每段一个字节（0 改成 2），整体 base64。波形可以省略，叨叨端没有波形也能播放。
+0202 叨叨 → 腾讯：ffmpeg -i in.amr -ac 1 -ar 16000 -c:a aac -b:a 32k out.m4a，用 H 的 token 上传到叨叨存储（路径 /1/<对方uid>/...m4a）后把公开地址填入 TIMSoundElem.Url。华为端的 TUIKit AudioPlayer 用系统 MediaPlayer，安卓原生能解 AMR-NB；阶段 0 如果实测华为机能直接播 AMR，可省掉这一步。
+0203 叨叨 iOS 录制格式待阶段 0 实测；转码前用 ffprobe 按实际格式处理，不凭扩展名判断。
+0204 其他
+0205 视频：腾讯 → 叨叨时视频和封面分别转存，second 取 VideoSecond（缺失则 ffprobe）；叨叨 → 腾讯直接用叨叨地址，VideoFormat 取扩展名。
+0206 缓存：以文件 sha256 写 media_cache，同一文件（转发、群发）只处理一次。
+0207 大小上限：以叨叨网关 Nginx 的 client_max_body_size 为准，阶段 0 实测。
+0208 临时文件放本地 SSD 的 /data/hwb/tmp，处理完即删，每小时清理残留。
+0209 10. 好友关系同步：双向流程
+0210 华为用户与叨叨用户之间的好友关系以叨叨为准：叨叨确认成为好友后，中间层才在腾讯侧强制添加双向好友。华为用户之间的好友只在腾讯，不同步。叨叨的好友申请必须带 vercode，申请 token 15 天过期（FriendApplyExpire），这两点决定了下面的流程。
+0211 10.1 状态
+0212 friend_link 状态：1 = H 已申请待 T 确认；2 = T 已申请待 H 确认；3 = 好友；4 = H 已删；5 = T 已删；6 = 拒绝或过期。
+0213 10.2 叨叨用户加华为用户（T 发起）
+0214 T 在叨叨按用户名搜到 H（H 在叨叨有用户名），发起 /v1/friend/apply。
+0215 叨叨给 H 发指令 friendRequest（参数 apply_uid、apply_name、to_uid、remark、token），H 的代理收到；离线期间漏掉的由指令同步补回。
+0216 中间层写 friend_link(H, T) = 2，记下 token 和过期时间；确保 T 的影子账号已导入（昵称、头像）；调腾讯 friend_add（From = T，To = H，AddType = Both，ForceAddFlags = 0，AddWording = 附言）。
+0217 H 的加好友方式是“需要验证”（默认）：腾讯生成待处理申请，华为端“新的联系人”出现 T，用的是 TUIKit 原生界面。
+0218 “允许任何人”：腾讯直接成为好友并触发添加回调，直接走第 4 步。
+0219 “拒绝任何人”：腾讯返回失败，中间层调叨叨 PUT /v1/friend/refuse/<T> 拒绝，状态置 6。
+0220 H 同意 → 腾讯 Sns.CallbackFriendAdd → 腾讯侧后端转发 → 中间层用 H 的 token 调叨叨 POST /v1/friend/sure {"token":"..."}，状态置 3。叨叨会建双向好友、加悟空白名单，并发两条消息：H → T 的提示“我们已经是好友了…”（发送人是华为用户，按防回环不转腾讯）、T → H 的申请附言（转到腾讯，华为端看到 T 的第一句话）。
+0221 H 拒绝：腾讯没有对应回调。华为端 App 在拒绝影子账号申请时调 /api/bridge/friend_refuse（可选改造），中间层调 PUT /v1/friend/refuse/<T>；不改的话叨叨侧申请 15 天后自然过期。
+0222 过期后才同意：叨叨 sure 返回“获取好友申请token的信息失败”，中间层改为替 H 向 T 发起申请（10.3），并给 H 发提示“对方的申请已过期，已替你向对方发送好友申请”。
+0223 10.3 华为用户加叨叨用户（H 发起）
+0224 找人：华为端“添加好友”页输入叨叨用户名 / 手机号 / 短号 → App 调 /api/bridge/search_user → 中间层调叨叨 GET /v1/user/search?keyword=（不需要登录），命中返回 {uid, name, vercode} → 中间层导入影子账号、把 vercode 存入 vercode_cache（source=search），返回 {user_id, nick, face_url}。App 打开 TUIKit 资料页（影子账号已导入，能读到资料）。叨叨搜索本身不按租户过滤，行为与叨叨客户端一致。
+0225 申请：资料页“添加好友”→ 改造后的 ContactProvider.addFriend 发现对方是影子账号（32 位十六进制），改调 /api/bridge/friend_apply → 中间层按顺序找 vercode：搜索缓存 → 名片缓存 → 共同群（GET /v1/users/<T>?group_no=<共同群>，群允许加好友时才返回）→ 用 H 的 token 调 POST /v1/friend/apply {"to_uid":"<T>","remark":"<附言>","vercode":"..."}，状态置 1。App 提示“已发送好友申请，等待对方验证”。
+0226 叨叨返回“已经是好友，不能再申请！”：直接在腾讯侧强制添加双向好友。
+0227 拿不到 vercode 或叨叨返回“验证码不能为空”：提示“请通过搜索账号或名片添加”。
+0228 T 同意：叨叨发指令 friendAccept（发给双方）→ H 的代理收到 → 中间层调腾讯 friend_add（From = H，To = T，Both，ForceAddFlags = 1），状态置 3。叨叨同时发的 T → H 提示转为 bridge_tip，H → T 的附言按防回环不转。
+0229 T 拒绝：叨叨 refuse 只改申请状态，不通知申请人。状态停在 1，30 天后清理为 6。
+0230 10.4 删除好友
+0231 H 删 T：华为端删除好友 → 腾讯 Sns.CallbackFriendDelete → 中间层用 H 的 token 调 DELETE /v1/friends/<T>，状态置 4。叨叨的删除是“我删对方、对方变单向”，之后双方发消息都会被预校验拦下。
+0232 T 删 H：叨叨只给 T 自己的设备发 friendDeleted，给 H 发的是 channelUpdate（channel_id = T）。H 的代理收到后，中间层调 GET /v1/friend/sync?version=<friend_version>&limit=200，发现 T 的记录出现 be_deleted = 1 或 is_deleted = 1，就调腾讯 friend_delete（Delete_Type_Both），状态置 5。
+0233 兜底：每小时做一次好友对账（第 14 节）。
+0234 10.5 黑名单
+0235 H 拉黑 T：腾讯 Sns.CallbackBlackListAdd → 叨叨 POST /v1/user/blacklist/<T>；移出：Sns.CallbackBlackListDelete → DELETE /v1/user/blacklist/<T>。叨叨拉黑后悟空会拦下 T 发给 H 的消息。
+0236 T 拉黑 H：叨叨不通知 H。H 再发消息会收到原因码 4，中间层发 bridge_tip“消息已发出，但被对方拒收”。不镜像到腾讯，因为 T 解除拉黑时叨叨同样不通知，镜像了反而没法撤销。
+0237 10.6 腾讯 REST 报文
+0238 POST .../v4/im_open_login_svc/account_import{"UserID":"<T uid>","Nick":"张三","FaceUrl":"<叨叨 API>/v1/users/<T uid>/avatar?v=1"}POST .../v4/profile/portrait_set{"From_Account":"<T uid>","ProfileItem":[  {"Tag":"Tag_Profile_IM_Nick","Value":"张三"},  {"Tag":"Tag_Profile_IM_Image","Value":"<叨叨 API>/v1/users/<T uid>/avatar?v=2"},  {"Tag":"Tag_Profile_IM_AllowType","Value":"AllowType_Type_NeedConfirm"}]}POST .../v4/sns/friend_add        （T 发起：给 H 生成待确认申请）{"From_Account":"<T uid>","AddFriendItem":[{"To_Account":"<H 腾讯 uid>","AddSource":"AddSource_Type_TSDD","AddWording":"我是张三"}],"AddType":"Add_Type_Both","ForceAddFlags":0}POST .../v4/sns/friend_add        （叨叨已成为好友：强制双向）{"From_Account":"<H 腾讯 uid>","AddFriendItem":[{"To_Account":"<T uid>","AddSource":"AddSource_Type_TSDD"}],"AddType":"Add_Type_Both","ForceAddFlags":1}POST .../v4/sns/friend_delete{"From_Account":"<H 腾讯 uid>","To_Account":["<T uid>"],"DeleteType":"Delete_Type_Both"}
+0239 腾讯侧后端现有代码已经用过 friend_add（ForceAddFlags = 1、Both），字段写法可直接参考 application/api/model/Tencent.php。ForceAddFlags = 0 时是否生成“待确认”申请是阶段 0 验证项；如不生成，备选做法是中间层发一条自定义消息 bridge_friend_apply，华为端 App 渲染成带“同意 / 拒绝”按钮的卡片。
+0240 10.7 腾讯侧后端问候语要改
+0241 现有 UserTencent.php 在 Sns.CallbackFriendAdd 里会以 To_Account 的身份给 From_Account 发“我是{昵称}已通过你的好友请求”，昵称取本地用户表。涉及影子账号时昵称为空，而且叨叨自己已经发了提示和附言。改法：任一方是影子账号（^[0-9a-f]{32}$ 或 u_10000）时不发问候语。
+0242 10.8 边界情况
+0243 11. 群同步：建群、成员、资料、群消息
+0244 只要叨叨群里有华为用户，中间层就在腾讯建一个镜像群 dd_<group_no>。群主、管理员、成员、群名、公告、禁言都以叨叨为准；华为端对镜像群的操作先在叨叨执行，叨叨拒绝就把腾讯改回去。
+0245 11.1 镜像群规则
+0246 11.2 建镜像群
+0247 触发：H 的代理收到群提示 1001（建群）、1002（被拉入）、1007（扫码进群）；首次追平发现群会话；收到群消息但 group_map 里没有；华为端发起建群。同一个群只跑一个 mirror_group 任务。
+0248 用 H 的 token 取群资料 GET /v1/groups/<group_no>（name、notice、forbidden、invite、receipt、group_type、status）和成员 GET /v1/groups/<group_no>/membersync?version=0&limit=1000（uid、name、role、is_deleted、forbidden_expir_time、vercode）。
+0249 算出腾讯成员列表，并确保需要的影子账号都已导入。
+0250 调 create_group：
+0251 POST .../v4/group_open_http_svc/create_group{  "Owner_Account": "<群主：华为用户用腾讯 uid，叨叨用户用影子账号>",  "Type": "Public",  "GroupId": "dd_<group_no>",  "Name": "<截断后的群名>",  "Introduction": "<完整群名>",  "Notification": "<公告>",  "FaceUrl": "<叨叨 API>/v1/groups/<group_no>/avatar?v=1",  "ApplyJoinOption": "DisableApply",  "MemberList": [{"Member_Account": "<uid>", "Role": "Admin"}, {"Member_Account": "<uid>"}]}
+0252 成员超过单次上限的分批用 add_group_member（Silence = 1，每批 100）。群 ID 已存在视为成功，转为对账。
+0253 写 group_map（status=1）和 group_member_mirror，全员禁言状态用 modify_group_base_info 的 ShutUpAllMember 补上。
+0254 11.3 叨叨侧变化 → 腾讯
+0255 下表的事件都由 H 的代理收到（群里多个华为成员时按 message_id 去重）。所有成员操作都用 Silence = 1（不出腾讯原生提示），群内提示统一由叨叨原文生成 bridge_tip（占位符 {0} {1} 用 extra 里的名字填充）。
+0256 11.4 华为端发起的群操作 → 叨叨
+0257 建群和拉人在华为端 App 里拦截，同步调中间层（用户马上看到成败）；其他操作走腾讯“之后回调”，中间层用操作人 H 的 token 在叨叨执行。中间层自己（bridge_admin）做的操作也会触发回调，按操作人识别后忽略。
+0258 叨叨单人禁言只有 6 档时长（forbidden_with_member 的 key：1 = 1 分钟、2 = 10 分钟、3 = 1 小时、4 = 1 天、5 = 1 周、6 = 1 个月），二期如果要开放华为端禁言，按向上取整的规则映射。
+0259 11.5 群消息
+0260 叨叨 → 腾讯：同一条群消息会被群里 N 个华为成员的代理各收一次，按 d:<message_id> 只处理一次。发送者影子不在镜像群就先静默加入；镜像群已满时不填发送人（由 bridge_admin 发），正文前加“昵称：”。
+0261 腾讯 → 叨叨：Group.CallbackAfterSendMsg → 用发送者 H 的代理连接发到 group_no；叨叨校验群成员和禁言。镜像群里其他华为成员已经在腾讯收到，叨叨再推给他们代理的那份按防回环第 1 道丢弃。
+0262 群内提示：send_group_msg 不填 From_Account（发送人为 bridge_admin），消息体是 bridge_tip 自定义消息；叨叨系统消息带 visibles 时，改成给列表里的华为用户单独发单聊提示。
+0263 禁言一致：叨叨全员禁言是“只有群主和管理员在白名单”，腾讯 ShutUpAllMember = On 也是群主和管理员可发言，行为一致。
+0264 超大群：叨叨超大群不维护最近会话（ServerLib config/msg.go 的 large 注释），会话同步发现不了，补偿时要遍历 group_map 里该用户所在的群逐个拉。
+0265 群已读回执：本期不做。
+0266 12. 撤回、已读、未读、资料与头像
+0267 撤回和单聊已读双向同步，定位全靠 msg_map；叨叨的“已读”和“管理员删除他人消息”都通过指令 syncMessageExtra + 拉消息扩展来传递，其中已读指令不存储，必须有对账兜底。
+0268 12.1 撤回
+0269 叨叨 → 腾讯
+0270 消息扩展拉取：POST /v1/message/extra/sync {"channel_id","channel_type","extra_version","limit":100}，返回每条消息的 revoke、readed、readed_count、is_mutual_deleted、content_edit、extra_version。按“华为用户 + 频道”记录最大 extra_version（sync_cursor 增加 extra_version BIGINT 列）。
+0271 腾讯 → 叨叨
+0272 说明：叨叨的 revoke 必须传 client_msg_no（为空会报“撤回主键参数错误”），同时要传 message_id（更新消息扩展时用）。叨叨服务端没有撤回时限，TUIKit 默认 2 分钟内可撤回。叨叨拒绝时只记日志（腾讯侧已撤回，极少出现）。
+0273 12.2 已读
+0274 T 读了 H 的消息（叨叨 → 腾讯）：叨叨只对 setting.receipt = 1 的消息记已读。中间层代 H 发单聊时按对方的回执设置带上 setting.receipt。叨叨每 3 秒汇总一次已读，给发送者发不存储的指令 syncMessageExtra（message/event.go）。H 的代理收到后拉消息扩展，对 readed 或 readed_count 变为大于 0 的消息，在腾讯调 admin_set_msg_read {Report_Account: T, Peer_Account: H}，华为端单聊显示“已读”（前提是华为端 App 开启了 TUIKit 的单聊已读回执展示，阶段 0 验证该接口是否会触发对端的已读状态更新）。
+0275 H 读了 T 的消息（腾讯 → 叨叨）：腾讯 C2C.CallbackAfterMsgReport（Report_Account = H、Peer_Account = T、LastReadTime）→ 从 msg_map 找 T 发给 H、时间 ≤ LastReadTime、need_receipt = 1 且还没同步的消息 → 用 H 的 token 调 POST /v1/message/readed {"channel_id":"<T>","channel_type":1,"message_ids":[...]}，read_synced 置 1。
+0276 指令丢失兜底：已读指令不存储，代理断线期间会丢。每 10 分钟对“24 小时内有 H 发出消息且仍有未读”的单聊拉一次消息扩展。
+0277 群已读：本期不做。
+0278 12.3 未读
+0279 H 在腾讯读完单聊后，除了上报已读，还用 H 的 token 调 PUT /v1/coversation/clearUnread {"channel_id":"<T>","channel_type":1,"unread":0}（路径拼写就是 coversation），清掉 H 在叨叨侧的未读。
+0280 群会话没有可用的腾讯已读回调，每天凌晨对 H 的全部群会话批量清一次未读。
+0281 12.4 资料与头像
+0282 叨叨用户 → 影子账号
+0283 头像：叨叨用户上传头像后给全部好友发指令 userAvatarUpdate {uid}（user/api.go uploadAvatar）。好友里有华为用户时其代理会收到 → portrait_set 把 Tag_Profile_IM_Image 改为 <叨叨 API>/v1/users/<uid>/avatar?v=<时间戳>，加版本号让华为端刷新缓存。
+0284 昵称：叨叨改昵称不推送。影子账号资料每 6 小时刷新一次（GET /v1/users/<uid>，用一个与其有关系的 H 的 token）；收到其消息时如果距上次刷新超过 1 小时也异步刷新。变化时 portrait_set 改 Tag_Profile_IM_Nick。
+0285 群名片：二期可选，用 modify_group_member_info 的 NameCard。
+0286 华为用户 → 叨叨
+0287 华为端改资料时会先调腾讯侧后端 /api/user/modify_user_info（nick_name、head_pic），再 setSelfInfo 改腾讯资料（profile/SelfDetailActivity.java）。腾讯侧后端在该接口成功后调中间层 /api/v1/account/profile {tim_uid, nick, avatar_url}。
+0288 中间层：昵称 → PUT /v1/user/current {"name":"..."}；头像 → 下载 avatar_url → POST /v1/users/<H 的叨叨 uid>/avatar（multipart 字段 file），叨叨会自动通知 H 的叨叨好友。默认头像（head_pic/head_pic1.png）不上传。按头像文件 sha256 去重，没变就不传。
+0289 性别、签名等其他资料不同步。
+0290 12.5 消息编辑（二期可选）
+0291 叨叨支持编辑已发消息（/v1/message/edit），编辑后的正文出现在消息扩展的 content_edit 里。二期可用腾讯“修改历史消息”类 REST 接口（单聊 / 群聊各一个，接口名以官方为准）同步到华为端。华为端 TUIKit 没有编辑入口，不存在反向。
+0292 13. 腾讯一侧改造清单：腾讯侧后端与华为端 App
+0293 腾讯一侧共 3 类改动：控制台配置、腾讯侧后端 6 处、华为端 App 7 处。所有改动只在“对方是叨叨用户或镜像群”时生效，华为用户之间的原有功能不变。
+0294 13.1 腾讯 IM 控制台
+0295 回调地址不变（仍是腾讯侧后端 Tencent/call_back），开启以下 13 类“之后回调”：C2C.CallbackAfterSendMsg、Group.CallbackAfterSendMsg、C2C.CallbackAfterMsgWithDraw、Group.CallbackAfterRecallMsg、C2C.CallbackAfterMsgReport、Sns.CallbackFriendAdd（已开）、Sns.CallbackFriendDelete、Sns.CallbackBlackListAdd、Sns.CallbackBlackListDelete、Group.CallbackAfterNewMemberJoin、Group.CallbackAfterMemberExit、Group.CallbackAfterGroupInfoChanged、Group.CallbackAfterGroupDestroyed。腾讯侧后端已在用的“之前回调”和状态回调保持不变。命令名以控制台显示为准。
+0296 新增 App 管理员 bridge_admin，中间层用它调 REST，与腾讯侧后端的 administrator 分开，回调里能区分操作来源。
+0297 确认套餐项：消息漫游天数（腾讯侧补偿依赖）、Public 群人数上限、单聊是否开启“仅好友可发消息”、日活计费口径（影子账号经 REST 发消息是否计入）。
+0298 回调鉴权：如果开了腾讯回调鉴权 token，腾讯侧后端验证后再转发，转发时带上原始 query。
+0299 13.2 腾讯侧后端（PHP，ThinkPHP 5.1）
+0300 回调转发（第 2 项）示例：
+0301 // application/api/model/UserTencent.php  tencent_call_back() 开头$bridgeCmds = [    'C2C.CallbackAfterSendMsg', 'Group.CallbackAfterSendMsg', 'C2C.CallbackAfterMsgWithDraw',    'Group.CallbackAfterRecallMsg', 'C2C.CallbackAfterMsgReport', 'Sns.CallbackFriendAdd',    'Sns.CallbackFriendDelete', 'Sns.CallbackBlackListAdd', 'Sns.CallbackBlackListDelete',    'Group.CallbackAfterNewMemberJoin', 'Group.CallbackAfterMemberExit',    'Group.CallbackAfterGroupInfoChanged', 'Group.CallbackAfterGroupDestroyed',];if (isset($data['CallbackCommand']) && in_array($data['CallbackCommand'], $bridgeCmds, true)) {    model('api/Bridge')->forward_callback(request()->getContent(), $sign_data);}// application/api/model/Bridge.phppublic function forward_callback($rawBody, $query){    $ts = time();    $nonce = bin2hex(random_bytes(8));    $sign = hash_hmac('sha256', $ts . "\n" . $nonce . "\n" . $rawBody, config('bridge.secret'));    $ch = curl_init(config('bridge.url') . '/cb/tim');    curl_setopt_array($ch, [        CURLOPT_POST => true,        CURLOPT_POSTFIELDS => $rawBody,        CURLOPT_RETURNTRANSFER => true,        CURLOPT_CONNECTTIMEOUT_MS => 300,        CURLOPT_TIMEOUT_MS => 1000,        CURLOPT_HTTPHEADER => [            'Content-Type: application/json',            'X-HWB-Timestamp: ' . $ts,            'X-HWB-Nonce: ' . $nonce,            'X-HWB-Sign: ' . $sign,            'X-TIM-Query: ' . http_build_query($query),        ],    ]);    curl_exec($ch);    $code = curl_getinfo($ch, CURLINFO_HTTP_CODE);    curl_close($ch);    if ($code != 200) {   // 失败入本机 Redis，定时任务每分钟重发        connectionRedis()->rPush('hwb:outbox', json_encode(['body' => $rawBody, 'query' => $query]));    }}
+0302 转发建议放在 response_end 钩子里执行：ThinkPHP 5.1 在 PHP-FPM 下会先 fastcgi_finish_request() 把响应返回给腾讯，再触发该钩子，不拖慢回调应答；不是 PHP-FPM 就按上面的 1 秒超时同步转发。
+0303 重发任务：新增 php think bridge:retry 命令，crontab 每分钟执行，一次最多取 500 条，重新生成时间戳和签名后发送。
+0304 bridge.url、bridge.secret 放环境变量或不入库的配置文件。
+0305 给华为端 App 的新接口（第 4 项）：
+0306 13.3 华为端 App（TUIKit）
+0307 addFriend 拦截示例（AddMoreDetailActivity 收到成功后会 toast data.second 并关闭页面）：
+0308 public void addFriend(String userId, String addWording, String remark, IUIKitCallback<Pair<Integer, String>> callback) {    if (BridgeHelper.isTsddUser(userId)) {           // ^[0-9a-f]{32}$ 或 u_10000        BridgeApi.friendApply(userId, addWording, remark, new BridgeApi.Callback() {            @Override public void onSuccess(String msg) {                ContactUtils.callbackOnSuccess(callback, new Pair<>(0, msg));            }            @Override public void onError(int code, String msg) {                ContactUtils.callbackOnError(callback, TAG, code, msg);            }        });        return;    }    // 以下为原有逻辑，不动    V2TIMFriendAddApplication v2TIMFriendAddApplication = new V2TIMFriendAddApplication(userId);    // ...}
+0309 bridge_tip 的 Data 格式：{"businessID":"bridge_tip","version":1,"text":"消息未送达：对方还不是你的好友"}，Desc 填同样的文字，老版本 App 没注册该类型时也能显示文字。没改 App 前的临时办法：用 TUIKit 已有的 group_create 自定义消息（ChatMessageParser.parseGroupCreateMessage 会把它渲染成提示条），但前面会带发送者名字。
+0310 14. 断线追平、定时对账与异常处理
+0311 实时链路负责快，补偿链路负责不丢：叨叨侧用同步接口追平（即方案 F 的能力），腾讯侧用漫游接口补漏掉的回调，关系和群用定时对账以叨叨为准纠正。
+0312 14.1 重连追平（叨叨侧）
+0313 顺序与叨叨安卓端 MsgModel 一致，每个华为用户在连接成功后执行一遍（全局并发 10）：
+0314 会话同步：POST /v1/conversation/sync
+0315 {"version": <conv_version>, "last_msg_seqs": "<channel_id>:<channel_type>:<last_seq>|...", "msg_count": 20, "device_uuid": "hwbridge-<tsdd_uid>"}
+0316 返回 {uid, conversations[{channel_id, channel_type, last_msg_seq, version, recents...}], users, groups}。处理完调 POST /v1/conversation/syncack {"device_uuid":"hwbridge-<tsdd_uid>"}，conv_version 取返回会话的最大 version。
+0317 频道补拉：对 last_msg_seq 大于游标的会话调 POST /v1/message/channel/sync，循环到 more = 0：
+0318 {"channel_id": "<对方uid或group_no>", "channel_type": 1, "start_message_seq": <游标+1>, "end_message_seq": 0, "limit": 100, "pull_mode": 1, "device_uuid": "hwbridge-<tsdd_uid>"}
+0319 pull_mode = 1 是向上（取更新的消息），悟空按 LoadNextRangeMsgs(start, end, limit) 取数（internal/api/message.go）。拉到的每条消息走第 8 节流程，先查 msg_map。新用户第一次追平没有游标时，只转发注册时间之后的消息。
+0320 超大群：会话同步里没有它们，对 group_map 里该用户所在的 is_large = 1 的群逐个按游标补拉。
+0321 指令同步：POST /v1/message/sync {"limit":500,"max_message_seq":<cmd_seq>} 循环到返回空；每批处理完调 POST /v1/message/syncack/<last_message_seq>，更新 cmd_seq。离线期间的好友申请、撤回、成员变化指令都在这里。
+0322 好友增量：GET /v1/friend/sync?version=<friend_version>&limit=1000，处理增删变化。
+0323 全部完成后状态置 Online。追平期间实时收到的消息照常处理，靠 msg_map 去重。
+0324 14.2 腾讯侧补偿（漏回调）
+0325 腾讯“之后回调”失败不重试；腾讯侧后端宕机、转发失败且本机队列也丢失时，华为用户发的消息就到不了叨叨。每 10 分钟对最近 24 小时活跃的会话补一次：
+0326 单聊：admin_getroammsg {"Operator_Account":"<H>","Peer_Account":"<T>","MaxCnt":100,"MinTime":<检查点>,"MaxTime":<现在>}，按 LastMsgKey 翻页；取发送人是 H 且 msg_map 里没有 tc:<MsgKey> 的消息，按回调同样的流程补发，正文前加“[补发 hh:mm]”。
+0327 群：group_msg_get_simple {"GroupId":"dd_...","ReqMsgNumber":20,"ReqMsgSeq":<当前最大>} 往回翻到检查点；发送人是华为用户且没有 tg: 记录的补发。
+0328 检查点存 tim_cursor。依赖腾讯消息漫游，阶段 0 确认套餐漫游天数。
+0329 撤回、已读、好友、群变化的漏回调由 14.3 的对账覆盖。
+0330 14.3 定时任务
+0331 每次对账把“发现差异数 / 已修正数”写入监控指标，差异持续不为 0 说明实时链路有漏洞。
+0332 14.4 异常场景
+0333 14.5 开关与应急
+0334 总开关（hwb:switch 的 total）：关闭后断开全部代理、停止消费，入口仍把事件落库；重新打开后自动追平。
+0335 分功能开关：媒体（关闭时媒体消息降级为链接文字）、好友同步、群同步。
+0336 应急代发（默认关闭）：代理连接长时间不可用时，可由管理员手动打开“用悟空 /message/send 代发”。它按系统设备处理，会跳过好友校验、租户限频和黑名单，还要用悟空管理 token，只作为最后手段。
+0337 15. 安全、监控告警与运维
+0338 中间层不持有叨叨管理员凭据，只用华为用户自己的 token；对外只开两个入口（腾讯侧后端调用的业务入口、内网管理入口）。监控围绕三件事：代理在不在线、消息有没有积压或失败、对账有没有差异。
+0339 15.1 安全
+0340 15.2 监控指标与告警
+0341 面板按“连接 / 叨叨 → 腾讯 / 腾讯 → 叨叨 / 关系与群 / 对账 / 依赖错误”六块排列，接入叨叨现有 Prometheus。
+0342 15.3 日志
+0343 JSON 格式，每行包含 ts、level、trace_id（即来源键，如 d:<message_id>）、uid、dir、step、latency_ms、err。一条消息从收到到写入完成的所有日志共享一个 trace_id，按它就能串出全链路。保留 14 天，接入现有日志系统。
+0344 15.4 部署与配置
+0345 镜像：debian:bookworm-slim + ffmpeg + ca-certificates + tzdata + 中间层二进制，以非 root 用户运行；两台机器各跑一个容器。
+0346 发布：先发备实例，再让主实例释放租约切过去，最后发原主；切换期间消息靠追平补齐。
+0347 配置样例（密钥只写文件路径）：
+0348 instance_id: hwb-1http:  listen: ":8080"  admin_listen: ":9090"tsdd:  api_base: "http://master:8090/v1"  public_api_base: "https://<叨叨对外 API 地址>"  wk_ws_addr: "ws://master:15200"  manufacturer: "huawei"  system_uids: ["u_10000"]  skip_uids: ["fileHelper"]tim:  sdk_app_id: <SDKAppID>  admin_identifier: "bridge_admin"  secret_key_file: "/run/secrets/tim_secret_key"  api_host: "https://console.tim.qq.com"  qps: 50upstream:  hmac_secret_file: "/run/secrets/bridge_hmac"  allow_ips: ["<腾讯侧后端出口 IP>"]mysql:  dsn_file: "/run/secrets/mysql_dsn"redis:  addr: "<redis>:6379"  db: 5  password_file: "/run/secrets/redis_pwd"data_key_file: "/run/secrets/hwb_data_key"features:  full_mirror_threshold: 100  forward_system_account: true  voice_transcode_to_tim: true  forward_screenshot_tip: false  emergency_system_send: false
+0349 15.5 管理接口与运行手册
+0350 16. 测试方案与验收用例
+0351 测试分三层：契约测试防止字段理解错，集成与真机用例验证功能，故障演练与 72 小时稳定性验证“不丢、不重、不回环”。验收以 16.4 的标准为准。
+0352 16.1 测试环境
+0353 16.2 测试类型
+0354 单元测试：每种消息类型做往返转换（叨叨 payload → MsgBody → payload）；表情码表；@ 与引用；去重键生成；HMAC。
+0355 契约测试：test/contract/ 存阶段 0 抓到的真实样本（腾讯 13 类回调、REST 请求与响应、悟空 JSON-RPC 帧、叨叨接口响应），CI 里回放。腾讯或叨叨升级后先跑这组测试。
+0356 集成测试：docker compose 起单机叨叨 + 悟空；用脚本模拟叨叨用户（JSON-RPC 客户端）和腾讯侧（用 REST 以华为用户身份发消息，再模拟回调）。
+0357 真机端到端：按 16.3 用例。
+0358 压测：500 条代理连接，50 条/s 混合消息持续 30 分钟；一条群消息被 50 个华为成员同时收到的去重；观察延迟、CPU、内存和对叨叨接口的 QPS。
+0359 故障演练：杀主实例、断 Redis、断 MySQL、重启一个悟空节点、腾讯侧后端停 10 分钟、随机丢弃 10% 回调、使叨叨 token 失效。
+0360 72 小时稳定性：真人使用 + 定时脚本，对账差异为 0、内存不持续增长。
+0361 16.3 验收用例
+0362 16.4 验收标准
+0363 16.3 的用例全部通过。
+0364 连续 72 小时：对账差异为 0，死信为 0 或每条都有解释，没有触发回环熔断。
+0365 延迟：文本 P95 叨叨 → 华为 < 1 s、华为 → 叨叨 < 1.5 s；图片和语音 P95 < 3 s。
+0366 叨叨与悟空的代码、配置与上线前完全一致。
+0367 中间层停机期间叨叨业务不受影响。
+0368 17. 开发计划：阶段、任务拆分与交付物
+0369 分 9 个阶段，每个阶段结束都能在真机上演示、有明确的出口标准。阶段 0 是门槛：零改动前提和腾讯侧关键行为验证通过后才进入开发。不写工期。
+0370 阶段 4 和阶段 5 互不依赖，人手够可以并行。
+0371 17.1 阶段 0：单机验证（门槛）
+0372 出口：12 项全部有结论，样本进 test/contract/，叨叨与悟空零改动。
+0373 17.2 阶段 1–8
+0374 17.3 灰度节奏
+0375 内部 10 人（华为端测试账号 + 内部叨叨账号）。
+0376 小范围真实用户 50 人。
+0377 200 人。
+0378 全部华为用户（300–500 人）。
+0379 每一步观察到指标稳定、对账差异为 0 再进入下一步。回滚：关总开关即可，叨叨侧没有任何需要撤销的改动；华为用户之间的聊天本来就在腾讯，不受影响。
+0380 17.4 交付物与分工
+0381 人员建议：Go 后端 1–2 人、PHP 1 人（兼职即可）、安卓 1 人、测试 1 人（覆盖华为真机和叨叨安卓、iOS）、运维支持。
+0382 18. 备选方案详细设计：F 纯拉取、D / D+F 插件
+0383 三个备选方案都不改叨叨代码，差别在“怎么知道华为用户有新消息”和“华为 → 叨叨怎么发”。F 的能力已经内置在 A+ 的补偿链路里，可以随时切过去；D 和 D+F 要改生产悟空的部署，不推荐。下面给出完整设计，便于 A+ 遇到阻碍时切换。
+0384 18.1 对比
+0385 18.2 方案 F：纯拉取
+0386 思路：不建常驻连接，调度器定时替每个华为用户调叨叨同步接口；发送时临时建连接。
+0387 轮询节奏（自适应）
+0388 全局限速 50 次/s，超出时按热度优先。500 人按平均 15 s 一次估算，约 33 次/s 会话同步，再加上有变化频道的补拉。
+0389 每次轮询
+0390 POST /v1/conversation/sync（带 version 和 last_msg_seqs，只返回有变化的会话）。
+0391 有变化的频道按游标 POST /v1/message/channel/sync。
+0392 每 5 次轮询做一次指令同步 POST /v1/message/sync + syncack。
+0393 已读类指令不存储，拉不到，靠定时 extra/sync（12.2）。
+0394 华为 → 叨叨：收到腾讯回调后为该用户建临时 JSON-RPC 连接（connect → send → 等回执），空闲 60 s 后关闭，连续发送复用同一条。发送仍走叨叨预校验。
+0395 代价：延迟等于轮询周期；正在输入、在线状态做不了；对叨叨业务服务的请求量比 A+ 高。
+0396 什么时候用：悟空 WebSocket 入口不可用或限制连接数时；或作为 A+ 故障期间的降级模式。A+ 已经实现了同步客户端、游标和临时发送连接，把配置 mode 从 realtime 改成 polling 即可切换。
+0397 18.3 方案 D：悟空插件
+0398 组件：一个 Go 写的悟空插件 hwbridge.wkp（用悟空官方 Go 插件 SDK），声明 Receive 方法。插件可声明 ReplySync 让悟空同步调用（超时 plugin.timeout，默认 1 s），默认异步。
+0399 部署：放到 3 个悟空节点的 <rootDir>/plugins/ 目录。悟空用 fsnotify 监听该目录，发现 .wkp 文件就以 ./hwbridge.wkp --socket <socket> --sandbox <dir> 启动（internal/plugin/server.go），不一定要重启。但容器部署时插件目录要挂卷或改镜像，仍是生产部署变更；离线推送在消息分发所在节点执行，所以 3 个节点都要装。
+0400 绑定：每注册一个华为用户，调悟空管理接口 POST /plugin/bind {"plugin_no":"<插件编号>","uid":"<华为用户叨叨 uid>"}，需要悟空管理 token。
+0401 什么时候触发（internal/pusher/handler/event_pushoffline.go）：接收者是绑定用户且主设备离线（华为用户没有叨叨 APP 设备，始终算离线）、发送者不是自己、不是只同步一次的指令、发送者不是系统账号。
+0402 插件拿到什么：RecvPacket{FromUid, ToUid, ChannelId, ChannelType, Payload}（internal/types/pluginproto/plugin.pb.go），没有 message_id、message_seq、client_msg_no、时间戳。
+0403 插件做什么：把 RecvPacket 连同一个签名 POST 给中间层 /cb/wk_plugin（地址用 /pluginconfig/:plugin 下发）。
+0404 华为 → 叨叨：插件 RPC 发送按系统设备处理，跳过好友预校验、租户限频和黑名单，不能用；只能仍用临时连接。
+0405 为什么单独用不行：收不到指令（好友申请、撤回、成员变化、已读）；收不到系统账号发的群提示；群消息 N 份无法去重；撤回无法定位；失败不重试。
+0406 18.4 方案 D+F：插件当门铃，拉取补全
+0407 插件 Receive 到达中间层后，只用它的 (ToUid, ChannelId, ChannelType)：立即对该用户该频道按游标执行一次 channel/sync，拿到带 ID 的完整消息后走第 8 节流程。同一频道 500 ms 内的多次门铃合并成一次拉取。
+0408 指令、群提示、已读仍靠 F 的定时拉取（周期可放宽到 30 s）。
+0409 发送用临时连接。
+0410 优点：不需要 500 条常驻连接，消息接近实时。
+0411 缺点：生产悟空部署变更、要持有悟空管理 token、插件要随悟空版本维护（3 个节点版本一致、崩溃重启），与“叨叨以稳定为主”冲突。
+0412 什么时候考虑：将来悟空本身要升级或重构部署时，在那次变更里一起评估。
+0413 18.5 方案 A（没有补偿的代理在线）
+0414 只有常驻连接、不做追平和对账。悟空的未回执重投只在同一条连接上有效，连接断开期间的消息会丢，所以只作为阶段 3 之前的开发中间态，不上生产。
+0415 18.6 切换方式
+0416 19. 风险与待确认
+0417 风险多数来自腾讯侧的实际行为和套餐限制，阶段 0 能消掉大部分；剩下的是运营配置项，需要你们在开发前给出答案。
+0418 19.1 风险
+0419 19.2 待确认（开发前）
+0420 ☐ 华为用户用哪个叨叨邀请码（归属哪个租户）？使用次数上限和有效期是否够 300–500 人？
+0421 ☐ 该租户是否开启“自动与邀请人互为好友”？每分钟发消息上限是多少？
+0422 ☐ 叨叨后台是否为 huawei 渠道单独设置了注册开关和邀请码开关？
+0423 ☐ 新用户是否自动进系统群 g_10000？是否需要镜像给华为用户？
+0424 ☐ 叨叨系统账号 u_10000 的消息是否转给华为用户？（默认转）
+0425 ☐ 腾讯套餐：漫游天数、Public 群人数上限、日活计费口径、是否开启“仅好友可发消息”。
+0426 ☐ 腾讯回调鉴权是否开启？
+0427 ☐ 腾讯侧后端是否跑在 PHP-FPM（能否用 response_end 转发）？出口 IP 是多少？
+0428 ☐ 叨叨对外 API 地址（给华为端加载媒体用的公网地址）和上传大小上限。
+0429 ☐ 阅后即焚、截屏、通话记录、发送失败的提示文案是否认可。
+0430 ☐ 音视频通话将来是否需要互通？（本期不做）
+0431 技术验证项见 17.1 的 V1–V12。
+0432 20. 参考：代码位置
+0433 本文每个结论对应的源码位置。叨叨业务层路径以 service/TangSengDaoDaoUltimateServer/libs/ 为根。
+0434 悟空 IM（WuKongIM/）
+0435 叨叨业务层
+0436 叨叨安卓端（ChangJuXin）
+0437 华为端 App（腾讯 IM TUIKit）
+0438 腾讯侧后端（ThinkPHP）
+0439 文档
+0440 腾讯云 IM：单发单聊消息（ForbidCallbackControl、MsgRandom）
+0441 悟空 IM：插件开发（与代码不符的描述出自此页）
+0442 WuKongIMGoProto（原因码常量）
+0443 其余腾讯 REST 接口与回调（好友、群、撤回、已读、漫游、资料）的字段以腾讯云 IM 官方文档为准，阶段 0 用真实请求样本固化。

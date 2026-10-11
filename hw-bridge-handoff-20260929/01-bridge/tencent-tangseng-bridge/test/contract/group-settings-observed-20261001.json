@@ -1,0 +1,51 @@
+{
+  "evidence": "sanitized live observations, not a simulated fixture",
+  "date": "2026-10-01",
+  "group_create_before_fix": {
+    "http": 502,
+    "step": "update-tencent-group",
+    "server_cause": "media download HTTP 404",
+    "resource": "new group avatar"
+  },
+  "after_fix": {
+    "group_create": 200,
+    "invite": {
+      "facade": [
+        1,
+        0
+      ],
+      "native": [
+        1,
+        0
+      ],
+      "tencent_ApplyJoinOption": "DisableApply"
+    },
+    "mute_all": [
+      1,
+      0
+    ],
+    "roles": [
+      "facade Admin",
+      "facade Member",
+      "native Admin",
+      "native Member"
+    ],
+    "role_notices": 4,
+    "repeat_sync_count": 3,
+    "tencent_message_sequence_unchanged": true,
+    "native_group_type": 1,
+    "member_endpoint": "/v1/groups/<group>/members?limit=1000&page=1",
+    "member_avatar": {
+      "status": 200,
+      "bytes": 1864822,
+      "source_reencoded_bytes_match": true
+    },
+    "cleanup": "both temporary groups disbanded"
+  },
+  "not_verified": [
+    "APK actual mute crash stack",
+    "APK invitation setting UI",
+    "recipient admin UI",
+    "native installed client avatar display"
+  ]
+}

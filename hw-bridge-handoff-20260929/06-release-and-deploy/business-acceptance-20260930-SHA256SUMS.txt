@@ -1,0 +1,2 @@
+da64e33554c676a75f75fe67fa6c8e073d8579c2714ee859032cde603812eebb  hw-bridge-business-acceptance-20260930.tar.gz
+a8e4717279f7440a116be6228e49faf91955c7ce4a63a73734292899e43f11bf  business-acceptance-20260930-source.zip

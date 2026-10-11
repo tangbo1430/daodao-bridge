@@ -1,0 +1,12 @@
+{
+  "channel_id": "fixture-peer",
+  "channel_type": 1,
+  "client_msg_no": "fixture-command",
+  "from_uid": "fixture-shadow",
+  "message_id": "2105000000000000001",
+  "message_seq": 23,
+  "need_receipt": false,
+  "occurred_at": 1790766828,
+  "payload": {"cmd":"syncMessageExtra","type":99},
+  "to_uid": "fixture-shadow"
+}

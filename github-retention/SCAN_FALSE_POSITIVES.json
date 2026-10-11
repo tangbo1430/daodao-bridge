@@ -1,0 +1,102 @@
+[
+  {
+    "path": "hw-bridge-handoff-20260929/02-authoritative-qch-source/企才汇源码交付-20260810/PHP-Web/qicaihui.com/extend/alipay-sdk-PHP-4.9.2/aop/AlipayMobilePublicMultiMediaClient.php",
+    "line": 137,
+    "reason": "SDK PEM delimiter string concatenated with runtime key, no embedded key body"
+  },
+  {
+    "path": "hw-bridge-handoff-20260929/02-authoritative-qch-source/企才汇源码交付-20260810/PHP-Web/qicaihui.com/extend/alipay-sdk-PHP-4.9.2/aop/AopCertClient.php",
+    "line": 302,
+    "reason": "SDK PEM delimiter string concatenated with runtime key, no embedded key body"
+  },
+  {
+    "path": "hw-bridge-handoff-20260929/02-authoritative-qch-source/企才汇源码交付-20260810/PHP-Web/qicaihui.com/extend/alipay-sdk-PHP-4.9.2/aop/AopCertClient.php",
+    "line": 685,
+    "reason": "SDK PEM delimiter string concatenated with runtime key, no embedded key body"
+  },
+  {
+    "path": "hw-bridge-handoff-20260929/02-authoritative-qch-source/企才汇源码交付-20260810/PHP-Web/qicaihui.com/extend/alipay-sdk-PHP-4.9.2/aop/AopCertClient.php",
+    "line": 743,
+    "reason": "SDK PEM delimiter string concatenated with runtime key, no embedded key body"
+  },
+  {
+    "path": "hw-bridge-handoff-20260929/02-authoritative-qch-source/企才汇源码交付-20260810/PHP-Web/qicaihui.com/extend/alipay-sdk-PHP-4.9.2/aop/AopClient.php",
+    "line": 132,
+    "reason": "SDK PEM delimiter string concatenated with runtime key, no embedded key body"
+  },
+  {
+    "path": "hw-bridge-handoff-20260929/02-authoritative-qch-source/企才汇源码交付-20260810/PHP-Web/qicaihui.com/extend/alipay-sdk-PHP-4.9.2/aop/AopClient.php",
+    "line": 168,
+    "reason": "SDK PEM delimiter string concatenated with runtime key, no embedded key body"
+  },
+  {
+    "path": "hw-bridge-handoff-20260929/02-authoritative-qch-source/企才汇源码交付-20260810/PHP-Web/qicaihui.com/extend/alipay-sdk-PHP-4.9.2/aop/AopClient.php",
+    "line": 849,
+    "reason": "SDK PEM delimiter string concatenated with runtime key, no embedded key body"
+  },
+  {
+    "path": "hw-bridge-handoff-20260929/03-php-deployment/backend/extend/alipay-sdk-PHP-4.9.2/aop/AlipayMobilePublicMultiMediaClient.php",
+    "line": 137,
+    "reason": "SDK PEM delimiter string concatenated with runtime key, no embedded key body"
+  },
+  {
+    "path": "hw-bridge-handoff-20260929/03-php-deployment/backend/extend/alipay-sdk-PHP-4.9.2/aop/AopCertClient.php",
+    "line": 302,
+    "reason": "SDK PEM delimiter string concatenated with runtime key, no embedded key body"
+  },
+  {
+    "path": "hw-bridge-handoff-20260929/03-php-deployment/backend/extend/alipay-sdk-PHP-4.9.2/aop/AopCertClient.php",
+    "line": 685,
+    "reason": "SDK PEM delimiter string concatenated with runtime key, no embedded key body"
+  },
+  {
+    "path": "hw-bridge-handoff-20260929/03-php-deployment/backend/extend/alipay-sdk-PHP-4.9.2/aop/AopCertClient.php",
+    "line": 743,
+    "reason": "SDK PEM delimiter string concatenated with runtime key, no embedded key body"
+  },
+  {
+    "path": "hw-bridge-handoff-20260929/03-php-deployment/backend/extend/alipay-sdk-PHP-4.9.2/aop/AopClient.php",
+    "line": 132,
+    "reason": "SDK PEM delimiter string concatenated with runtime key, no embedded key body"
+  },
+  {
+    "path": "hw-bridge-handoff-20260929/03-php-deployment/backend/extend/alipay-sdk-PHP-4.9.2/aop/AopClient.php",
+    "line": 168,
+    "reason": "SDK PEM delimiter string concatenated with runtime key, no embedded key body"
+  },
+  {
+    "path": "hw-bridge-handoff-20260929/03-php-deployment/backend/extend/alipay-sdk-PHP-4.9.2/aop/AopClient.php",
+    "line": 849,
+    "reason": "SDK PEM delimiter string concatenated with runtime key, no embedded key body"
+  },
+  {
+    "path": "hw-bridge-handoff-20260929/02-authoritative-qch-source/企才汇源码交付-20260810/PHP-Web/qicaihui.com/public/assets/index-d1b679af.js",
+    "line": 26,
+    "reason": "Babel method property key followed by value:function, not an API credential"
+  },
+  {
+    "path": "hw-bridge-handoff-20260929/02-authoritative-qch-source/企才汇源码交付-20260810/PHP-Web/qicaihui.com/public/assets/index-722d3ad9.js",
+    "line": 30,
+    "reason": "Babel method property key followed by value:function, not an API credential"
+  },
+  {
+    "path": "hw-bridge-handoff-20260929/02-authoritative-qch-source/企才汇源码交付-20260810/PHP-Web/qicaihui.com/public/assets/index-65c5c0c5.js",
+    "line": 26,
+    "reason": "Babel method property key followed by value:function, not an API credential"
+  },
+  {
+    "path": "hw-bridge-handoff-20260929/02-authoritative-qch-source/企才汇源码交付-20260810/PHP-Web/qicaihui.com/public/assets/index-3717f853.js",
+    "line": 26,
+    "reason": "Babel method property key followed by value:function, not an API credential"
+  },
+  {
+    "path": "hw-bridge-handoff-20260929/02-authoritative-qch-source/企才汇源码交付-20260810/PHP-Web/qicaihui.com/public/assets/index-fb9fdf8f.js",
+    "line": 26,
+    "reason": "Babel method property key followed by value:function, not an API credential"
+  },
+  {
+    "path": "hw-bridge-handoff-20260929/02-authoritative-qch-source/企才汇源码交付-20260810/PHP-Web/qicaihui.com/public/assets/index-e194fc22.js",
+    "line": 26,
+    "reason": "Babel method property key followed by value:function, not an API credential"
+  }
+]

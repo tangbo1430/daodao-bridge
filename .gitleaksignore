@@ -1,0 +1,21 @@
+# Exact reviewed SDK/method false positives; no directory-wide exclusions.
+hw-bridge-handoff-20260929/02-authoritative-qch-source/企才汇源码交付-20260810/PHP-Web/qicaihui.com/extend/alipay-sdk-PHP-4.9.2/aop/AlipayMobilePublicMultiMediaClient.php:private-key:137
+hw-bridge-handoff-20260929/02-authoritative-qch-source/企才汇源码交付-20260810/PHP-Web/qicaihui.com/extend/alipay-sdk-PHP-4.9.2/aop/AopCertClient.php:private-key:302
+hw-bridge-handoff-20260929/02-authoritative-qch-source/企才汇源码交付-20260810/PHP-Web/qicaihui.com/extend/alipay-sdk-PHP-4.9.2/aop/AopCertClient.php:private-key:685
+hw-bridge-handoff-20260929/02-authoritative-qch-source/企才汇源码交付-20260810/PHP-Web/qicaihui.com/extend/alipay-sdk-PHP-4.9.2/aop/AopCertClient.php:private-key:743
+hw-bridge-handoff-20260929/02-authoritative-qch-source/企才汇源码交付-20260810/PHP-Web/qicaihui.com/extend/alipay-sdk-PHP-4.9.2/aop/AopClient.php:private-key:132
+hw-bridge-handoff-20260929/02-authoritative-qch-source/企才汇源码交付-20260810/PHP-Web/qicaihui.com/extend/alipay-sdk-PHP-4.9.2/aop/AopClient.php:private-key:168
+hw-bridge-handoff-20260929/02-authoritative-qch-source/企才汇源码交付-20260810/PHP-Web/qicaihui.com/extend/alipay-sdk-PHP-4.9.2/aop/AopClient.php:private-key:849
+hw-bridge-handoff-20260929/02-authoritative-qch-source/企才汇源码交付-20260810/PHP-Web/qicaihui.com/public/assets/index-3717f853.js:generic-api-key:26
+hw-bridge-handoff-20260929/02-authoritative-qch-source/企才汇源码交付-20260810/PHP-Web/qicaihui.com/public/assets/index-65c5c0c5.js:generic-api-key:26
+hw-bridge-handoff-20260929/02-authoritative-qch-source/企才汇源码交付-20260810/PHP-Web/qicaihui.com/public/assets/index-722d3ad9.js:generic-api-key:30
+hw-bridge-handoff-20260929/02-authoritative-qch-source/企才汇源码交付-20260810/PHP-Web/qicaihui.com/public/assets/index-d1b679af.js:generic-api-key:26
+hw-bridge-handoff-20260929/02-authoritative-qch-source/企才汇源码交付-20260810/PHP-Web/qicaihui.com/public/assets/index-e194fc22.js:generic-api-key:26
+hw-bridge-handoff-20260929/02-authoritative-qch-source/企才汇源码交付-20260810/PHP-Web/qicaihui.com/public/assets/index-fb9fdf8f.js:generic-api-key:26
+hw-bridge-handoff-20260929/03-php-deployment/backend/extend/alipay-sdk-PHP-4.9.2/aop/AlipayMobilePublicMultiMediaClient.php:private-key:137
+hw-bridge-handoff-20260929/03-php-deployment/backend/extend/alipay-sdk-PHP-4.9.2/aop/AopCertClient.php:private-key:302
+hw-bridge-handoff-20260929/03-php-deployment/backend/extend/alipay-sdk-PHP-4.9.2/aop/AopCertClient.php:private-key:685
+hw-bridge-handoff-20260929/03-php-deployment/backend/extend/alipay-sdk-PHP-4.9.2/aop/AopCertClient.php:private-key:743
+hw-bridge-handoff-20260929/03-php-deployment/backend/extend/alipay-sdk-PHP-4.9.2/aop/AopClient.php:private-key:132
+hw-bridge-handoff-20260929/03-php-deployment/backend/extend/alipay-sdk-PHP-4.9.2/aop/AopClient.php:private-key:168
+hw-bridge-handoff-20260929/03-php-deployment/backend/extend/alipay-sdk-PHP-4.9.2/aop/AopClient.php:private-key:849

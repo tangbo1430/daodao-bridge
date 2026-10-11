@@ -1,0 +1,22 @@
+{
+  "evidence": "Observed native self-member PUT on an authorized temporary group; identifiers and versions sanitized",
+  "request": {
+    "method": "PUT",
+    "path": "/v1/groups/fixture-group/members/fixture-owner",
+    "body": {}
+  },
+  "response": {
+    "status": 200
+  },
+  "before": {
+    "uid": "fixture-owner",
+    "version": 1,
+    "avatar": ""
+  },
+  "after": {
+    "uid": "fixture-owner",
+    "version": 2,
+    "avatar": ""
+  },
+  "business_fields_unchanged": true
+}

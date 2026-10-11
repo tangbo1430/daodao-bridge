@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="../../lib/layui-v2.5.5/css/layui.css" media="all">
+    <link rel="stylesheet" href="../../css/public.css" media="all">
+</head>
+
+<body>
+    <div class="layuimini-container">
+        <div class="layuimini-main">
+         
+        <script type="text/html" id="toolbar_add">
+                    <div class="layui-btn-container">
+                        <button class="layui-btn layui-btn-normal layui-btn-sm data-add-btn" lay-event="add"> 添 加 </button>
+                    </div>
+        </script>
+        <table class="layui-hide" id="currentTableId" lay-filter="currentTableFilter" style="align: center;">
+        </table>
+    </div>
+    </div>
+    <script src="../../lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
+    <script src="../../common/common.js" charset="utf-8"></script>
+    <script>
+        layui.use(['form', 'table'], function () {
+            var $ = layui.jquery,
+                form = layui.form,
+                table = layui.table;
+                var group_id = parent.Id
+            table.render({
+                elem: '#currentTableId',
+                url: WebHost + 'group/get_group_file_list',
+                where: {
+                    "login_token": AdminLoginToken,
+                    group_id:group_id
+                }, //设定异步数据接口的额外参数
+                method: "POST",
+                toolbar: '#toolbar_add',
+                defaultToolbar: ['filter', 'exports', 'print', {
+                    title: '提示',
+                    layEvent: 'LAYTABLE_TIPS',
+                    icon: 'layui-icon-tips'
+                }],
+                cols: [[
+                    { field: 'file_name', title: '文件名称' },
+                    { field: 'file_url', title: '文件地址' },
+                    { title: '操作', minWidth: 150, toolbar: '#currentTableBar', align: "center" }
+                ]],
+                limits: [10, 15, 20, 25, 50, 100],
+                limit: 15,
+                page: true,
+                skin: 'line'
+            });
+
+            // 监听搜索操作
+            form.on('submit(data-search-btn)', function (data) {
+                // var result = JSON.stringify(data.field);
+                // layer.alert(result, {
+                //     title: '最终的搜索信息'
+                // });
+                data.field.admin_login_token = AdminLoginToken
+                //执行搜索重载
+                table.reload('currentTableId', {
+                    where: data.field,
+                    page: {
+                        curr: 1
+                    }
+                }, 'json');
+                return false;
+            });
+
+            /**
+ * toolbar监听事件
+     */
+        table.on('toolbar(currentTableFilter)', function (obj) {
+                if (obj.event === 'add') {  // 监听添加操作
+                    GroupId = group_id
+                    var index = layer.open({
+                        title: '添加',
+                        type: 2,
+                        shade: 0.2,
+                        maxmin: true,
+                        shadeClose: true,
+                        area: ['80%', '80%'],
+                        content: 'group_file_add.html',
+                    });
+                    $(window).on("resize", function () {
+                        layer.full(index);
+                    });
+                }
+            });
+
+            table.on('tool(currentTableFilter)', function (obj) {
+                var data = obj.data;
+                if (obj.event === 'edit_info') {
+                    Id = data.id;
+                    var index = layer.open({
+                        title: '编辑',
+                        type: 2,
+                        shade: 0.2,
+                        maxmin: true,
+                        shadeClose: true,
+                        area: ['80%', '80%'],
+                        content: '../report/report_type_edit.html',
+                    });
+                    $(window).on("resize", function () {
+                        layer.full(index);
+                    });
+                    return false;
+
+                } else if (obj.event === 'del') {
+                    Id = data.id;
+                    admin_login_token = AdminLoginToken;
+                    layer.confirm("确认要删除吗", { title: "删除确认" }, function (index) {
+                        $.post(WebHost + 'group/del_group_file', { id: data.id, group_id: group_id, login_token: admin_login_token }, function (data) {
+                            layer.msg(data.msg);
+                            if (data.code == 200) {
+                                location.reload();
+                            }
+                            layer.close(index);
+                        }, "json");
+                    });
+                }
+            });
+        });
+    </script>
+<script type="text/html" id="add_time">
+    {{dateFormat(d.add_time) }}
+</script>
+
+<script type="text/html" id="deal_time">
+    {{dateFormat(d.deal_time) }}
+</script>
+<script type="text/html" id="update_time">
+    {{dateFormat(d.update_time) }}
+</script>
+    <script type="text/html" id="currentTableBar">
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+
+<script type="text/html" id="head_pic_Tpl">
+			<img src="{{d.head_pic}}" height="100%" class="layui-upload-img" onclick="previewImg(this)" />
+		</script>
+<script type="text/html" id="status">
+    {{#  if(d.status == "1"){ }}
+       <span style="color:red">待处理</span>
+    {{# }else if(d.status=="2"){}}
+        <span style="color:green">已处理</span>
+    {{#  } }}
+</script>
+
+<script type="text/html" id="image">
+  <a href="{{d.image}}" target="_blank"> <img src="{{d.image}}"  height="100%"> </a>
+</script>
+
+</body>
+
+</html>

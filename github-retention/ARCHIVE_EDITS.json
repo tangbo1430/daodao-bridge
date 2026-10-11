@@ -1,0 +1,26 @@
+{
+  "changed_paths": [
+    "02-authoritative-qch-source/企才汇源码交付-20260810/PHP-Web/qicaihui.com/.gitignore",
+    "02-authoritative-qch-source/企才汇源码交付-20260810/PHP-Web/qicaihui.com/application/api/model/UserTencent.php",
+    "02-authoritative-qch-source/企才汇源码交付-20260810/PHP-Web/qicaihui.com/application/common.php",
+    "02-authoritative-qch-source/企才汇源码交付-20260810/PHP-Web/qicaihui.com/public/static/.gitignore",
+    "03-php-deployment/backend/.gitignore",
+    "03-php-deployment/backend/application/admin/model/UploadSql.php",
+    "03-php-deployment/backend/application/api/model/UserTencent.php",
+    "03-php-deployment/backend/application/common.php",
+    "02-authoritative-qch-source/企才汇源码交付-20260810/Android/qch/app/build.gradle",
+    "02-authoritative-qch-source/企才汇源码交付-20260810/PHP-Web/qicaihui.com/extend/RongCloud/Lib/Push/api.json",
+    "02-authoritative-qch-source/企才汇源码交付-20260810/PHP-Web/qicaihui.com/extend/RongCloud/Lib/User/api.json",
+    "02-authoritative-qch-source/企才汇源码交付-20260810/PHP-Web/qicaihui.com/public/assets/index-3717f853.js",
+    "02-authoritative-qch-source/企才汇源码交付-20260810/PHP-Web/qicaihui.com/public/assets/index-65c5c0c5.js",
+    "02-authoritative-qch-source/企才汇源码交付-20260810/PHP-Web/qicaihui.com/public/assets/index-722d3ad9.js",
+    "02-authoritative-qch-source/企才汇源码交付-20260810/PHP-Web/qicaihui.com/public/assets/index-d1b679af.js",
+    "02-authoritative-qch-source/企才汇源码交付-20260810/PHP-Web/qicaihui.com/public/assets/index-e194fc22.js",
+    "02-authoritative-qch-source/企才汇源码交付-20260810/PHP-Web/qicaihui.com/public/assets/index-fb9fdf8f.js",
+    "03-php-deployment/backend/extend/RongCloud/Lib/Push/api.json",
+    "03-php-deployment/backend/extend/RongCloud/Lib/User/api.json",
+    "02-authoritative-qch-source/企才汇源码交付-20260810/PHP-Web/qicaihui.com/extend/.gitignore",
+    "03-php-deployment/backend/extend/.gitignore"
+  ],
+  "reason": "Remove embedded credentials and preserve framework/static resources in Git; original workspace and production are unchanged."
+}

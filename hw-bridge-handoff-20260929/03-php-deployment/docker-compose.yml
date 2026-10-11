@@ -1,0 +1,188 @@
+services:
+  mysql:
+    image: mysql:8.0
+    restart: unless-stopped
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    environment:
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      TZ: Asia/Singapore
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./database/init:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -uroot -p$$MYSQL_ROOT_PASSWORD --silent"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    command: redis-server --appendonly yes
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  bridge_mysql:
+    image: mysql:8.0
+    restart: unless-stopped
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    environment:
+      MYSQL_DATABASE: bridge
+      MYSQL_USER: bridge
+      MYSQL_PASSWORD: ${BRIDGE_DB_PASSWORD:-CHANGE_ME_BRIDGE_DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${BRIDGE_DB_ROOT_PASSWORD:-CHANGE_ME_BRIDGE_ROOT_PASSWORD}
+      TZ: Asia/Singapore
+    volumes:
+      - bridge_mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -uroot -p$$MYSQL_ROOT_PASSWORD --silent"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+
+  bridge_redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    command: redis-server --appendonly yes
+    volumes:
+      - bridge_redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  migrate:
+    image: mysql:8.0
+    restart: "no"
+    env_file: .env
+    command:
+      - /bin/sh
+      - -ec
+      - |
+        for file in /migrations/*.sql; do
+          echo "Applying $${file}"
+          MYSQL_PWD="$${DB_PASSWORD}" mysql -h mysql -u"$${DB_USER}" "$${DB_NAME}" < "$${file}"
+        done
+    volumes:
+      - ./database/migrations:/migrations:ro
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+  php:
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+    restart: unless-stopped
+    env_file: .env
+    volumes:
+      - ./backend:/var/www/app
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      migrate:
+        condition: service_completed_successfully
+
+  worker:
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+    restart: unless-stopped
+    env_file: .env
+    command: php application/imcallback/scripts/worker.php
+    working_dir: /var/www/app
+    volumes:
+      - ./backend:/var/www/app
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      migrate:
+        condition: service_completed_successfully
+
+  bridge:
+    build:
+      context: ../bridge/tencent-tangseng-bridge
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      BRIDGE_MYSQL_DSN: bridge:${BRIDGE_DB_PASSWORD:-CHANGE_ME_BRIDGE_DB_PASSWORD}@tcp(bridge_mysql:3306)/bridge?parseTime=true&charset=utf8mb4
+      BRIDGE_REDIS_URL: redis://bridge_redis:6379/0
+    ports:
+      - "8090:8090"
+    depends_on:
+      bridge_mysql:
+        condition: service_healthy
+      bridge_redis:
+        condition: service_healthy
+
+  cleanup:
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+    restart: unless-stopped
+    env_file: .env
+    command: ["/bin/sh", "/opt/cleanup-loop.sh"]
+    working_dir: /var/www/app
+    volumes:
+      - ./backend:/var/www/app
+      - ./docker/php/cleanup-loop.sh:/opt/cleanup-loop.sh:ro
+    depends_on:
+      mysql:
+        condition: service_healthy
+      migrate:
+        condition: service_completed_successfully
+
+  web:
+    image: node:20-alpine
+    restart: unless-stopped
+    environment:
+      PORT: 8080
+      API_BASE: http://gateway:8080
+      IM_SDK_APP_ID: ${IM_SDK_APP_ID}
+      LEGACY_IM_SDK_APP_ID: ${LEGACY_IM_SDK_APP_ID:-1600088222}
+      WEB_ROOT: /app/public
+      MAIN_ASSET: /assets/index-eab254cd.js
+    command: node /app/server.cjs
+    volumes:
+      - ./frontend/public:/app/public:ro
+      - ./docker/web/server.cjs:/app/server.cjs:ro
+    depends_on:
+      - gateway
+
+  gateway:
+    image: caddy:2.8-alpine
+    restart: unless-stopped
+    environment:
+      ACME_EMAIL: ${ACME_EMAIL}
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./docker/caddy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - ./backend/public:/srv/backend/public:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - php
+
+volumes:
+  mysql_data:
+  redis_data:
+  bridge_mysql_data:
+  bridge_redis_data:
+  caddy_data:
+  caddy_config:

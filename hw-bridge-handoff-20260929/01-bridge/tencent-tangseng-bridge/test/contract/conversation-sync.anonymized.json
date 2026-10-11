@@ -1,0 +1,315 @@
+{
+  "source": "deployed TangSeng read-only capture, 2026-09-29",
+  "conversation": {
+    "uid": "fixture-owner",
+    "conversations": [
+      {
+        "channel_id": "fixture-channel",
+        "channel_type": 2,
+        "timestamp": 1790704541,
+        "last_msg_seq": 11,
+        "last_client_msg_no": "fixture-client",
+        "offset_msg_seq": 0,
+        "version": 1790704541000000000,
+        "recents": [
+          {
+            "header": {
+              "no_persist": 0,
+              "red_dot": 0,
+              "sync_once": 0
+            },
+            "setting": 128,
+            "message_id": 900000000000000000,
+            "message_idstr": "900000000000000001",
+            "message_seq": 11,
+            "client_msg_no": "fixture-1",
+            "from_uid": "fixture-peer",
+            "channel_id": "fixture-channel",
+            "channel_type": 2,
+            "timestamp": 1790704541,
+            "payload": {
+              "type": 1,
+              "content": "fixture"
+            },
+            "is_deleted": 1,
+            "is_delete": 1,
+            "readed": 0,
+            "extra_version": 0,
+            "message_extra": {
+              "message_id": "900000000000000001",
+              "message_id_str": "900000000000000001",
+              "is_mutual_deleted": 1,
+              "extra_version": 0
+            }
+          }
+        ]
+      }
+    ],
+    "users": [],
+    "groups": [],
+    "channel_status": []
+  },
+  "channel": {
+    "start_message_seq": 1,
+    "end_message_seq": 12,
+    "pull_mode": 0,
+    "more": 0,
+    "messages": [
+      {
+        "header": {
+          "no_persist": 0,
+          "red_dot": 1,
+          "sync_once": 0
+        },
+        "setting": 0,
+        "message_id": 900000000000000000,
+        "message_idstr": "900000000000000020",
+        "message_seq": 2,
+        "client_msg_no": "fixture-20",
+        "from_uid": "fixture-peer",
+        "channel_id": "fixture-channel",
+        "channel_type": 2,
+        "timestamp": 1790700560,
+        "payload": {
+          "type": 1,
+          "content": "fixture"
+        },
+        "is_deleted": 0,
+        "is_delete": 0,
+        "readed": 0,
+        "extra_version": 0
+      },
+      {
+        "header": {
+          "no_persist": 0,
+          "red_dot": 1,
+          "sync_once": 0
+        },
+        "setting": 0,
+        "message_id": 900000000000000000,
+        "message_idstr": "900000000000000021",
+        "message_seq": 3,
+        "client_msg_no": "fixture-21",
+        "from_uid": "fixture-peer",
+        "channel_id": "fixture-channel",
+        "channel_type": 2,
+        "timestamp": 1790700563,
+        "payload": {
+          "type": 1,
+          "content": "fixture"
+        },
+        "is_deleted": 0,
+        "is_delete": 0,
+        "readed": 0,
+        "extra_version": 0
+      },
+      {
+        "header": {
+          "no_persist": 0,
+          "red_dot": 1,
+          "sync_once": 0
+        },
+        "setting": 0,
+        "message_id": 900000000000000000,
+        "message_idstr": "900000000000000022",
+        "message_seq": 4,
+        "client_msg_no": "fixture-22",
+        "from_uid": "fixture-peer",
+        "channel_id": "fixture-channel",
+        "channel_type": 2,
+        "timestamp": 1790700565,
+        "payload": {
+          "type": 1,
+          "content": "fixture"
+        },
+        "is_deleted": 0,
+        "is_delete": 0,
+        "readed": 0,
+        "extra_version": 0
+      },
+      {
+        "header": {
+          "no_persist": 0,
+          "red_dot": 1,
+          "sync_once": 0
+        },
+        "setting": 0,
+        "message_id": 900000000000000000,
+        "message_idstr": "900000000000000023",
+        "message_seq": 5,
+        "client_msg_no": "fixture-23",
+        "from_uid": "fixture-peer",
+        "channel_id": "fixture-channel",
+        "channel_type": 2,
+        "timestamp": 1790700567,
+        "payload": {
+          "type": 1,
+          "content": "fixture"
+        },
+        "is_deleted": 0,
+        "is_delete": 0,
+        "readed": 0,
+        "extra_version": 0
+      },
+      {
+        "header": {
+          "no_persist": 0,
+          "red_dot": 1,
+          "sync_once": 0
+        },
+        "setting": 128,
+        "message_id": 900000000000000000,
+        "message_idstr": "900000000000000024",
+        "message_seq": 7,
+        "client_msg_no": "fixture-24",
+        "from_uid": "fixture-peer",
+        "channel_id": "fixture-channel",
+        "channel_type": 2,
+        "timestamp": 1790700619,
+        "payload": {
+          "type": 1,
+          "content": "fixture"
+        },
+        "is_deleted": 0,
+        "is_delete": 0,
+        "readed": 0,
+        "readed_count": 1,
+        "extra_version": 1790700717127106,
+        "message_extra": {
+          "message_id": "900000000000000024",
+          "message_id_str": "900000000000000024",
+          "readed_count": 1,
+          "extra_version": 1790700717127106
+        }
+      },
+      {
+        "header": {
+          "no_persist": 0,
+          "red_dot": 1,
+          "sync_once": 0
+        },
+        "setting": 128,
+        "message_id": 900000000000000000,
+        "message_idstr": "900000000000000025",
+        "message_seq": 8,
+        "client_msg_no": "fixture-25",
+        "from_uid": "fixture-peer",
+        "channel_id": "fixture-channel",
+        "channel_type": 2,
+        "timestamp": 1790700691,
+        "payload": {
+          "type": 1,
+          "content": "fixture"
+        },
+        "is_deleted": 0,
+        "is_delete": 0,
+        "readed": 0,
+        "readed_count": 1,
+        "extra_version": 1790700717126289,
+        "message_extra": {
+          "message_id": "900000000000000025",
+          "message_id_str": "900000000000000025",
+          "readed_count": 1,
+          "extra_version": 1790700717126289
+        }
+      },
+      {
+        "header": {
+          "no_persist": 0,
+          "red_dot": 1,
+          "sync_once": 0
+        },
+        "setting": 128,
+        "message_id": 900000000000000000,
+        "message_idstr": "900000000000000026",
+        "message_seq": 9,
+        "client_msg_no": "fixture-26",
+        "from_uid": "fixture-peer",
+        "channel_id": "fixture-channel",
+        "channel_type": 2,
+        "timestamp": 1790700716,
+        "payload": {
+          "type": 1,
+          "content": "fixture"
+        },
+        "is_deleted": 0,
+        "is_delete": 0,
+        "readed": 0,
+        "extra_version": 0
+      },
+      {
+        "header": {
+          "no_persist": 0,
+          "red_dot": 1,
+          "sync_once": 0
+        },
+        "setting": 128,
+        "message_id": 900000000000000000,
+        "message_idstr": "900000000000000027",
+        "message_seq": 10,
+        "client_msg_no": "fixture-27",
+        "from_uid": "fixture-peer",
+        "channel_id": "fixture-channel",
+        "channel_type": 2,
+        "timestamp": 1790700718,
+        "payload": {
+          "type": 1,
+          "content": "fixture"
+        },
+        "is_deleted": 0,
+        "is_delete": 0,
+        "readed": 0,
+        "extra_version": 0
+      },
+      {
+        "header": {
+          "no_persist": 0,
+          "red_dot": 1,
+          "sync_once": 0
+        },
+        "setting": 128,
+        "message_id": 900000000000000000,
+        "message_idstr": "900000000000000028",
+        "message_seq": 11,
+        "client_msg_no": "fixture-28",
+        "from_uid": "fixture-peer",
+        "channel_id": "fixture-channel",
+        "channel_type": 2,
+        "timestamp": 1790704541,
+        "payload": {
+          "type": 1,
+          "content": "fixture"
+        },
+        "is_deleted": 1,
+        "is_delete": 1,
+        "readed": 0,
+        "extra_version": 1790704566878833,
+        "message_extra": {
+          "message_id": "900000000000000028",
+          "message_id_str": "900000000000000028",
+          "is_mutual_deleted": 1,
+          "extra_version": 1790704566878833
+        }
+      }
+    ]
+  },
+  "pagination_observation": {
+    "request": {
+      "start_message_seq": 0,
+      "end_message_seq": 238,
+      "limit": 5,
+      "pull_mode": 1
+    },
+    "response": {
+      "more": 0,
+      "sequences": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ]
+    },
+    "conversation_last_msg_seq": 237
+  }
+}

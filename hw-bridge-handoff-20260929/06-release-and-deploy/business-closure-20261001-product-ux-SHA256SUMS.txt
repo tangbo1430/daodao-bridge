@@ -1,0 +1,5 @@
+dc7680b5d9e0ab889b95d0d42c7f2b4af5e2083b32caa2e4114e4b4d451a6f9a  business-closure-20261001-product-ux-source.zip
+b516394dbdd64058eace6189b7cea4f00a75b3406990c2dc815bb142bb698a9f  business-closure-20261001-product-ux-SOURCE-MANIFEST.json
+9b6c3807fd61988e9a9ab1eb1b3b54ca3e8da24960b1ab602ecb3a03da2f9f4e  hw-bridge-business-closure-20261001-product-ux.tar.gz
+d32c3e64e2335ac634015c485a923441081b9e5d19e76f38d4f584e6fda1abbd  php-business-closure-20261001-product-ux.tar.gz
+caa17a53a2cf8bd31ac9058c6544ba276f1df8bfc6741898954943a63145bbed  qch-business-closure-20261001-product-ux-qa.apk

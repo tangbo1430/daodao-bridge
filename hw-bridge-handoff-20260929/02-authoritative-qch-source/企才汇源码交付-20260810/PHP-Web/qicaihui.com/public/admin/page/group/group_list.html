@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="../../lib/layui-v2.5.5/css/layui.css" media="all">
+    <link rel="stylesheet" href="../../css/public.css" media="all">
+</head>
+
+<body>
+    <div class="layuimini-container">
+        <div class="layuimini-main">
+            <fieldset class="table-search-fieldset">
+                <legend>搜索信息</legend>
+                <div style="margin: 10px 10px 10px 10px">
+                    <form class="layui-form layui-form-pane" action="">
+                        <div class="layui-form-item">
+                            <div class="layui-inline">
+                                <div class="layui-input-inline">
+                                    <input type="text" name="uid" autocomplete="off" class="layui-input"
+                                        placeholder="群主ID">
+                                </div>
+                            </div>
+                            <div class=" layui-inline">
+                                <button type="submit" class="layui-btn layui-btn-primary" lay-submit
+                                    lay-filter="data-search-btn"><i class="layui-icon"></i> 搜 索</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </fieldset>
+            
+            <script type="text/html" id="toolbar_add">
+                <div class="layui-btn-container">
+                    <button class="layui-btn layui-btn-normal layui-btn-sm data-add-btn" lay-event="add"> 添 加 </button>
+                    <button class="layui-btn layui-btn-warm layui-btn-sm" lay-event="export_with_members"> 导出（含成员） </button>
+                </div>
+            </script>
+            
+            <table class="layui-hide" id="currentTableId" lay-filter="currentTableFilter" style="align: center;">
+            </table>
+        </div>
+    </div>
+    
+    <script src="../../lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
+    <script src="../../common/common.js" charset="utf-8"></script>
+    <script>
+        layui.use(['form', 'table'], function () {
+            var $ = layui.jquery,
+                form = layui.form,
+                table = layui.table;
+                
+            table.render({
+                elem: '#currentTableId',
+                url: WebHost + 'group/get_group_list',
+                where: {
+                    "login_token": AdminLoginToken,
+                },
+                method: "POST",
+                toolbar: '#toolbar_add',
+                defaultToolbar: ['filter', 'exports', 'print', {
+                    title: '提示',
+                    layEvent: 'LAYTABLE_TIPS',
+                    icon: 'layui-icon-tips'
+                }],
+                cols: [[
+                    { field: 'id', title: 'ID' },
+                    { field: 'uid', title: '群主ID' },
+                    { field: 'nick_name', title: '群主昵称' },
+                    { field: 'group_name', title: '群主名称' },
+                    { field: 'add_time', title: '创建时间', templet: '#add_time' },
+                    { title: '操作', minWidth: 210, toolbar: '#currentTableBar', align: "center" }
+                ]],
+                limits: [10, 15, 20, 25, 50, 100],
+                limit: 15,
+                page: true,
+                skin: 'line'
+            });
+
+            // 监听搜索操作
+            form.on('submit(data-search-btn)', function (data) {
+                data.field.admin_login_token = AdminLoginToken;
+                table.reload('currentTableId', {
+                    where: data.field,
+                    page: {
+                        curr: 1
+                    }
+                }, 'json');
+                return false;
+            });
+
+            // 导出群组和成员信息的函数
+            function exportGroupsWithMembers() {
+                layer.msg('正在获取当前页数据，请稍候...', {icon: 16, time: 0, shade: 0.3});
+                
+                // 获取当前页面显示的数据
+                var currentData = table.cache.currentTableId || [];
+                
+                if (currentData.length === 0) {
+                    layer.closeAll('msg');
+                    layer.msg('当前页没有数据可以导出');
+                    return;
+                }
+                
+                var exportData = [];
+                var completedRequests = 0;
+                var totalGroups = currentData.length;
+                
+                // 为当前页每个群组获取成员信息
+                currentData.forEach(function(group, index) {
+                    $.post(WebHost + 'group/get_group_user_list', {
+                        group_id: group.id,
+                        login_token: AdminLoginToken,
+                        page: 1,
+                        limit: 999
+                    }, function(memberData) {
+                        var members = '';
+                        var memberCount = 0;
+                        
+                        if (memberData.code === 0 && memberData.data) {
+                            memberCount = memberData.count || 0;
+                            if (memberData.data.length > 0) {
+                                var memberNames = memberData.data.map(function(member) {
+                                    // return member.username || member.nickname || ('用户' + member.uid);
+                                    return member.username || member.nickname || ( member.uid);
+                                });
+                                members = memberNames.join(', ');
+                            }
+                        }
+                        
+                        exportData[index] = {
+                            'ID': group.id,
+                            '群主ID': group.uid,
+                            '群主昵称': group.nick_name || '',
+                            '群名称': group.group_name || '',
+                            '创建时间': dateFormat(group.add_time),
+                            '成员数量': memberCount,
+                            '成员列表': members || '暂无成员'
+                        };
+                        
+                        completedRequests++;
+                        
+                        if (completedRequests === totalGroups) {
+                            layer.closeAll('msg');
+                            exportToExcel(exportData, '群组列表（当前页含成员信息）');
+                        }
+                    }, 'json').fail(function() {
+                        exportData[index] = {
+                            'ID': group.id,
+                            '群主ID': group.uid,
+                            '群主昵称': group.nick_name || '',
+                            '群名称': group.group_name || '',
+                            '创建时间': dateFormat(group.add_time),
+                            '成员数量': 0,
+                            '成员列表': '获取失败'
+                        };
+                        
+                        completedRequests++;
+                        if (completedRequests === totalGroups) {
+                            layer.closeAll('msg');
+                            exportToExcel(exportData, '群组列表（当前页含成员信息）');
+                        }
+                    });
+                });
+            }
+            
+            // 导出到Excel的函数
+            function exportToExcel(data, filename) {
+                if (data.length === 0) {
+                    layer.msg('没有数据可以导出');
+                    return;
+                }
+                
+                // 创建CSV内容
+                var csv = '\uFEFF'; // BOM头，解决中文乱码
+                var headers = Object.keys(data[0]);
+                csv += headers.join(',') + '\n';
+                
+                data.forEach(function(row) {
+                    var values = headers.map(function(header) {
+                        var value = row[header] || '';
+                        // 处理包含逗号或换行的值
+                        if (value.toString().includes(',') || value.toString().includes('\n')) {
+                            value = '"' + value.toString().replace(/"/g, '""') + '"';
+                        }
+                        return value;
+                    });
+                    csv += values.join(',') + '\n';
+                });
+                
+                // 创建下载链接
+                var blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+                var link = document.createElement('a');
+                var url = URL.createObjectURL(blob);
+                link.setAttribute('href', url);
+                link.setAttribute('download', filename + '_' + new Date().toISOString().slice(0,10) + '.csv');
+                link.style.visibility = 'hidden';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                
+                layer.msg('导出成功！');
+            }
+
+            // toolbar监听事件
+            table.on('toolbar(currentTableFilter)', function (obj) {
+                if (obj.event === 'add') {
+                    var index = layer.open({
+                        title: '添加',
+                        type: 2,
+                        shade: 0.2,
+                        maxmin: true,
+                        shadeClose: true,
+                        area: ['80%', '80%'],
+                        content: 'group_add.html',
+                    });
+                    $(window).on("resize", function () {
+                        layer.full(index);
+                    });
+                } else if (obj.event === 'export_with_members') {
+                    // 导出包含成员信息的数据
+                    exportGroupsWithMembers();
+                }
+            });
+
+            table.on('tool(currentTableFilter)', function (obj) {
+                var data = obj.data;
+                if (obj.event === 'edit_info') {
+                    Id = data.id;
+                    var index = layer.open({
+                        title: '修改群组',
+                        type: 2,
+                        shade: 0.2,
+                        maxmin: true,
+                        shadeClose: true,
+                        area: ['80%', '80%'],
+                        content: 'group_edit.html',
+                    });
+                    $(window).on("resize", function () {
+                        layer.full(index);
+                    });
+                    return false;
+                } else if (obj.event === 'del') {
+                    Id = data.id;
+                    admin_login_token = AdminLoginToken;
+                    layer.confirm("确认要删除吗", { title: "删除确认" }, function (index) {
+                        $.post(WebHost + 'group/del_group', { id: Id, login_token: admin_login_token }, function (data) {
+                            layer.msg(data.msg);
+                            if (data.code == 200) {
+                                location.reload();
+                            }
+                            layer.close(index);
+                        }, "json");
+                    });
+                } else if (obj.event === 'group_user') {
+                    Id = data.id;
+                    var index = layer.open({
+                        title: '群组列表',
+                        type: 2,
+                        shade: 0.2,
+                        maxmin: true,
+                        shadeClose: true,
+                        area: ['80%', '90%'],
+                        content: 'group_user_list.html',
+                    });
+                    $(window).on("resize", function () {
+                        layer.full(index);
+                    });
+                    return false;
+                } else if (obj.event === 'group_file') {
+                    Id = data.id;
+                    var index = layer.open({
+                        title: '群组文件',
+                        type: 2,
+                        shade: 0.2,
+                        maxmin: true,
+                        shadeClose: true,
+                        area: ['80%', '90%'],
+                        content: 'group_file_list.html',
+                    });
+                    $(window).on("resize", function () {
+                        layer.full(index);
+                    });
+                    return false;
+                }
+            });
+        });
+
+        function previewImg(obj) {
+            var img = new Image();
+            img.src = obj.src;
+            var imgHtml = "<img src='" + obj.src + "' width='500px' height='500px'/>";
+            layer.open({
+                type: 1,
+                shade: 0.8,
+                offset: 'auto',
+                area: [500 + 'px', 550 + 'px'],
+                shadeClose: true,
+                scrollbar: false,
+                title: '查看图片',
+                content: imgHtml,
+                cancel: function () {
+                }
+            });
+        }
+    </script>
+    
+<script type="text/html" id="add_time">
+    {{dateFormat(d.add_time) }}
+</script>
+
+<script type="text/html" id="deal_time">
+    {{dateFormat(d.deal_time) }}
+</script>
+
+<script type="text/html" id="update_time">
+    {{dateFormat(d.update_time) }}
+</script>
+
+<script type="text/html" id="currentTableBar">
+    <a class="layui-btn layui-btn-xs data-count-edit" lay-event="edit_info">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+    <a class="layui-btn layui-btn-xs data-count-edit" lay-event="group_user">群成员</a>
+</script>
+
+<script type="text/html" id="status">
+    {{#  if(d.status == "1"){ }}
+       <span style="color:red">待处理</span>
+    {{# }else if(d.status=="2"){}}
+        <span style="color:green">已处理</span>
+    {{#  } }}
+</script>
+
+<script type="text/html" id="image">
+   <img src="{{d.image}}"  height="100%" class="layui-upload-img" onclick="previewImg(this)"> 
+</script>
+
+</body>
+</html>

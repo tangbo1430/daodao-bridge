@@ -1,0 +1,52 @@
+{
+  "provenance": "real Bridge Inbox; identifiers and names redacted",
+  "packets": {
+    "2000": {
+      "content": "{0}已解散该群聊",
+      "extra": [
+        {
+          "uid": "fixture-native-id",
+          "name": "fixture-name"
+        }
+      ],
+      "from_name": "fixture-name",
+      "from_uid": "fixture-native-id",
+      "type": 2000
+    },
+    "1008": {
+      "content": "“{0}”已成为新群主",
+      "extra": [
+        {
+          "uid": "fixture-native-id",
+          "name": "fixture-name"
+        }
+      ],
+      "type": 1008
+    },
+    "1002": {
+      "content": "fixture-name邀请{0}加入群聊",
+      "extra": [
+        {
+          "uid": "fixture-native-id",
+          "name": "fixture-name"
+        }
+      ],
+      "from_name": "fixture-name",
+      "from_uid": "fixture-native-id",
+      "type": 1002
+    },
+    "1001": {
+      "content": "fixture-name邀请{0}加入群聊",
+      "creator": "fixture-native-id",
+      "creator_name": "fixture-name",
+      "extra": [
+        {
+          "uid": "fixture-native-id",
+          "name": "fixture-name"
+        }
+      ],
+      "type": 1001,
+      "version": 1142054
+    }
+  }
+}

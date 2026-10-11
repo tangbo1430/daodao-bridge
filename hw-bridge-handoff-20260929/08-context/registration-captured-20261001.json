@@ -1,0 +1,10 @@
+{
+  "provenance": "real native login for dedicated registration acceptance reservation",
+  "reservation_status": "registering",
+  "stored_uid_present": true,
+  "http_status": 400,
+  "response": {
+    "msg": "更新用户登录设备失败",
+    "status": 400
+  }
+}

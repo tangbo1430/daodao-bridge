@@ -1,0 +1,3 @@
+# Preserve required vendored PHP extensions and their licenses.
+.DS_Store
+Thumbs.db

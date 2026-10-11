@@ -1,0 +1,42 @@
+[
+  {
+    "path": "01-bridge/tencent-tangseng-bridge/internal/business/group_role_notice.go",
+    "sha256": "c5e00858374c0dd2bff4baf8ffb99433e0b31717cb12815d4eb395539cba4c38"
+  },
+  {
+    "path": "01-bridge/tencent-tangseng-bridge/internal/business/group_role_notice_test.go",
+    "sha256": "72707d408c7560562c49ffabd8fefdde06afeb26b2c755ce5c3c844a7e9cfc88"
+  },
+  {
+    "path": "01-bridge/tencent-tangseng-bridge/internal/business/groups.go",
+    "sha256": "2f257d3513a0c806b71606412ee7c0d259af823aa3fea5a5e50580b85470d97b"
+  },
+  {
+    "path": "01-bridge/tencent-tangseng-bridge/internal/business/friends.go",
+    "sha256": "a53a9c42e970fd99a8592ee48a6a25e8eb96c6633549b23a62009afabc3ec3e7"
+  },
+  {
+    "path": "01-bridge/tencent-tangseng-bridge/internal/domain/business.go",
+    "sha256": "fa79fb0a297bc36ef7be5d6e461dbdd1686cc799705bcd323b0bb35e3bd9025e"
+  },
+  {
+    "path": "01-bridge/tencent-tangseng-bridge/internal/domain/message_metadata.go",
+    "sha256": "cfdcbe1224bf5615b35b92b1307b9812b13a5b739d7d1ce24338f50108d74f4f"
+  },
+  {
+    "path": "01-bridge/tencent-tangseng-bridge/test/contract/group-role-notice-observed-20261001.json",
+    "sha256": "713a1c54b4c6103b4aeae1434ba5df5eed271757460ad9cf9139b04e2ae049ea"
+  },
+  {
+    "path": "06-release-and-deploy/verify-group-role-notice.py",
+    "sha256": "becbe49725e9c8f9a7b579ab56c39d564a38358d7ab835cdfd46302c813cc7c8"
+  },
+  {
+    "path": "08-context/GROUP_ROLE_NOTICE_FIX_20261001.md",
+    "sha256": "a6a7ba5566102e7d4f8a25fe93f8fe82dd04280236e59d00633c4ec3623784b6"
+  },
+  {
+    "path": "08-context/CURRENT_PROGRESS.md",
+    "sha256": "e2c0f5e1dda8f7fe4c6a4ff8af8841c83cc80dcc7783c8b693b79a942e12df77"
+  }
+]

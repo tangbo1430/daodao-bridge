@@ -1,0 +1,245 @@
+{
+  "c2c": {
+    "ActionStatus": "OK",
+    "ErrorCode": 0,
+    "Complete": 0,
+    "LastMsgTime": 1790702714,
+    "MsgCnt": 5,
+    "LastMsgKey": "fixture-last-key",
+    "MsgList": [
+      {
+        "MsgSeq": 1754881889,
+        "MsgRandom": 434944307,
+        "MsgTimeStamp": 1790702714,
+        "MsgClientTime": 1790702714,
+        "MsgFlagBits": 0,
+        "IsPeerRead": 0,
+        "PeerReadTime": 0,
+        "IsNeedReadReceipt": 0,
+        "SupportMessageExtension": 0,
+        "MsgCheckResult": 0,
+        "MsgVersion": 0,
+        "From_Account": "fixture-owner",
+        "To_Account": "fixture-peer",
+        "MsgKey": "fixture-key-0",
+        "CloudCustomData": "",
+        "MsgBody": [
+          {
+            "MsgType": "TIMTextElem",
+            "MsgContent": {
+              "Text": "fixture"
+            }
+          }
+        ]
+      },
+      {
+        "MsgSeq": 1036579010,
+        "MsgRandom": 1790702751,
+        "MsgTimeStamp": 1790702751,
+        "MsgClientTime": 1790702751,
+        "MsgFlagBits": 0,
+        "IsPeerRead": 0,
+        "PeerReadTime": 0,
+        "IsNeedReadReceipt": 0,
+        "SupportMessageExtension": 0,
+        "MsgCheckResult": 0,
+        "MsgVersion": 0,
+        "From_Account": "fixture-owner",
+        "To_Account": "fixture-peer",
+        "MsgKey": "fixture-key-1",
+        "CloudCustomData": "",
+        "MsgBody": [
+          {
+            "MsgType": "TIMTextElem",
+            "MsgContent": {
+              "Text": "fixture"
+            }
+          }
+        ]
+      },
+      {
+        "MsgSeq": 192726206,
+        "MsgRandom": 459723517,
+        "MsgTimeStamp": 1790702755,
+        "MsgClientTime": 1790702755,
+        "MsgFlagBits": 0,
+        "IsPeerRead": 0,
+        "PeerReadTime": 0,
+        "IsNeedReadReceipt": 0,
+        "SupportMessageExtension": 0,
+        "MsgCheckResult": 0,
+        "MsgVersion": 0,
+        "From_Account": "fixture-owner",
+        "To_Account": "fixture-peer",
+        "MsgKey": "fixture-key-2",
+        "CloudCustomData": "",
+        "MsgBody": [
+          {
+            "MsgType": "TIMTextElem",
+            "MsgContent": {
+              "Text": "fixture"
+            }
+          }
+        ]
+      },
+      {
+        "MsgSeq": 1004965631,
+        "MsgRandom": 1336561252,
+        "MsgTimeStamp": 1790702760,
+        "MsgClientTime": 1790702760,
+        "MsgFlagBits": 0,
+        "IsPeerRead": 0,
+        "PeerReadTime": 0,
+        "IsNeedReadReceipt": 0,
+        "SupportMessageExtension": 0,
+        "MsgCheckResult": 0,
+        "MsgVersion": 0,
+        "From_Account": "fixture-owner",
+        "To_Account": "fixture-peer",
+        "MsgKey": "fixture-key-3",
+        "CloudCustomData": "",
+        "MsgBody": [
+          {
+            "MsgType": "TIMTextElem",
+            "MsgContent": {
+              "Text": "fixture"
+            }
+          }
+        ]
+      },
+      {
+        "MsgSeq": 517527207,
+        "MsgRandom": 1790704278,
+        "MsgTimeStamp": 1790704278,
+        "MsgClientTime": 1790704278,
+        "MsgFlagBits": 8,
+        "IsPeerRead": 0,
+        "PeerReadTime": 0,
+        "IsNeedReadReceipt": 0,
+        "SupportMessageExtension": 0,
+        "MsgCheckResult": 0,
+        "MsgVersion": 0,
+        "From_Account": "fixture-owner",
+        "To_Account": "fixture-peer",
+        "MsgKey": "fixture-key-4",
+        "CloudCustomData": "",
+        "MsgBody": [
+          {
+            "MsgType": "TIMTextElem",
+            "MsgContent": {
+              "Text": "fixture"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "group": {
+    "ActionStatus": "OK",
+    "ErrorCode": 0,
+    "IsFinished": 1,
+    "GroupId": "dd_fixture-group",
+    "RspMsgList": [
+      {
+        "IsPlaceMsg": 2,
+        "MsgPriority": 2,
+        "MsgRandom": 1790704539,
+        "MsgSeq": 61,
+        "MsgTimeStamp": 1790704539,
+        "MsgVersion": 0,
+        "From_Account": "fixture-owner",
+        "To_Account": "fixture-peer",
+        "MsgKey": "fixture-key-0",
+        "CloudCustomData": "",
+        "MsgBody": [
+          {
+            "MsgType": "TIMTextElem",
+            "MsgContent": {
+              "Text": "fixture"
+            }
+          }
+        ]
+      },
+      {
+        "IsPlaceMsg": 0,
+        "MsgPriority": 2,
+        "MsgRandom": 219305791,
+        "MsgSeq": 60,
+        "MsgTimeStamp": 1790700718,
+        "MsgVersion": 0,
+        "From_Account": "fixture-owner",
+        "To_Account": "fixture-peer",
+        "MsgKey": "fixture-key-1",
+        "CloudCustomData": "",
+        "MsgBody": [
+          {
+            "MsgType": "TIMTextElem",
+            "MsgContent": {
+              "Text": "fixture"
+            }
+          }
+        ]
+      },
+      {
+        "IsPlaceMsg": 0,
+        "MsgPriority": 2,
+        "MsgRandom": 1485681941,
+        "MsgSeq": 59,
+        "MsgTimeStamp": 1790700716,
+        "MsgVersion": 0,
+        "From_Account": "fixture-owner",
+        "To_Account": "fixture-peer",
+        "MsgKey": "fixture-key-2",
+        "CloudCustomData": "",
+        "MsgBody": [
+          {
+            "MsgType": "TIMTextElem",
+            "MsgContent": {
+              "Text": "fixture"
+            }
+          }
+        ]
+      },
+      {
+        "IsPlaceMsg": 0,
+        "MsgPriority": 2,
+        "MsgRandom": 1212029343,
+        "MsgSeq": 58,
+        "MsgTimeStamp": 1790700690,
+        "MsgVersion": 0,
+        "From_Account": "fixture-owner",
+        "To_Account": "fixture-peer",
+        "MsgKey": "fixture-key-3",
+        "CloudCustomData": "",
+        "MsgBody": [
+          {
+            "MsgType": "TIMTextElem",
+            "MsgContent": {
+              "Text": "fixture"
+            }
+          }
+        ]
+      },
+      {
+        "IsPlaceMsg": 0,
+        "IsSystemMsg": 1,
+        "MsgPriority": 2,
+        "MsgRandom": 671628323,
+        "MsgSeq": 57,
+        "MsgTimeStamp": 1790700642,
+        "From_Account": "fixture-owner",
+        "To_Account": "fixture-peer",
+        "MsgKey": "fixture-key-4",
+        "CloudCustomData": "",
+        "MsgBody": [
+          {
+            "MsgType": "TIMTextElem",
+            "MsgContent": {
+              "Text": "fixture"
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "bridge_binary_sha256": "4c736bf586df349e040c597f5e97306be751d46330e345c564f01e3d46954cf7",
+  "deployed": true,
+  "apk_changed": false,
+  "files": {
+    "01-bridge/tencent-tangseng-bridge/internal/business/member_avatar_refresh.go": "37c67dcec4da21e06e47a3f5accf559b10840648fee9c7a21cdd9d726e5c922c",
+    "01-bridge/tencent-tangseng-bridge/internal/business/member_avatar_refresh_test.go": "6d220c4427c3875e6d1fb32706601e87acad92946bc9c71ff210c8b96facd34c",
+    "01-bridge/tencent-tangseng-bridge/internal/business/groups.go": "e67e77f34b87a2d082627092c5da77508101140ba414328ff9ec4bf3aa1a9aa9",
+    "01-bridge/tencent-tangseng-bridge/internal/business/profiles.go": "5bb9b9d4f73ae5ca786a70d82117b79da02409da87281a0cdc80958eb5e1ca20",
+    "01-bridge/tencent-tangseng-bridge/test/contract/member-avatar-refresh-observed-20261002.json": "8e6054d11f63f27ee35854004250bf642aba63d6cd09e1102d343deb7ffd40c0",
+    "06-release-and-deploy/verify-member-refresh-contract.py": "881a2d2628968964e9c17cfb2d1286e13eb0417caaa9bd1be0398b4ee1ae2d4d",
+    "06-release-and-deploy/verify-member-avatar-refresh.py": "7a7579e0e926a6d4ad951a655782544b8368da3ee4c654fc9e0d1769b90350b5",
+    "08-context/MEMBER_AVATAR_REFRESH_20261002.md": "52283bb596ec8ab4732be9c84987da3e2506ae4eb6fd380deb309599f87ba5a8"
+  },
+  "validation": "unit/vet/native CMD/checkpoint/repeat-sync tests passed; six existing test groups refreshed",
+  "ui_validation": "pending; friend-only avatar invalidation and supergroup UI limitations remain"
+}

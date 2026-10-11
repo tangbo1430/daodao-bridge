@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="../../lib/layui-v2.5.5/css/layui.css" media="all">
+    <link rel="stylesheet" href="../../css/public.css" media="all">
+</head>
+
+<body>
+    <div class="layuimini-container">
+        <div class="layuimini-main">
+            <fieldset class="table-search-fieldset">
+                <legend>搜索信息</legend>
+                <div style="margin: 10px 10px 10px 10px">
+                    <form class="layui-form layui-form-pane" action="">
+                        <div class="layui-form-item">
+
+                            <div class="layui-inline">
+                                <div class="layui-input-inline">
+                                    <input type="text" name="uid" autocomplete="off" class="layui-input"
+                                        placeholder="用户uid">
+                                </div>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="user_name" autocomplete="off" class="layui-input"
+                                        placeholder="手机号">
+                                </div>
+                            </div>
+                            <div class="layui-inline">
+                                <button type="submit" class="layui-btn layui-btn-primary" lay-submit
+                                    lay-filter="data-search-btn"><i class="layui-icon"></i> 搜 索</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </fieldset>
+            
+            <script type="text/html" id="toolbar_add">
+                    <div class="layui-btn-container">
+                        <button class="layui-btn layui-btn-sm" lay-event="getCheckData">批量添加</button>
+                    </div>
+            </script>
+
+            <table class="layui-hide" id="currentTableId" lay-filter="currentTableFilter" style="align: center;">
+            </table>
+        </div>
+    </div>
+    <script src="../../lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
+    <script src="../../common/common.js" charset="utf-8"></script>
+    <script>
+        layui.use(['form', 'table'], function () {
+            var $ = layui.jquery,
+                form = layui.form,
+                table = layui.table;
+            var group_id = parent.GroupId
+            table.render({
+                elem: '#currentTableId',
+                url: WebHost + 'group/get_user_list',
+                where: {
+                    "login_token": AdminLoginToken,
+                    group_id: group_id
+                }, //设定异步数据接口的额外参数
+                method: "POST",
+                toolbar: '#toolbar_add',
+                // toolbar: '#toolbar',
+                defaultToolbar: ['filter', 'exports', 'print', {
+                    title: '提示',
+                    layEvent: 'LAYTABLE_TIPS',
+                    icon: 'layui-icon-tips'
+                }],
+                cols: [[
+                    { type: 'checkbox', fixed: 'left'},
+                    { field: 'uid', title: 'ID' },
+                    { field: 'nick_name', title: '用户昵称', align: "center" },
+                    { field: 'user_name', title: '账号', align: "center" },
+                ]],
+                limits: [10, 15, 20, 25, 50, 100],
+                limit: 25,
+                page: true,
+                skin: 'line',
+                
+            });
+
+            // 监听搜索操作
+            form.on('submit(data-search-btn)', function (data) {
+                // var result = JSON.stringify(data.field);
+                // layer.alert(result, {
+                //     title: '最终的搜索信息'
+                // });
+                data.field.admin_login_token = AdminLoginToken
+                //执行搜索重载
+                table.reload('currentTableId', {
+                    where: data.field,
+                    page: {
+                        curr: 1
+                    }
+                }, 'json');
+
+                return false;
+            });
+
+            table.on('toolbar(currentTableFilter)', function (obj) {
+                var checkStatus = table.checkStatus(obj.config.id);
+                if(obj.event === 'getCheckData'){
+                    var info = checkStatus.data;
+                    if(info.length > 0){
+                        
+                        info = info;
+                        console.log(info);
+                        admin_login_token = AdminLoginToken;
+                        $.post(WebHost + 'group/add_group_user', { login_token: admin_login_token, group_id: group_id, info: info }, function (data) {
+                                layer.msg(data.msg);
+                                if (data.code == 200) {
+                                    location.reload();
+                                }
+                                layer.close(index);
+                            }, "json");
+                    }else{
+                        layer.msg('尚未选中');
+                    }
+                }
+            });
+
+            
+
+
+
+            
+
+
+
+        });
+
+        function previewImg(obj) {
+            var img = new Image()
+            img.src = obj.src
+            //var height = img.height + 50; // 原图片大小
+            //var width = img.width; //原图片大小
+            var imgHtml =
+                "<img src='" +
+                obj.src +
+                "' width='500px' height='500px'/>"
+            //弹出层
+            layer.open({
+                type: 1,
+                shade: 0.8,
+                offset: 'auto',
+                area: [500 + 'px', 550 + 'px'], // area: [width + 'px',height+'px'] //原图显示
+                shadeClose: true,
+                scrollbar: false,
+                title: '查看图片', //不显示标题
+                content: imgHtml, //捕获的元素，注意：最好该指定的元素要存放在body最外层，否则可能被其它的相对元素所影响
+                cancel: function () {
+                    //layer.msg('捕获就是从页面已经存在的元素上，包裹layer的结构', { time: 5000, icon: 6 });
+                },
+            })
+        }
+    </script>
+
+    <script type="text/html" id="is_public_screen">
+    {{#  if(d.is_public_screen == "1"){ }}
+       是
+    {{# }else if(d.is_public_screen=="2"){}}
+        否
+    {{#  } else { }}
+    未知
+    {{#  } }}
+</script>
+
+    <script type="text/html" id="is_public_server">
+    {{#  if(d.is_public_server == "1"){ }}
+    是
+    {{# }else if(d.is_public_server=="2"){}}
+    否
+    {{#  } else { }}
+    未知
+    {{#  } }}
+</script>
+
+
+    <script type="text/html" id="base_image">
+  <img src="{{d.base_image}}"  height="100%" class="layui-upload-img" onclick="previewImg(this)" >
+</script>
+
+
+    <script type="text/html" id="add_time">
+    {{dateFormat(d.add_time) }}
+</script>
+    <script type="text/html" id="currentTableBar">
+    <a class="layui-btn layui-btn-xs data-count-edit" lay-event="edit_info">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+</body>
+
+</html>

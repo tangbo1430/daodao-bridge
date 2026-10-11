@@ -1,0 +1,6 @@
+{
+  "source": "2026-09-30 authorized test conversation, deployed TangSeng channel/sync",
+  "invalid_payload": {"type":1,"content":"fixture reply","reply":{"message_id":900000000000000001,"message_seq":19,"from_uid":"fixture-owner","from_name":"Fixture","payload":{"type":1,"content":"fixture"}}},
+  "observation": {"channel_sync_http":500,"response_bytes":0},
+  "required_payload": {"type":1,"content":"fixture reply","reply":{"message_id":"900000000000000001","message_seq":19,"from_uid":"fixture-owner","from_name":"Fixture","payload":{"type":1,"content":"fixture"}}}
+}

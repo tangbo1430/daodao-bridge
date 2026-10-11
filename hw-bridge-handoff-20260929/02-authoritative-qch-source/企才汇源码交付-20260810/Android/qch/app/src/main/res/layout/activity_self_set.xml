@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/qch_page_bg"
+    android:orientation="vertical">
+
+    <com.tencent.qcloud.tuikit.timcommon.component.TitleBarLayout
+        android:id="@+id/self_detail_title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="@color/white" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true"
+        android:overScrollMode="never">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingLeft="16dp"
+            android:paddingTop="16dp"
+            android:paddingRight="16dp"
+            android:paddingBottom="20dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/qch_group_bg"
+                android:orientation="vertical"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp">
+                <TextView
+                    android:id="@+id/appearance_setting"
+                    style="@style/QchSettingRow"
+                    android:text="外观模式" />
+                <View style="@style/QchDivider" />
+                <TextView
+                    android:id="@+id/language_setting"
+                    style="@style/QchSettingRow"
+                    android:text="Languages/多语言" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/qch_group_bg"
+                android:orientation="vertical"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp">
+
+                <FrameLayout android:layout_width="match_parent" android:layout_height="54dp">
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_gravity="center_vertical" android:text="我的账号" android:textColor="@color/qch_text_primary" android:textSize="15sp" />
+                    <TextView android:id="@+id/t_p" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_gravity="right|center_vertical" android:text="-" android:textColor="@color/qch_text_secondary" android:textSize="14sp" />
+                </FrameLayout>
+                <View style="@style/QchDivider" />
+                <TextView android:id="@+id/changePassword" style="@style/QchSettingRow" android:text="修改密码" />
+                <FrameLayout android:id="@+id/changePassword2" android:layout_width="1dp" android:layout_height="1dp" android:visibility="gone" />
+            </LinearLayout>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="54dp"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/qch_group_bg"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp">
+                <TextView android:id="@+id/f_huanC" style="@style/QchSettingRow" android:text="清空图片缓存" />
+                <TextView android:id="@+id/t_huanC" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_gravity="right|center_vertical" android:layout_marginRight="28dp" android:text="0KB" android:textColor="@color/qch_text_secondary" android:textSize="13sp" />
+            </FrameLayout>
+
+            <TextView android:id="@+id/app" style="@style/QchSettingCard" android:layout_marginTop="12dp" android:text="软件权限管理" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/qch_group_bg"
+                android:orientation="vertical"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp">
+                <TextView android:id="@+id/tvXieyi1" style="@style/QchSettingRow" android:text="用户协议" />
+                <View style="@style/QchDivider" />
+                <TextView android:id="@+id/tvXieyi2" style="@style/QchSettingRow" android:text="隐私政策" />
+            </LinearLayout>
+
+            <TextView android:id="@+id/account_cancel" style="@style/QchSettingCard" android:layout_marginTop="12dp" android:text="账号注销" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="54dp"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/qch_group_bg"
+                android:gravity="center_vertical"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:text="版本号  V1.0.0"
+                android:textColor="@color/qch_text_secondary"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/logout_btn"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="24dp"
+                android:background="@drawable/qch_primary_button"
+                android:gravity="center"
+                android:text="退出登录"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

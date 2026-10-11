@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <RelativeLayout
+        android:id="@+id/edit_common_ctrl_view_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </RelativeLayout>
+
+    <RelativeLayout
+            android:id="@+id/rl_generate_video_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/multimedia_plugin_edit_function_view_background"
+            android:visibility="gone">
+
+        <com.tencent.qcloud.tuikit.tuimultimediaplugin.record.view.ProgressRingView
+                android:id="@+id/generate_video_progressBar"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:layout_centerInParent="true" />
+
+        <Button
+                android:id="@+id/generate_video_cancel_btn"
+                android:text="@string/multimedia_plugin_cancel"
+                android:textColor="@color/multimedia_plugin_white"
+                android:textSize="@dimen/multimedia_plugin_common_text_size"
+                android:fontFamily="@string/multimedia_plugin_common_font"
+                android:layout_height="wrap_content"
+                android:layout_width="70dp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="20dp"
+                android:background="@null" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

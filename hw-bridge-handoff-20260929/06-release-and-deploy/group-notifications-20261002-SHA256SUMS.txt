@@ -1,0 +1,4 @@
+7a479e9eec7a678bbb9c68517c659845f969f785d6f05b1c35cf1bfe06f0b5f4  hw-bridge-group-notifications-20261002.tar.gz
+2e97a3e97a043d88508d73fed8bce76b52b18ae58dbd79818a1ff710d7132afb  qch-group-notifications-20261002-r2-qa.apk
+211cfbaa54e2721776c287baa87d73b2074b06c66d1a5fa28b9f726c4c259ed9  group-notifications-20261002-source.zip
+6e6615ac4465468e9efc42779bd7ca8cf6944297a6832c83bf088f324bce6e8e  group-notifications-20261002-MANIFEST.json

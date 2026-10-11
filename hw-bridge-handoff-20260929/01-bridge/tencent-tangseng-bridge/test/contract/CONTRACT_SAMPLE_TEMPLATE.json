@@ -1,0 +1,10 @@
+{
+  "source": "tangseng|wukong|tencent",
+  "captured_at": "YYYY-MM-DDThh:mm:ssZ",
+  "endpoint": "REDACTED_UNTIL_CONFIRMED",
+  "request": {},
+  "response": {},
+  "redaction": ["token", "password", "usersig", "secret", "phone"],
+  "result_code": "RECORD_REAL_SUCCESS_CODE",
+  "notes": "Replace only with a redacted sample captured from the real test environment."
+}

@@ -1,0 +1,16 @@
+{
+  "bridge_binary_sha256": "daf4ce4ed01caf0062c70d5216bdd6f39d9d841acf124a4831eb12affdca3fef",
+  "deployed": true,
+  "apk_changed": false,
+  "files": {
+    "01-bridge/tencent-tangseng-bridge/internal/business/groups.go": "7db976536372e0dc3bf5599896c9d7e5498b479a3da355a3d35fa482e1bb33a9",
+    "01-bridge/tencent-tangseng-bridge/internal/business/group_events.go": "4fcef43e117331105a65cdf5ffe5bfc799f3498d0399cc9af16359883b5581d3",
+    "01-bridge/tencent-tangseng-bridge/internal/business/group_profile_operator.go": "cb49fb50eeb62ad359a2f7d56381b62b9cf14ac0238fc4aaaa05faa31e1f5694",
+    "01-bridge/tencent-tangseng-bridge/internal/business/group_profile_operator_test.go": "f9cc92bfceb137a5ba7c67724de99701686e70030611e5c64d4a871b263635e5",
+    "01-bridge/tencent-tangseng-bridge/test/contract/group-profile-operator-observed-20261002.json": "acf1743a7c861c841c7035e07cd18f5edc5753319fd9f46ee6cb7c985216f342",
+    "06-release-and-deploy/verify-group-profile-operator.py": "656ca5bf415b50be14764338ca6629c701e53677b51572c1b5274d4567ac1d56",
+    "08-context/GROUP_PROFILE_OPERATOR_20261002.md": "fc490b2e8219f7a83c41341a00b44fff19932ddfa37fc3e604d2730355f8d7a0"
+  },
+  "real_validation": "temporary group cleaned; four profile operations attributed to actual user; no repeated-sync tips",
+  "ui_validation": "pending"
+}

@@ -1,0 +1,2 @@
+fe7ad594ad539c128be5a71ee8ceb1eac3b3a2563cade5d5778427854297ebce  hw-bridge-group-sync-fix-20260930.tar.gz
+c54ef643116397f59b65f312496170902c21c96cca0848db7d16944deb14a619  group-sync-fix-20260930-source.zip

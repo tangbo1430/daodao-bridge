@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="partTranslucent">#39000000</color>
+    <color name="slide_bar_hint_color">#CCCCCC</color>
+
+    <color name="split_lint_color">#D9D9D9</color>
+
+    <color name="contact_profile_btn_pressed_color">#E6E9EB</color>
+    <color name="contact_profile_member_name_text_color">#888888</color>
+
+    <color name="text_color_black">#000</color>
+    <color name="timcommon_btn_positive">#00a4ff</color>
+    <color name="timcommon_btn_positive_hover">#006eff</color>
+
+    <color name="timcommon_btn_negative">#ffffff</color>
+    <color name="timcommon_btn_negative_hover">#cc3428</color>
+
+    <color name="group_btn_negative">#ffffff</color>
+
+    <color name="item_split_color">#cccccc</color>
+
+    <color name="group_profile_member_name_text_color">#888888</color>
+
+</resources>

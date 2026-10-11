@@ -1,0 +1,39 @@
+{
+  "release": "20261001-ios-feedback",
+  "kind": "incremental source overlay",
+  "base": "business-closure-20261001-pretest-review-source.zip applied over original handoff",
+  "apk": "unchanged qch-business-closure-20261001-pretest-review-qa.apk",
+  "live_bridge_sha256": "69cb569b61f2b37b5dea5373ed8afc24968e58b1bf634cbc9774eab8b69d5eba",
+  "files": [
+    {
+      "path": "01-bridge/tencent-tangseng-bridge/internal/business/profiles.go",
+      "sha256": "d2cbe1fc78ed8db3ceefcd565ef09018305d6894388989d83de8dea9f116a76e",
+      "bytes": 4902
+    },
+    {
+      "path": "01-bridge/tencent-tangseng-bridge/internal/business/profile_avatar_refresh_test.go",
+      "sha256": "2409b34d04b2a8250c8b5e2241e9948a6ee6e844d94e60df936ebd6915833ea3",
+      "bytes": 2800
+    },
+    {
+      "path": "01-bridge/tencent-tangseng-bridge/test/contract/ios-feedback-observed-20261001.json",
+      "sha256": "ef305aedbc1c3b4395c2ec5b5f909fdfe8f2aff3cd2d36c32de5ba5906236f26",
+      "bytes": 1215
+    },
+    {
+      "path": "06-release-and-deploy/verify-avatar-refresh.py",
+      "sha256": "218b19cf67bd6e585ed70b033f331217b8b8c4110a457390dc6faf68a2c63ca6",
+      "bytes": 3257
+    },
+    {
+      "path": "08-context/IOS_FEEDBACK_20261001.md",
+      "sha256": "50107f676ebb205a731ed126d18f5ff5706467f9c65ba5da83bb65ac4e0d8534",
+      "bytes": 6097
+    },
+    {
+      "path": "08-context/CURRENT_PROGRESS.md",
+      "sha256": "e731b1ae0bd4739aa5f1747459467d10b0572a3549549a02d5b39c5ee0d1d636",
+      "bytes": 10920
+    }
+  ]
+}

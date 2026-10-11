@@ -1,0 +1,16 @@
+{
+  "provenance": "Real deployed native HTTP responses captured 2026-10-01. IDs, names and resource URLs omitted; selected metadata only. Public upstream iOS source is a reference, not evidence of the installed app version.",
+  "images": [
+    {"type": 2, "width": 2616, "height": 1140, "url_is_relative": true, "readed_count": 1, "download_http": 200, "download_bytes": 191293, "content_matches_cache_sha256": true},
+    {"type": 2, "width": 2616, "height": 1140, "url_is_relative": true, "readed_count": 1, "download_http": 200, "download_bytes": 213020, "content_matches_cache_sha256": true}
+  ],
+  "recall": {"native_extra": {"readed_count": 1, "is_mutual_deleted": 1}, "bridge_revoked": true, "recipient_unread_ui_verified": false},
+  "group_remove": {
+    "business_http": 200, "business_code": 200,
+    "native_membership_removed": true, "tencent_membership_removed": true,
+    "temporary_group_history_after_remove": [],
+    "join_group_remind_variants_tested": [0, 1],
+    "recipient_private_command_not_captured": true
+  },
+  "avatar_resync": {"jobs_done": 2, "refresh_checkpoint_persisted": true, "duplicate_refresh_suppressed": true, "original_avatar_bytes_preserved": true, "ios_ui_verified": false}
+}

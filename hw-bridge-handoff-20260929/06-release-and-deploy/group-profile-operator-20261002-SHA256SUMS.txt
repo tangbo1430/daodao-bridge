@@ -1,0 +1,3 @@
+eba54a326cd230e2bad8be0264fe6d60aa582748386133b510144fcf6f16f2d3  hw-bridge-group-profile-operator-20261002.tar.gz
+8abb01cba5d19b62b404db3f22d5aa5082e8ce3a5b7245a424a50f1b4fe8e958  group-profile-operator-20261002-source.zip
+7f0b00cce55e29e047e83489456ad4f616bb6ff52b9882e27c1eaeff1e56bb07  group-profile-operator-20261002-MANIFEST.json
